@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Paris | Portfolio",
   description: "프론트엔드 개발자 Paris의 포트폴리오",
+  icons: {
+    icon: "/favicon-light.svg", // 라이트 기본
+  },
 };
 
 export default function RootLayout({

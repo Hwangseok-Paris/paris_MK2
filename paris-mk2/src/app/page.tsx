@@ -1,9 +1,11 @@
-import ThemeToggle from "../components/common/ThemeToggle";
+import Hero from "@/components/sections/Hero";
+import ProjectsPreview from "@/components/sections/ProjectsPreview";
 
 export default function Home() {
   return (
-    <div>
-      <ThemeToggle />
-    </div>
+    <>
+      <Hero />
+      <ProjectsPreview />
+    </>
   );
 }

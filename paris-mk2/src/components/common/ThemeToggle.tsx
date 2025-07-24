@@ -1,20 +1,41 @@
-// components/ThemeToggle.tsx
 "use client";
 
+import { useEffect, useState } from "react";
+import { Moon, Sun } from "lucide-react";
+
+/**
+ *  ⏺ 작동 방식
+ *  1. <html class="dark"> 토글
+ *  2. 파비콘 src 교체  (public/favicon-light.svg / -dark.svg 두 개 준비)
+ *  3. 아이콘(🌞·🌙) 스위치
+ */
 export default function ThemeToggle() {
-  const handleToggle = () => {
-    console.log("toggle Activated");
-    document.documentElement.classList.toggle("dark");
+  const [dark, setDark] = useState(false);
+
+  /* 초기 상태 동기화 */
+  useEffect(() => {
+    setDark(document.documentElement.classList.contains("dark"));
+  }, []);
+
+  const toggle = () => {
+    const html = document.documentElement;
+    html.classList.toggle("dark");
+    const nowDark = html.classList.contains("dark");
+    setDark(nowDark);
+
+    /* 파비콘 교체 */
+    const favicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
+    if (favicon) {
+      favicon.href = nowDark ? "/favicon-dark.svg" : "/favicon-light.svg";
+    }
   };
 
   return (
-    <div>
-      <button className="p-2 bg-gray-200" onClick={handleToggle}>
-        Toggle theme
-      </button>
-      <div className="bg-white dark:bg-gray-900 text-[black] dark:text-[white] p-4">
-        다크모드 테스트
-      </div>
-    </div>
+    <button
+      aria-label="Toggle dark mode"
+      onClick={toggle}
+      className="h-6 w-6 text-gray-800 dark:text-gray-100 cursor-pointer">
+      {dark ? <Moon className="h-6 w-6" /> : <Sun className="h-6 w-6" />}
+    </button>
   );
 }
