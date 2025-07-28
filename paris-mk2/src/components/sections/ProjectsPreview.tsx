@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function ProjectsPreview() {
   return (
-    <section className="border-t border-gray-200 py-16 dark:border-gray-700">
+    <section className=" border-gray-200 py-16 dark:border-gray-700">
       <Container>
         <div className="mb-8 flex items-center justify-between">
           <h2 className="text-2xl font-bold">Featured Projects</h2>

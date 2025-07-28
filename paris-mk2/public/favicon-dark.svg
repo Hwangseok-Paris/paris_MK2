@@ -1,1 +1,2 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFF00"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFF00"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg> -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFF00">\n <circle cx="12" cy="1" r="1.5" />\n <path d="M11 2h2l5 20h-2l-.9-4H8.9l-.9 4H6l5-20z"/>\n <path d="M7 14h10v2H7z" opacity=".35"/>\n</svg>

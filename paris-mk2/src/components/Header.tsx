@@ -9,11 +9,11 @@ export default function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-30 w-full border-b border-gray-200 bg-white/70 backdrop-blur dark:border-gray-700 dark:bg-gray-900/70">
+    <header className="sticky top-0 z-30 w-full border-b border-gray-200  backdrop-blur dark:border-gray-700 ">
       <Container>
         <div className="flex h-14 items-center justify-between">
           {/* 로고 */}
-          <Link href="/" className="text-lg font-bold">
+          <Link href="/" className="text-lg font-bold w-20">
             Paris<span className="text-primary-500">.</span>
           </Link>
 
@@ -30,7 +30,7 @@ export default function Header() {
             </Link>
           </nav>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center justify-end gap-4  w-20">
             <ThemeToggle />
 
             {/* 모바일 햄버거 */}
