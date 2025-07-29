@@ -21,6 +21,8 @@ const history: Entry[] = [
 
 export default function Timeline() {
   const yearDesktopRef = useRef<HTMLDivElement>(null);
+  const yearMobileRef = useRef<HTMLDivElement>(null);
+  const mobileBoxRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const boxRef = useRef<HTMLDivElement>(null);
 
@@ -37,89 +39,272 @@ export default function Timeline() {
           history.forEach(({ year }, idx) => {
             ScrollTrigger.create({
               trigger: `#y${year}`,
-              start: "top center",
-              end: "bottom center",
+              start: "top bottom",
+              end: "bottom bottom",
               scrub: 1,
               markers: true,
-              onEnter: () => swapPC(year, idx),
-              onEnterBack: () => swapPC(year, idx),
-              onLeaveBack: () => swapPCReverse(year, idx),
-              onLeave: () => swapPCReverse(year, idx),
+              onEnter: () => swapEnter(year, idx),
+              onEnterBack: () => swapPCEnterBack(year, idx),
+              onLeaveBack: () => swapPCLeaveBack(year, idx),
+              onLeave: () => swapPCLeave(year, idx),
             });
           });
 
-          function swapPC(year: string, idx: number) {
+          function swapEnter(year: string, idx: number) {
+            console.log("onEnter");
             if (!boxRef.current) return;
             gsap.fromTo(
               boxRef.current,
-              { x: 100, y: 100, opacity: 0 }, // ▶ 위에서 아래로 슬라이드‑in
+              { x: -400, y: 0, opacity: 0 }, // ▶ 위에서 아래로 슬라이드‑in
               { x: 0, y: 0, opacity: 1 },
             );
             boxRef.current.innerHTML = history.find((h) => h.year === year)!.detail; // 박스안에 내용 삽입
-            if (yearDesktopRef.current) yearDesktopRef.current.textContent = year; // 연도 변경
+            // if (yearDesktopRef.current) yearDesktopRef.current.textContent = year; // 연도 변경
+
+            if (yearDesktopRef.current) {
+              gsap.to(yearDesktopRef.current, {
+                opacity: 0,
+                duration: 0.2,
+                onComplete: () => {
+                  yearDesktopRef.current!.textContent = year;
+                  gsap.fromTo(
+                    yearDesktopRef.current,
+                    { y: 10, opacity: 0 },
+                    { opacity: 1, y: 1, duration: 0.6 },
+                  );
+                },
+              });
+            }
+          }
+          function swapPCLeaveBack(year: string, idx: number) {
+            console.log("LeaveBack");
+            if (!boxRef.current) return;
+            gsap.fromTo(
+              boxRef.current,
+              { x: 0, y: 0, opacity: 1 }, // ▶ 위에서 아래로 슬라이드‑in
+              { x: -400, y: 0, opacity: 0 },
+            );
+            boxRef.current.innerHTML = history.find((h) => h.year === year)!.detail; // 박스안에 내용 삽입
+            // if (yearDesktopRef.current) yearDesktopRef.current.textContent = year; // 연도 변경
+            if (yearDesktopRef.current) {
+              gsap.to(yearDesktopRef.current, {
+                opacity: 0,
+                duration: 0.2,
+                onComplete: () => {
+                  yearDesktopRef.current!.textContent = "";
+                  gsap.fromTo(
+                    yearDesktopRef.current,
+                    { y: 10, opacity: 0 },
+                    { opacity: 1, y: 1, duration: 0.6 },
+                  );
+                },
+              });
+            }
           }
 
-          function swapPCReverse(year: string, idx: number) {
-            console.log("leave");
+          function swapPCLeave(year: string, idx: number) {
+            console.log("Leave");
             if (!boxRef.current) return;
-            gsap.fromTo(boxRef.current, { x: 0, y: 0, opacity: 1 }, { x: 100, y: 100, opacity: 0 });
+            gsap.fromTo(boxRef.current, { x: 0, y: 0, opacity: 1 }, { x: 400, y: 0, opacity: 0 });
             boxRef.current.innerHTML = history.find((h) => h.year === year)!.detail; // 박스안에 내용 삽입
-            if (yearDesktopRef.current) yearDesktopRef.current.textContent = year; // 연도 변경
+            // if (yearDesktopRef.current) yearDesktopRef.current.textContent = ""; // 연도 변경
+            if (yearDesktopRef.current) {
+              gsap.to(yearDesktopRef.current, {
+                opacity: 0,
+                duration: 0.2,
+                onComplete: () => {
+                  yearDesktopRef.current!.textContent = "";
+                  gsap.fromTo(
+                    yearDesktopRef.current,
+                    { y: 10, opacity: 0 },
+                    { opacity: 1, y: 1, duration: 0.6 },
+                  );
+                },
+              });
+            }
           }
+          function swapPCEnterBack(year: string, idx: number) {
+            console.log("EnterBack");
+            if (!boxRef.current) return;
+            gsap.fromTo(boxRef.current, { x: 400, y: 0, opacity: 0 }, { x: 0, y: 0, opacity: 1 });
+            boxRef.current.innerHTML = history.find((h) => h.year === year)!.detail; // 박스안에 내용 삽입
+            // if (yearDesktopRef.current) yearDesktopRef.current.textContent = year; // 연도 변경
+            if (yearDesktopRef.current) {
+              gsap.to(yearDesktopRef.current, {
+                opacity: 0,
+                duration: 0.2,
+                onComplete: () => {
+                  yearDesktopRef.current!.textContent = year;
+                  gsap.fromTo(
+                    yearDesktopRef.current,
+                    { y: 10, opacity: 0 },
+                    { opacity: 1, y: 1, duration: 0.6 },
+                  );
+                },
+              });
+            }
+          }
+        }
+
+        if (ctx.conditions!.isMobile) {
+          history.forEach(({ year }, idx) => {
+            ScrollTrigger.create({
+              trigger: `#y${year}`,
+              start: "top bottom",
+              end: "bottom bottom",
+              markers: true,
+              scrub: 1,
+              onEnter: () => swapEnter(year, idx),
+              onEnterBack: () => swapPCEnterBack(year, idx),
+              onLeaveBack: () => swapPCLeaveBack(year, idx),
+              onLeave: () => swapPCLeave(year, idx),
+            });
+          });
+
+          function swapEnter(year: string, idx: number) {
+            console.log("onEnter");
+            if (!mobileBoxRef.current) return;
+            gsap.fromTo(
+              mobileBoxRef.current,
+              { x: -400, y: 0, opacity: 0 }, // ▶ 위에서 아래로 슬라이드‑in
+              { x: 0, y: 0, opacity: 1 },
+            );
+            mobileBoxRef.current.innerHTML = history.find((h) => h.year === year)!.detail; // 박스안에 내용 삽입
+            // if (yearDesktopRef.current) yearDesktopRef.current.textContent = year; // 연도 변경
+
+            if (yearMobileRef.current) {
+              gsap.to(yearMobileRef.current, {
+                opacity: 0,
+                duration: 0.2,
+                onComplete: () => {
+                  yearMobileRef.current!.textContent = year;
+                  gsap.fromTo(
+                    yearMobileRef.current,
+                    { y: 10, opacity: 0 },
+                    { opacity: 1, y: 1, duration: 0.6 },
+                  );
+                },
+              });
+            }
+          }
+          function swapPCLeaveBack(year: string, idx: number) {
+            console.log("LeaveBack");
+            if (!mobileBoxRef.current) return;
+            gsap.fromTo(
+              mobileBoxRef.current,
+              { x: 0, y: 0, opacity: 1 }, // ▶ 위에서 아래로 슬라이드‑in
+              { x: -400, y: 0, opacity: 0 },
+            );
+            mobileBoxRef.current.innerHTML = history.find((h) => h.year === year)!.detail; // 박스안에 내용 삽입
+            // if (yearDesktopRef.current) yearDesktopRef.current.textContent = year; // 연도 변경
+            if (yearMobileRef.current) {
+              gsap.to(yearMobileRef.current, {
+                opacity: 0,
+                duration: 0.2,
+                onComplete: () => {
+                  yearMobileRef.current!.textContent = "";
+                  gsap.fromTo(
+                    yearMobileRef.current,
+                    { y: 10, opacity: 0 },
+                    { opacity: 1, y: 1, duration: 0.6 },
+                  );
+                },
+              });
+            }
+          }
+
+          function swapPCLeave(year: string, idx: number) {
+            console.log("Leave");
+            if (!mobileBoxRef.current) return;
+            gsap.fromTo(
+              mobileBoxRef.current,
+              { x: 0, y: 0, opacity: 1 },
+              { x: 400, y: 0, opacity: 0 },
+            );
+            mobileBoxRef.current.innerHTML = history.find((h) => h.year === year)!.detail; // 박스안에 내용 삽입
+            // if (yearDesktopRef.current) yearDesktopRef.current.textContent = ""; // 연도 변경
+            if (yearMobileRef.current) {
+              gsap.to(yearMobileRef.current, {
+                opacity: 0,
+                duration: 0.2,
+                onComplete: () => {
+                  yearMobileRef.current!.textContent = "";
+                  gsap.fromTo(
+                    yearMobileRef.current,
+                    { y: 10, opacity: 0 },
+                    { opacity: 1, y: 1, duration: 0.6 },
+                  );
+                },
+              });
+            }
+          }
+          function swapPCEnterBack(year: string, idx: number) {
+            console.log("EnterBack");
+            if (!mobileBoxRef.current) return;
+            gsap.fromTo(
+              mobileBoxRef.current,
+              { x: 400, y: 0, opacity: 0 },
+              { x: 0, y: 0, opacity: 1 },
+            );
+            mobileBoxRef.current.innerHTML = history.find((h) => h.year === year)!.detail; // 박스안에 내용 삽입
+            // if (yearDesktopRef.current) yearDesktopRef.current.textContent = year; // 연도 변경
+            if (yearMobileRef.current) {
+              gsap.to(yearMobileRef.current, {
+                opacity: 0,
+                duration: 0.2,
+                onComplete: () => {
+                  yearMobileRef.current!.textContent = year;
+                  gsap.fromTo(
+                    yearMobileRef.current,
+                    { y: 10, opacity: 0 },
+                    { opacity: 1, y: 1, duration: 0.6 },
+                  );
+                },
+              });
+            }
+          }
+
+          // function updateMobile(year: string) {
+          //   if (yearMobileRef.current) yearMobileRef.current.textContent = year;
+          // }
         }
       },
     );
     return () => mm.revert();
   }, []);
 
-  //   useEffect(() => {
-  //     console.log("renderd");
-  //     gsap.fromTo(
-  //       boxRef.current,
-  //       { x: 100, y: 100, opacity: 0 },
-  //       {
-  //         y: 0,
-  //         x: 0,
-  //         opacity: 1,
-  //         scrollTrigger: {
-  //           trigger: `#y${year}`,
-  //           start: "top 800px",
-  //           end: "center center",
-  //           markers: true,
-  //           scrub: true,
-  //           toggleActions: "restart pause reverse pause",
-  //         },
-  //       },
-  //     );
-  //   }, []);
-
   return (
-    <section className="min-h-[calc(100vh-56px)] mx-5 py-24 bg-amber-200">
-      <div ref={containerRef} className="grid gap-8 md:grid-cols-[150px_1fr]">
+    <section className="min-h-[calc(100vh-56px)] mx-5 py-24 pb-60">
+      <div ref={containerRef} className="md:grid md:gap-8 md:grid-cols-[150px_1fr]">
         {/* 연도 */}
         <div
           ref={yearDesktopRef}
-          className="sticky top-24 flex flex-col gap6 text-xl font-bold text-right border-r pr-5 ">
-          2021
+          className="hidden sticky top-24 flex-col gap-6 text-xl font-bold text-right pr-5 md:block h-full"></div>
+
+        {/* 모바일 상단 고정 배지 */}
+        <div
+          ref={yearMobileRef}
+          className="sticky top-20 z-20 mb-8 block self-start text-2xl font-bold text-center md:hidden ">
+          {history[0].year}
         </div>
+
         {/* 상세 박스 (PC) */}
         <div
           ref={boxRef}
-          className="hidden min-h-[200px] rounded-lg border border-gray-200 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-900 md:block opacity-0"
+          className="sticky top-24 min-h-[600px] rounded-lg border border-gray-200 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-900 opacity-0 hidden md:block"
+        />
+        <div
+          ref={mobileBoxRef}
+          className="sticky top-34 min-h-[600px] rounded-lg border border-gray-200 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-900 opacity-0 md:hidden"
         />
 
         {/* 스크롤 트리거 섹션 + 모바일 카드 */}
-        <div className="col-span-2 flex flex-col gap-20">
+        <div className="col-span-2 flex flex-col gap-30">
           {history.map(({ year, detail }) => (
             <section
               key={year}
               id={`y${year}`}
-              className="min-h-10 flex items-start md:items-center">
-              {/* 모바일 카드 */}
-              <div className="block w-full rounded-lg border border-gray-200 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-900 md:hidden opacity-0">
-                <p className="text-sm">{detail}</p>
-              </div>
-            </section>
+              className="min-h-80 flex items-start md:items-center"></section>
           ))}
         </div>
         {/* // 연도 */}
