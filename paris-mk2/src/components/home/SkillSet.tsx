@@ -27,7 +27,7 @@ const skills: Skill[] = [
 
 export default function SkillSet() {
   return (
-    <section className="h-[calc(100vh-56px)] flex flex-col items-center justify-center mx-5">
+    <section className="h-[calc(100vh-56px)] flex flex-col items-center justify-center mx-5 mb-50">
       <div className="w-full mb-15 text-center text-4xl font-bold bg-gradient-to-r from-primary-800 to-emerald-300 dark:from-pink-500 dark:to-pink-100 bg-clip-text text-transparent">
         MAIN TECH STACK
       </div>

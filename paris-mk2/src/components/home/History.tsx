@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "gsap/all";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -51,7 +51,7 @@ export default function Timeline() {
           });
 
           function swapEnter(year: string, idx: number) {
-            console.log("onEnter");
+            // console.log("onEnter");
             if (!boxRef.current) return;
             gsap.fromTo(
               boxRef.current,
@@ -77,7 +77,7 @@ export default function Timeline() {
             }
           }
           function swapPCLeaveBack(year: string, idx: number) {
-            console.log("LeaveBack");
+            // console.log("LeaveBack");
             if (!boxRef.current) return;
             gsap.fromTo(
               boxRef.current,
@@ -103,7 +103,7 @@ export default function Timeline() {
           }
 
           function swapPCLeave(year: string, idx: number) {
-            console.log("Leave");
+            // console.log("Leave");
             if (!boxRef.current) return;
             gsap.fromTo(boxRef.current, { x: 0, y: 0, opacity: 1 }, { x: 400, y: 0, opacity: 0 });
             boxRef.current.innerHTML = history.find((h) => h.year === year)!.detail; // 박스안에 내용 삽입
@@ -124,7 +124,7 @@ export default function Timeline() {
             }
           }
           function swapPCEnterBack(year: string, idx: number) {
-            console.log("EnterBack");
+            // console.log("EnterBack");
             if (!boxRef.current) return;
             gsap.fromTo(boxRef.current, { x: 400, y: 0, opacity: 0 }, { x: 0, y: 0, opacity: 1 });
             boxRef.current.innerHTML = history.find((h) => h.year === year)!.detail; // 박스안에 내용 삽입
@@ -154,6 +154,7 @@ export default function Timeline() {
               end: "bottom bottom",
               markers: true,
               scrub: 1,
+              snap: 1 / (history.length - 1),
               onEnter: () => swapEnter(year, idx),
               onEnterBack: () => swapPCEnterBack(year, idx),
               onLeaveBack: () => swapPCLeaveBack(year, idx),
@@ -162,12 +163,12 @@ export default function Timeline() {
           });
 
           function swapEnter(year: string, idx: number) {
-            console.log("onEnter");
+            // console.log("onEnter");
             if (!mobileBoxRef.current) return;
             gsap.fromTo(
               mobileBoxRef.current,
               { x: -400, y: 0, opacity: 0 }, // ▶ 위에서 아래로 슬라이드‑in
-              { x: 0, y: 0, opacity: 1 },
+              { x: 0, y: 0, opacity: 1, duration: 2, ease: "power3.out" },
             );
             mobileBoxRef.current.innerHTML = history.find((h) => h.year === year)!.detail; // 박스안에 내용 삽입
             // if (yearDesktopRef.current) yearDesktopRef.current.textContent = year; // 연도 변경
@@ -187,8 +188,9 @@ export default function Timeline() {
               });
             }
           }
+
           function swapPCLeaveBack(year: string, idx: number) {
-            console.log("LeaveBack");
+            // console.log("LeaveBack");
             if (!mobileBoxRef.current) return;
             gsap.fromTo(
               mobileBoxRef.current,
@@ -214,7 +216,7 @@ export default function Timeline() {
           }
 
           function swapPCLeave(year: string, idx: number) {
-            console.log("Leave");
+            // console.log("Leave");
             if (!mobileBoxRef.current) return;
             gsap.fromTo(
               mobileBoxRef.current,
@@ -239,7 +241,7 @@ export default function Timeline() {
             }
           }
           function swapPCEnterBack(year: string, idx: number) {
-            console.log("EnterBack");
+            // console.log("EnterBack");
             if (!mobileBoxRef.current) return;
             gsap.fromTo(
               mobileBoxRef.current,
@@ -279,7 +281,7 @@ export default function Timeline() {
         {/* 연도 */}
         <div
           ref={yearDesktopRef}
-          className="hidden sticky top-24 flex-col gap-6 text-xl font-bold text-right pr-5 md:block h-full"></div>
+          className="hidden sticky top-24 flex-col gap-6 text-3xl font-bold text-right pr-5 md:block h-full text-primary-500 dark:text-pink-400"></div>
 
         {/* 모바일 상단 고정 배지 */}
         <div
@@ -299,12 +301,12 @@ export default function Timeline() {
         />
 
         {/* 스크롤 트리거 섹션 + 모바일 카드 */}
-        <div className="col-span-2 flex flex-col gap-30">
-          {history.map(({ year, detail }) => (
+        <div className="col-span-2 flex flex-col gap-10">
+          {history.map(({ year }) => (
             <section
               key={year}
               id={`y${year}`}
-              className="min-h-80 flex items-start md:items-center"></section>
+              className="min-h-200 flex items-start md:items-center"></section>
           ))}
         </div>
         {/* // 연도 */}
