@@ -1,2 +1,6 @@
 @config "../../tailwind.config.ts";
 @import "tailwindcss";
+
+html {
+  scrollbar-gutter: stable;
+}
