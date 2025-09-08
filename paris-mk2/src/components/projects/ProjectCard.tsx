@@ -5,9 +5,10 @@ import type { Project } from "@/constants/projects";
 
 interface Props {
   project: Project;
+  onClick: (p: Project) => void;
 }
 
-export default function ProjectCard({ project }: Props) {
+export default function ProjectCard({ project, onClick }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   const onMove = (e: React.MouseEvent) => {
@@ -35,7 +36,11 @@ export default function ProjectCard({ project }: Props) {
 
   return (
     <>
-      <button onMouseMove={onMove} onMouseLeave={onLeave} className="group relative text-left">
+      <button
+        onMouseMove={onMove}
+        onMouseLeave={onLeave}
+        className="group relative text-left"
+        onClick={() => onClick(project)}>
         <div
           ref={ref}
           className="flex flex-col border shadow-xl sm:min-h-[230px] min-w-[230px] border-black/4  dark:border-white/10 bg-gradient-to-br  dark:from-white/6 dark:to-white/2 p-5 backdrop-blur-sm rounded-2xl  transition-all duration-150 will-change-transform
@@ -43,20 +48,20 @@ export default function ProjectCard({ project }: Props) {
           <div className="mb-2 text-xs opacity-70 line-clamp-2 turncate">
             {project.period} · {project.role}
           </div>
-          <h3 className="text-lg font-semibold line-clamp-2 leading-snug">{project.title}</h3>
-          <div className="mt-1 text-sm font-semibold  opacity-80">{project.company}</div>
+          <div className="mb-1 text-sm font-semibold  opacity-80">[ {project.company} ]</div>
+          <h3 className="text-md font-semibold line-clamp-2 leading-snug">{project.title}</h3>
           <p className="mt-3 mb-3 line-clamp-2 text-sm opacity-80">{project.summary}</p>
 
           <div className="mt-auto flex flex-wrap gap-1.5">
             {[project.category, ...project.stack.slice(0, 2)].map((t) => (
               <span
                 key={t}
-                className="rounded-2xl bg-foreground/10 px-2 py-1 text-[11px] border-[0.5px] border-black/20">
+                className="rounded-full bg-foreground/10 px-3 py-1 text-[11px] border-[1px] border-black/20 dark:border-white/50">
                 {t}
               </span>
             ))}
             {project.stack.length > 3 && (
-              <span className="rounded-full bg-foreground/10 px-2 py-1 text-[11px] border-[0.5px] border-black/20">
+              <span className="rounded-full bg-foreground/10 px-3 py-1 text-[11px] border-[1px] border-black/20 dark:border-white/50">
                 +{project.stack.length - 3}
               </span>
             )}

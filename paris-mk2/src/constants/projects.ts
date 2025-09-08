@@ -13,7 +13,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     id: "osstem-hybrid",
-    title: "오스템 임플란트 앱(하이브리드) 서비스 통합 프로젝트",
+    title: "앱(하이브리드) 서비스 통합 프로젝트",
     company: "오스템 임플란트",
     period: "2025.07 ~ 진행중",
     role: "웹-네이티브 브릿지 연동, 가이드 정리",
@@ -28,7 +28,7 @@ export const projects: Project[] = [
   },
   {
     id: "scb-connectalways",
-    title: "SC 제일은행 CRM(Connect Always) 커스터마이징",
+    title: "CRM(Connect Always) 커스터마이징",
     company: "SC제일은행",
     period: "2025.04 ~ 2025.06",
     role: "프론트엔드 전담",
@@ -58,7 +58,7 @@ export const projects: Project[] = [
   },
   {
     id: "kyobo-direct",
-    title: "교보생명 다이렉트 실시간 채팅 상담",
+    title: "교보 다이렉트 실시간 채팅 상담",
     company: "교보생명",
     period: "2024.08 ~ 2025.01",
     role: "프론트엔드 전담",
@@ -74,7 +74,7 @@ export const projects: Project[] = [
   },
   {
     id: "amore-bts",
-    title: "아모레퍼시픽 Beauty Tech Solution 운영 (마이스킨솔루션)",
+    title: "BTS(Beauty Tech Solution) 운영 (마이스킨솔루션)",
     company: "Amorepacific",
     period: "2024.04 ~ 2024.07",
     role: "FE 개발/운영",
@@ -90,7 +90,7 @@ export const projects: Project[] = [
   },
   {
     id: "kyobo-toktok",
-    title: "교보생명 ‘교보톡톡’ 상담 솔루션",
+    title: "교보톡톡 상담 솔루션",
     company: "교보생명",
     period: "2023.09 ~ 2024.03",
     role: "프론트엔드 3인 팀 리딩",

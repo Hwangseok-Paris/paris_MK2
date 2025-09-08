@@ -1,7 +1,14 @@
+"use client";
+
 import ProjectCard from "./ProjectCard";
-import { projects } from "@/constants/projects";
+import { Project, projects } from "@/constants/projects";
+import { useState } from "react";
+import ProjectModal from "./ProjectModal";
 
 export default function ProjectsContailner() {
+  const [modalState, setModalState] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<Project | null>();
+
   return (
     <>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -20,11 +27,24 @@ export default function ProjectsContailner() {
         {/* 카드(리스트)) 영역 */}
         {projects &&
           projects.map((project, idx) => {
-            return <ProjectCard project={project} key={idx} />;
+            return (
+              <ProjectCard
+                project={project}
+                key={idx}
+                onClick={() => setSelectedProject(project)}
+              />
+            );
           })}
 
         {/* 카드(리스트)) 영역 */}
       </div>
+      {/* 모달 영역 */}
+      <ProjectModal
+        open={!!selectedProject}
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
+      {/* // 모달 영역 */}
     </>
   );
 }
