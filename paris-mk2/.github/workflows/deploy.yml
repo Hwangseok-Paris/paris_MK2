@@ -1,0 +1,72 @@
+name: deploy
+
+on:
+  push:
+    branches: ["main"]
+
+env:
+  AWS_REGION: ap-northeast-2
+  AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
+  ECR_REPO: ${{ vars.ECR_REPO }} # 예: my-app
+  IMAGE: ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/${{ vars.ECR_REPO }}
+  TAG: sha-${{ github.sha }}
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_OIDC_ROLE_ARN }} # 예: arn:aws:iam::123456789012:role/ga-ecr-pusher
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region $AWS_REGION \
+          | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+
+      - name: Build
+        run: |
+          docker build -t $IMAGE:${{ env.TAG }} -t $IMAGE:latest .
+
+      - name: Push
+        run: |
+          docker push $IMAGE:${{ env.TAG }}
+          docker push $IMAGE:latest
+
+      - name: Export tag
+        run: echo "DEPLOY_TAG=${{ env.TAG }}" >> $GITHUB_OUTPUT
+        id: meta
+
+    outputs:
+      deploy_tag: ${{ steps.meta.outputs.DEPLOY_TAG }}
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH deploy
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }} # Elastic IP or DNS
+          username: ${{ secrets.SSH_USER }} # deploy
+          key: ${{ secrets.SSH_KEY }} # PEM 내용
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            set -e
+            cd /opt/app
+            # latest로 굴리는 경우:
+            docker compose pull
+            docker compose up -d
+            # sha 태그로 굴리고 싶으면 compose.yml 이미지 태그를 sha로 바꿔둔 뒤 아래처럼:
+            # sed -i "s#:image: .*#:image: $IMAGE:${{ needs.build-and-push.outputs.deploy_tag }}#g" compose.yml || true
+            # docker compose pull && docker compose up -d
+            sleep 3
+            curl -fsS http://127.0.0.1:3000/health
