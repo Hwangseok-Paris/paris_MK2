@@ -73,8 +73,9 @@ jobs:
             # latest로 굴리는 경우:
             docker compose pull
             docker compose up -d
-            # sha 태그로 굴리고 싶으면 compose.yml 이미지 태그를 sha로 바꿔둔 뒤 아래처럼:
-            # sed -i "s#:image: .*#:image: $IMAGE:${{ needs.build-and-push.outputs.deploy_tag }}#g" compose.yml || true
-            # docker compose pull && docker compose up -d
-            sleep 3
-            curl -fsS http://127.0.0.1:3000/health
+            for i in {1..20}; do
+              if curl -fsS http://127.0.0.1:3000/ >/dev/null; then
+                echo "app is up"; break
+              fi
+              echo "waiting ($i) ..."; sleep 2
+            done
