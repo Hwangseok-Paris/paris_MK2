@@ -29,7 +29,7 @@ export default function ProjectModal({ project, open, onClose }: Props) {
         <div
           aria-modal="true"
           className="absolute left-1/2 top-1/2 w-full sm:w-[min(680px,92vw)] -translate-x-1/2 -translate-y-1/2
-                   rounded-2xl border border-black/4 dark:border-white/10 p-6 bg-white/85 dark:bg-gray-900/85 dark:bg-gray/10 shadow-2xl py-15">
+                   rounded-2xl border border-black/4 dark:border-white/10 p-6 bg-white/90 dark:bg-gray-900/90 dark:bg-gray/10 shadow-2xl py-15">
           {/* 닫기(X) 아이콘 */}
           <div className="absolute right-4 top-4 opacity-50 hover:cursor-pointer hover:scale-110">
             <XIcon size={25} onClick={onClose} />

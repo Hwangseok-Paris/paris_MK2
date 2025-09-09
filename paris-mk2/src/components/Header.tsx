@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import Container from "@/components/layout/Container";
 import ThemeToggle from "@/components/common/ThemeToggle";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-30 w-full border-b border-gray-200  backdrop-blur dark:border-gray-700 ">
@@ -19,13 +21,25 @@ export default function Header() {
 
           {/* 데스크톱 내비게이션 */}
           <nav className="hidden gap-6 text-sm font-medium md:flex">
-            <Link href="/projects" className="hover:text-primary-500">
+            <Link
+              href="/projects"
+              className={`hover:text-primary-500 ${
+                pathname.includes("projects") ? "font-bold text-primary-500" : ""
+              }`}>
               Projects
             </Link>
-            <Link href="/about" className="hover:text-primary-500">
+            <Link
+              href="/about"
+              className={`hover:text-primary-500 ${
+                pathname.includes("about") ? "font-bold text-primary-500" : ""
+              }`}>
               About
             </Link>
-            <Link href="/contact" className="hover:text-primary-500">
+            <Link
+              href="/contact"
+              className={`hover:text-primary-500 ${
+                pathname.includes("contact") ? "font-bold text-primary-500" : ""
+              }`}>
               Contact
             </Link>
           </nav>
@@ -65,22 +79,34 @@ export default function Header() {
           <Container>
             <ul className="flex flex-col space-y-2 py-4 text-sm font-medium">
               <li>
-                <Link href="/" onClick={() => setOpen(false)}>
+                <Link
+                  href="/"
+                  onClick={() => setOpen(false)}
+                  className={`${pathname === "/" ? "text-green-500 font-bold" : ""}`}>
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/projects" onClick={() => setOpen(false)}>
+                <Link
+                  href="/projects"
+                  onClick={() => setOpen(false)}
+                  className={`${pathname === "/projects" ? "text-green-500 font-bold" : ""}`}>
                   Projects
                 </Link>
               </li>
               <li>
-                <Link href="/about" onClick={() => setOpen(false)}>
+                <Link
+                  href="/about"
+                  onClick={() => setOpen(false)}
+                  className={` ${pathname === "/about" ? "text-green-500 font-bold" : ""}`}>
                   About
                 </Link>
               </li>
               <li>
-                <Link href="/contact" onClick={() => setOpen(false)}>
+                <Link
+                  href="/contact"
+                  onClick={() => setOpen(false)}
+                  className={`${pathname === "/contact" ? "text-green-500 font-bold" : ""}`}>
                   Contact
                 </Link>
               </li>
