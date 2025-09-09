@@ -24,13 +24,21 @@ jobs:
       - name: Configure AWS (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ vars.AWS_OIDC_ROLE_ARN }} # 예: arn:aws:iam::123456789012:role/ga-ecr-pusher
-          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: arn:aws:iam::690039431106:role/github-action
+          aws-region: ap-northeast-2
+
+          # role-to-assume: ${{ vars.AWS_OIDC_ROLE_ARN }} # 예: arn:aws:iam::123456789012:role/ga-ecr-pusher
+          # aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to ECR
         run: |
           aws ecr get-login-password --region $AWS_REGION \
           | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+
+      - name: Debug context
+        run: |
+          echo "GITHUB_REPOSITORY=$GITHUB_REPOSITORY"
+          echo "GITHUB_REF=$GITHUB_REF"
 
       - name: Build
         run: |
