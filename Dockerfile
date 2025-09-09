@@ -3,7 +3,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 COPY . .
 # standalone 산출물 생성
 RUN npm run build
