@@ -81,7 +81,7 @@ jobs:
               | docker login --username AWS --password-stdin 690039431106.dkr.ecr.ap-northeast-2.amazonaws.com
             docker compose pull
             docker compose up -d
-            for i in ${seq 1 20}; do
+            for i in {1..20}; do
               if curl -fsS http://127.0.0.1:3000/ >/dev/null; then
                 echo "app is up"; break
               fi
