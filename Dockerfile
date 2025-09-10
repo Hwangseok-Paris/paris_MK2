@@ -17,5 +17,6 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # non-root 유저
 RUN addgroup -g 1001 nodejs && adduser -u 1001 -G nodejs -s /bin/sh -D nextjs
 # Next.js standalone + static + public만 복사
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/stat
+COPY --from=builder /app/.next/standalone/ ./
+COPY --from=builder /app/.next/static/ ./.next/static/
+COPY --from=builder /app/public/ ./public/
