@@ -70,10 +70,18 @@ jobs:
           script: |
             set -e
             cd /opt/app
-            # latest로 굴리는 경우:
+
+            # compose 변수 파일(.env)에 배포 태그 주입/갱신
+            if grep -q '^IMAGE_TAG=' .env 2>/dev/null; then
+              sed -i 's/^IMAGE_TAG=.*/IMAGE_TAG=${{ needs.build-and-push.outputs.deploy_tag }}/' .env
+            else
+              echo "IMAGE_TAG=${{ needs.build-and-push.outputs.deploy_tag }}" >> .env
+            fi
+            aws ecr get-login-password --region ap-northeast-2 \
+              | docker login --username AWS --password-stdin 690039431106.dkr.ecr.ap-northeast-2.amazonaws.com
             docker compose pull
             docker compose up -d
-            for i in {1..20}; do
+            for i in ${seq 1 20}; do
               if curl -fsS http://127.0.0.1:3000/ >/dev/null; then
                 echo "app is up"; break
               fi
