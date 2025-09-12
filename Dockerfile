@@ -3,7 +3,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 COPY . .
 # standalone 산출물 생성
 RUN npm run build
@@ -12,13 +12,14 @@ RUN npm run build
 FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
-ENV PORT=3000
 ENV NEXT_TELEMETRY_DISABLED=1
-# non-root 유저
-RUN addgroup -g 1001 nodejs && adduser -u 1001 -G nodejs -s /bin/sh -D nextjs
-# Next.js standalone + static + public만 복사
-COPY --from=builder /app/.next/standalone/ ./
-COPY --from=builder /app/.next/static/ ./.next/static/
-COPY --from=builder /app/public/ ./public/
+ENV HOSTNAME=0.0.0.0
+USER node
 
-CMD ["node", "server.js"]
+# standalone 산출물만 복사
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+
+EXPOSE 3000
+CMD ["node", "server.js"] 
