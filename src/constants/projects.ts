@@ -4,7 +4,7 @@ export type Project = {
   company?: string;
   period: string;
   role: string;
-  category: "Finance" | "Insurance" | "Beauty" | "AI/Voice" | "Hybrid" | "Chatbot";
+  category: string;
   stack: string[];
   summary: string;
   highlights: string[];
@@ -44,7 +44,7 @@ export const projects: Project[] = [
   {
     id: "realtime-voice-translate",
     title: "실시간 음성 통역/채팅(AI, STT/TTS) 서비스 개발",
-    company: "Side Project",
+    company: "POC",
     period: "2025.02 ~ 2025.03",
     role: "FE/BE 개발",
     category: "AI/Voice",
@@ -71,6 +71,17 @@ export const projects: Project[] = [
       "실시간 메시징 안정성/성능 개선",
       "컴포넌트화로 재사용성 향상",
     ],
+  },
+  {
+    id: "festivallife-admin",
+    title: "페스티벌라이프 앱 개발",
+    company: "사이드 프로젝트",
+    period: "2024.07 ~ ",
+    role: "기획, 웹 어드민 개발",
+    category: "Admin",
+    stack: ["React", "React-Query", "TypeScript", "Zustand", "Docker", "AWS"],
+    summary: "국내 최대 공연 커뮤니티 '페스티벌라이프' 앱 기획 및 웹 어드민 페이지 개발",
+    highlights: ["", "", ""],
   },
   {
     id: "amore-bts",
@@ -104,5 +115,15 @@ export const projects: Project[] = [
       "공통 컴포넌트화로 생산성 향상",
     ],
   },
-  // 필요 시: NH투자증권 챗봇(PL)도 추가 가능
+  {
+    id: "nh-investment",
+    title: "카카오톡 기반 NH 투자증권 챗봇 프로젝트",
+    company: "NH투자증권",
+    period: "2022.03 ~ 2024.10",
+    role: "개발 PL",
+    category: "Finance",
+    stack: ["HTML", "CSS", "JavaScript", "Java", "Skill-Builder", "Oracle", "Docker-Compose"],
+    summary: "프로젝트 개발 일정, 인력 관리 및 개발 리딩",
+    highlights: ["", "", ""],
+  },
 ];

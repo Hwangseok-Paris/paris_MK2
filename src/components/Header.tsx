@@ -22,18 +22,18 @@ export default function Header() {
           {/* 데스크톱 내비게이션 */}
           <nav className="hidden gap-6 text-sm font-medium md:flex">
             <Link
-              href="/projects"
-              className={`hover:text-primary-500 ${
-                pathname.includes("projects") ? "font-bold text-primary-500" : ""
-              }`}>
-              Projects
-            </Link>
-            <Link
               href="/about"
               className={`hover:text-primary-500 ${
                 pathname.includes("about") ? "font-bold text-primary-500" : ""
               }`}>
               About
+            </Link>
+            <Link
+              href="/projects"
+              className={`hover:text-primary-500 ${
+                pathname.includes("projects") ? "font-bold text-primary-500" : ""
+              }`}>
+              Projects
             </Link>
             <Link
               href="/contact"
@@ -86,20 +86,21 @@ export default function Header() {
                   Home
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/projects"
-                  onClick={() => setOpen(false)}
-                  className={`${pathname === "/projects" ? "text-green-500 font-bold" : ""}`}>
-                  Projects
-                </Link>
-              </li>
+
               <li>
                 <Link
                   href="/about"
                   onClick={() => setOpen(false)}
                   className={` ${pathname === "/about" ? "text-green-500 font-bold" : ""}`}>
                   About
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/projects"
+                  onClick={() => setOpen(false)}
+                  className={`${pathname === "/projects" ? "text-green-500 font-bold" : ""}`}>
+                  Projects
                 </Link>
               </li>
               <li>
