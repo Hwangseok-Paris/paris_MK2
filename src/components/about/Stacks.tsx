@@ -1,20 +1,34 @@
 "use client";
 
 import Image from "next/image";
+import { useThemeContext } from "@/context/ThemeContext";
+import { useMemo } from "react";
 
 const stacks = [
-  { name: "Next.js", icon: "/icons/nextdotjs.svg" },
-  { name: "TypeScript", icon: "/icons/typescript.svg" },
   { name: "Vue 3", icon: "/icons/vuedotjs.svg" },
+  { name: "React", icon: "/icons/react.svg" },
+  { name: "TypeScript", icon: "/icons/typescript.svg" },
+  { name: "JavaScript", icon: "/icons/javascript.svg" },
   { name: "Pinia", icon: "/icons/pinia.svg" },
   { name: "Tailwind", icon: "/icons/tailwindcss.svg" },
   { name: "React Query", icon: "/icons/reactquery.svg" },
+  { name: "Next.js", icon: "/icons/nextdotjs.svg" },
   { name: "AWS", icon: "/icons/amazonwebservices.svg" },
   { name: "Docker", icon: "/icons/docker.svg" },
   { name: "Git", icon: "/icons/git.svg" },
 ];
 
 export default function Stacks() {
+  const { mode } = useThemeContext();
+
+  useMemo(() => {
+    stacks.map((s) => {
+      if (s.name === "Next.js") {
+        s.icon = mode === "dark" ? "/icons/nextdotjs_dark.svg" : "/icons/nextdotjs_light.svg";
+      }
+    });
+  }, [mode]);
+
   return (
     <div>
       <h2 className="text-xl md:text-2xl font-semibold">Stack Snapshot</h2>

@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 
+import { useThemeContext } from "@/context/ThemeContext";
+
 /**
  *  ⏺ 작동 방식
  *  1. <html class="dark"> 토글
@@ -12,30 +14,31 @@ import { Moon, Sun } from "lucide-react";
 export default function ThemeToggle() {
   const [dark, setDark] = useState(false);
 
+  const { mode, toggle } = useThemeContext();
   /* 초기 상태 동기화 */
   useEffect(() => {
     setDark(document.documentElement.classList.contains("dark"));
   }, []);
 
-  const toggle = () => {
-    const html = document.documentElement;
-    html.classList.toggle("dark");
-    const nowDark = html.classList.contains("dark");
-    setDark(nowDark);
+  // const toggle = () => {
+  //   const html = document.documentElement;
+  //   html.classList.toggle("dark");
+  //   const nowDark = html.classList.contains("dark");
+  //   setDark(nowDark);
 
-    /* 파비콘 교체 */
-    const favicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
-    if (favicon) {
-      favicon.href = nowDark ? "/favicon-dark.svg" : "/favicon-light.svg";
-    }
-  };
+  //   /* 파비콘 교체 */
+  //   const favicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
+  //   if (favicon) {
+  //     favicon.href = nowDark ? "/favicon-dark.svg" : "/favicon-light.svg";
+  //   }
+  // };
 
   return (
     <button
       aria-label="Toggle dark mode"
       onClick={toggle}
       className="h-6 w-6 text-gray-800 dark:text-gray-100 cursor-pointer">
-      {dark ? (
+      {mode === "dark" ? (
         <Moon className="h-6 w-6" color="#FFFF00" fill="#FFFF00" />
       ) : (
         <Sun className="h-6 w-6" color="#CE0018" fill="#CE0018" />

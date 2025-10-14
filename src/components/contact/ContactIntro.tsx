@@ -5,13 +5,13 @@ export default function ContactIntro() {
     <div>
       <h1 className="text-2xl md:text-3xl font-bold tracking-tight">채용/인터뷰 문의</h1>
       <p className="mt-3 text-sm md:text-base leading-relaxed text-gray-700 dark:text-gray-300">
-        프론트엔드 포지션에 관심 가져주셔서 감사합니다. 아래 양식으로{" "}
+        방문해 주셔서 감사합니다. 아래 양식으로{" "}
         <span className="font-medium">담당자 성함, 회사/조직, 포지션(JD)</span>을 남겨 주시면 가능한
         한 빠르게 회신드리겠습니다.
       </p>
 
       <ul className="mt-4 text-sm text-gray-700 dark:text-gray-300 space-y-1">
-        <li>• 선호 직무: 프론트엔드(React/Vue, Next.js, Vue3)</li>
+        <li>• 선호 직무: 프론트엔드(React, Vue, Next.js)</li>
       </ul>
 
       <div className="mt-5 flex flex-wrap gap-2">

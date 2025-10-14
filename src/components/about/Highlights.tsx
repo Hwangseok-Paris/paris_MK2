@@ -2,24 +2,29 @@
 
 const items = [
   {
-    title: "운영 효율화",
-    desc: "배너 스케줄·드래그 정렬·일괄 처리로 운영 시간 단축",
-    stat: "Ops 시간 ↓ ~30%",
+    title: "실시간 상담 솔루션 개발",
+    desc: "카카오톡 기반 사내 솔루션 ‘Connect Always’의 모듈 설계 및 고객사 커스터마이징",
+    stat: "재사용성 ↑, 유지보수 ↓",
   },
   {
-    title: "이미지 파이프라인",
-    desc: "S3 Presigned URL + Optimistic UI로 등록/수정 경험 개선",
-    stat: "등록 실패율 ↓",
+    title: "프로젝트 리딩",
+    desc: "3인 프론트엔드 팀을 이끌며 일정·품질·리스크를 주도적으로 관리",
+    stat: "안정적 일정 준수율 100%",
   },
   {
-    title: "검색 품질",
-    desc: "이름/닉네임/제목/내용 교차 키워드 검색 최적화",
-    stat: "탐색 시간 ↓",
+    title: "금융권 챗봇 구축 리딩",
+    desc: "NH투자증권 챗봇 프로젝트 PL역할 수행, 상담 이력 시스템 및 API 연동 설계",
+    stat: "상담 효율·시스템 안정성 ↑",
   },
   {
-    title: "UI 일관성",
-    desc: "다크모드/반응형/스크롤 UX 표준화",
-    stat: "이탈 ↓, 가독성 ↑",
+    title: "AI 음성 상담 구현",
+    desc: "ChatGPT API와 STT/TTS를 결합해 음성 기반 AI 상담 기능을 구축",
+    stat: "상담 효율·사용자 만족도 ↑",
+  },
+  {
+    title: "CI/CD 자동화",
+    desc: "Jenkins·GitLab 파이프라인으로 배포 프로세스를 자동화",
+    stat: "배포 시간 ↓ 50%",
   },
 ];
 
