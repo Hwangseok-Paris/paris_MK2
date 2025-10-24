@@ -29,13 +29,13 @@ export default function ContactIntro() {
         </a>
       </div>
 
-      <div className="mt-5 rounded-xl border border-gray-200 dark:border-gray-800 p-3 text-xs text-gray-600 dark:text-gray-400">
+      {/* <div className="mt-5 rounded-xl border border-gray-200 dark:border-gray-800 p-3 text-xs text-gray-600 dark:text-gray-400">
         <p className="font-medium mb-1">안내</p>
         <ul className="list-disc pl-4 space-y-1">
           <li>포지션명 또는 JD 링크를 함께 남겨주시면 더 빠르게 검토할 수 있어요.</li>
           <li>필요 시 포트폴리오/깃허브 등 레퍼런스를 추가로 공유드립니다.</li>
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 }

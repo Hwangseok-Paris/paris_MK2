@@ -23,7 +23,8 @@ export default function AboutIntro() {
           </p>
 
           <p>
-            (주)코드클릭 소속으로 챗봇, CRM 솔루션, 고객사 커스터마이징 등 다양한{" "}
+            (주)코드클릭 소속으로 챗봇, CRM 솔루션(Kakao i Connect Always) 개발, 고객사 커스터마이징
+            등 다양한{" "}
             <strong className="text-gray-900 dark:text-gray-100">
               실시간 커뮤니케이션 프로젝트
             </strong>
@@ -31,14 +32,14 @@ export default function AboutIntro() {
           </p>
 
           <p>
-            현재는 국내 최대 공연·페스티벌 커뮤니티{" "}
+            현재는 국내 최대 공연·페스티벌 커뮤니티(
             <span
               className="text-red-400 font-semibold hover:cursor-pointer underline decoration-wavy"
               onClick={() => window.open("https://www.instagram.com/fstvl.life")}>
               @fstvl.life
-            </span>{" "}
-            앱 런칭을 목표로, <strong>기획과 웹 어드민 개발</strong>을 직접 담당하고 있습니다. 지난
-            엔터테인먼트 경력, 현재의 주력 기술을 연결해 사용자에게{" "}
+            </span>
+            ) 앱 런칭을 목표로, <strong>기획과 웹 어드민 개발</strong>을 직접 담당하고 있습니다.
+            지난 엔터테인먼트 경력, 현재의 주력 기술을 연결해 사용자에게{" "}
             <strong>감각적이고 효율적인 UX</strong>를 제공하고자 합니다.
           </p>
         </div>

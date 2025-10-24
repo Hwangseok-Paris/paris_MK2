@@ -11,6 +11,7 @@ export default function ProjectsPreview() {
       title: "페스티벌라이프",
       desc: "국내 최대 공연/페스티벌 커뮤니티 '페스티벌 라이프' 앱 개발 프로젝트",
       image: "/logo/festivalLife.svg",
+      path: "",
     },
   ];
 

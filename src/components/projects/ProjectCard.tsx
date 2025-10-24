@@ -45,9 +45,7 @@ export default function ProjectCard({ project, onClick }: Props) {
           ref={ref}
           className="flex flex-col border shadow-xl sm:min-h-[230px] min-w-[230px] border-black/4  dark:border-white/10 bg-gradient-to-br  dark:from-white/6 dark:to-white/2 p-5 backdrop-blur-sm rounded-2xl  transition-all duration-150 will-change-transform
                    [transform:perspective(900px)_rotateX(var(--rx))_rotateY(var(--ry))_translate3d(var(--tx),var(--ty),0)]">
-          <div className="mb-2 text-xs opacity-70 line-clamp-2 turncate">
-            {project.period} · {project.role}
-          </div>
+          <div className="mb-2 text-xs opacity-70 line-clamp-2 turncate">{project.period}</div>
           <div className="mb-1 text-sm font-semibold  opacity-80">[ {project.company} ]</div>
           <h3 className="text-md font-semibold line-clamp-2 leading-snug">{project.title}</h3>
           <p className="mt-3 mb-3 line-clamp-2 text-sm opacity-80">{project.summary}</p>

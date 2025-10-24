@@ -40,10 +40,11 @@ export default function ProjectPanel({ open, project, onClose }: Props) {
     <div className="p-5 md:p-6 space-y-4 overflow-y-auto m-1">
       {project ? (
         <>
+          <div className="text-sm opacity-80 mb-1">[{project.company}]</div>
           <h2 className="text-lg md:text-xl font-semibold">{project.title}</h2>
-          <p className="text-sm opacity-80">{project.summary}</p>
+          <p className=" opacity-80">{project.summary}</p>
 
-          <div className="text-xs opacity-70 space-y-1">
+          <div className="text-sm opacity-80 space-y-1">
             <div>기간: {project.period}</div>
             <div>역할: {project.role}</div>
             <div>카테고리: {project.category}</div>
@@ -71,9 +72,8 @@ export default function ProjectPanel({ open, project, onClose }: Props) {
 
   return (
     <>
-      {/* ✅ 백드롭에 onClick 추가 (핵심 수정) */}
       <div
-        onClick={onClose} // ← 여기 한 줄 추가
+        onClick={onClose}
         aria-hidden={!open}
         className={`fixed inset-0 z-40 bg-black/40 transition-opacity ${
           open ? "opacity-100" : "pointer-events-none opacity-0"

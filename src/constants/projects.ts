@@ -13,35 +13,30 @@ export type Project = {
 export const projects: Project[] = [
   {
     id: "osstem-hybrid",
-    title: "앱(하이브리드) 서비스 통합 프로젝트",
+    title: "신규 앱(하이브리드) 서비스 통합 프로젝트",
     company: "오스템임플란트",
     period: "2025.07 ~ 진행중",
-    role: "웹-네이티브 브릿지 연동, 가이드 정리",
-    category: "Hybrid",
-    stack: ["Vue3", "Pinia", "Vite"],
+    role: "웹-네이티브 브릿지 연동, Android APP 개발, 웹(Vue3) 개발",
+    category: "Hybrid APP",
+    stack: ["Kotlin", "Vue3"],
     summary:
-      "네이티브 앱과 웹(Vue) 간 브릿지 통신을 설계·구현하고, 하이브리드 서비스 통합 가이드를 정리.",
+      "기존 Full-WebView 앱을 네이티브 GNB 셸과 웹 콘텐츠 영역을 분리하는 Partial Hybrid 구조로 개편",
     highlights: [
-      "앱-웹 브릿지 프로토콜 정의 및 공통 모듈화",
-      "서비스별 통합 운영 가이드 제작",
-      "하이브리드 환경 운영 이슈 대응 체계화",
+      "신규 앱 디버깅 및 개발",
+      "네이티브-웹 인터페이스 재설계",
+      "기존 서비스 모바일 개편 가이드",
     ],
   },
   {
     id: "scb-connectalways",
-    title: "CRM(Connect Always) 커스터마이징",
+    title: "SC제일은행 Kakao i Connect Always 솔루션 커스터마이징",
     company: "SC제일은행",
     period: "2025.04 ~ 2025.06",
     role: "프론트엔드 전담",
     category: "Finance",
     stack: ["Vue3", "Pinia", "Tailwind", "Stomp.js", "Vite"],
-    summary:
-      "은행 환경에 맞춰 CRM 상담 UI/UX를 커스터마이징하고 실시간 이벤트(웹소켓) 안정성을 개선.",
-    highlights: [
-      "상담 UI/UX 커스터마이징 및 접근성 강화",
-      "실시간 이벤트(Stomp.js) 처리 안정화",
-      "내부 정책·보안 기준을 반영한 설계",
-    ],
+    summary: "요구사항에 맞춘 솔루션 UI/UX 커스터마이징, FE 통합 연동 및 기능 구현",
+    highlights: ["상담 UI/UX 커스터마이징 및 접근성 강화", "내부 정책·보안 기준을 반영한 개발"],
   },
   {
     id: "realtime-voice-translate",
@@ -52,7 +47,7 @@ export const projects: Project[] = [
     category: "AI/Voice",
     stack: ["React", "Vue3", "TypeScript", "Tailwind", "OpenAI Whisper", "OpenAI TTS"],
     summary:
-      "ChatGPT·Whisper 기반의 실시간 음성 인식(STT), 합성(TTS), 통역 및 대화형 챗봇 서비스를 구현.",
+      "ChatGPT·Whisper 기반의 실시간 음성 인식(STT), 합성(TTS), 통역 및 음성 대화형 챗봇 서비스를 구현.",
     highlights: [
       "실시간 음성 인식·합성 파이프라인 설계",
       "대화형 챗봇 UX 및 처리 흐름 구축",
@@ -77,17 +72,18 @@ export const projects: Project[] = [
   },
   {
     id: "festivallife-admin",
-    title: "페스티벌라이프 앱 개발",
-    company: "사이드 프로젝트",
+    title: "페스티벌라이프 앱 기획&개발",
+    company: "페스티벌라이프",
     period: "2024.07 ~ 진행중",
     role: "기획, 웹 어드민 개발",
     category: "Admin",
     stack: ["React", "TypeScript", "React-Query", "Zustand", "Tailwind", "AWS", "Docker"],
     summary:
-      "국내 최대 공연·페스티벌 커뮤니티 앱 ‘Festival Life’의 기획 및 어드민 개발을 담당. 엔터 업계 경험을 반영한 UX 중심 설계.",
+      "국내 최대 공연·페스티벌 커뮤니티 앱 ‘Festival Life’의 기획 및 어드민 개발을 담당. 엔터 업계 경험을 반영한 전반적인 기획과 설계.",
     highlights: [
       "React + TypeScript 기반 고성능 어드민 페이지 개발",
       "AWS EC2/S3 + Docker로 안정적 배포 환경 구축",
+      "효율적인 운영을 위한 UX 설계",
       "Tailwind로 일관된 디자인 시스템 구현",
     ],
   },
@@ -103,11 +99,11 @@ export const projects: Project[] = [
     highlights: [
       "Next.js 기반 신규 기능·프로모션 화면 개발",
       "운영 안정화 및 사용자 피드백 반영 UI 개선",
-      "Jira/Confluence 협업 프로세스 정착",
+      "Jira/Confluence 협업 프로세스 활용",
     ],
   },
   {
-    id: "kyobo-toktok",
+    id: "kyobo-talktalk",
     title: "교보톡톡 상담 솔루션",
     company: "교보생명",
     period: "2023.09 ~ 2024.03",
@@ -123,19 +119,31 @@ export const projects: Project[] = [
     ],
   },
   {
+    id: "kakaoi-connect-always",
+    title: "카카오 i 커넥트 올웨이즈 솔루션 개발",
+    company: "코드클릭",
+    period: "2023.05 ~ 2023.09",
+    role: "프론트엔드 개발",
+    category: "CRM",
+    stack: ["Vue3", "Pinia", "Tailwind", "Stomp.js", "Vite"],
+    summary: "카카오톡 기반 상담 솔루션 ‘Connect Always’ 프론트엔드 개발",
+    highlights: ["관리자 페이지 및 캘린더 기능 개발", "Pinia 상태관리 구조화 및 공통 컴포넌트화"],
+  },
+  {
     id: "nh-investment",
     title: "NH 투자증권 챗봇 프로젝트",
     company: "NH투자증권",
     period: "2022.03 ~ 2024.10",
     role: "개발 PL",
     category: "Finance",
-    stack: ["Vue3", "JavaScript", "Java", "Skill-Builder", "Oracle", "Docker-Compose"],
+    stack: ["Java", "JavaScript", "Skill-Builder", "Oracle", "Docker-Compose"],
     summary:
-      "카카오톡 기반 챗봇 시스템 구축 프로젝트의 FE/BE 개발 PL로 참여. 일정 및 인력 관리, API 연동 구조 설계 총괄.",
+      "카카오톡 기반 챗봇 시스템 구축 프로젝트의 FE/BE 개발 PL역할 수행. 일정 및 인력 관리, API 연동 구조 설계 총괄.",
     highlights: [
-      "챗봇 대화 흐름 및 API 연동 구조 설계",
+      "Kakao i Skill Builder를 활용한 챗봇 개발",
+      "레거시 API 연동 구조 설계 및 개발",
       "운영 프로세스 표준화 및 품질 관리",
-      "FE/BE 통합 릴리즈 관리",
+      "FE/BE 통합 개발 프로세스, 일정 관리",
     ],
   },
 ];

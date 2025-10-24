@@ -16,6 +16,7 @@ const stacks = [
   { name: "AWS", icon: "/icons/amazonwebservices.svg" },
   { name: "Docker", icon: "/icons/docker.svg" },
   { name: "Git", icon: "/icons/git.svg" },
+  { name: "Android", icon: "/icons/android.svg" },
 ];
 
 export default function Stacks() {

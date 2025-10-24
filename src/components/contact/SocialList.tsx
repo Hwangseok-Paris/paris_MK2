@@ -1,11 +1,9 @@
 "use client";
 
 const items = [
-  { label: "Email", href: "mailto:hello@watlzparis.com" },
-  { label: "GitHub", href: "https://github.com/watlzparis" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/watlzparis" },
-  { label: "X (Twitter)", href: "https://x.com/watlzparis" },
-  { label: "Instagram", href: "https://instagram.com/watlzparis" },
+  { label: "Email", href: "mailto:hwangseokparis@gmail.com" },
+  { label: "GitHub", href: "https://github.com/Hwangseok-Paris" },
+  { label: "Instagram", href: "https://instagram.com/watlz_paris" },
 ];
 
 export default function SocialList() {
@@ -32,13 +30,13 @@ export default function SocialList() {
         ))}
       </ul>
 
-      <div className="mt-5 rounded-xl border border-gray-200 dark:border-gray-800 p-3 text-xs text-gray-600 dark:text-gray-400">
+      {/* <div className="mt-5 rounded-xl border border-gray-200 dark:border-gray-800 p-3 text-xs text-gray-600 dark:text-gray-400">
         <p className="font-medium mb-1">Quick tips</p>
         <ul className="list-disc pl-4 space-y-1">
           <li>가능하면 프로젝트 링크/레퍼런스와 함께 문의해 주세요.</li>
           <li>기술 스택, 일정, 예산 범위가 있으면 더 정확히 답변드려요.</li>
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 }

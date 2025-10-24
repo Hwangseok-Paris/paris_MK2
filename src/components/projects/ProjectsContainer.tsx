@@ -5,7 +5,7 @@ import ProjectPanel from "./ProjectPanel";
 
 import { Project, projects } from "@/constants/projects";
 import { useState } from "react";
-import ProjectModal from "./ProjectModal";
+// import ProjectModal from "./ProjectModal_backup";
 import { motion, Variants } from "framer-motion";
 
 const container = {

@@ -14,8 +14,9 @@ export default function ProjectsPage() {
             transition={{ duration: 0.5, ease: "easeOut" }}>
             <h1 className="text-3xl font-bold tracking-tight">Projects</h1>
             <div className="flex flex-col mt-2 text-sm opacity-80">
-              <span>실제 운영/고객사 환경에서 임팩트가 있었던 프로젝트만 엄선해 정리했습니다.</span>
-              <span>카드를 클릭하여 상세 하이라이트를 확인하세요.</span>
+              {/* <span>실제 운영/고객사 환경에서 임팩트가 있었던 프로젝트만 엄선해 정리했습니다.</span> */}
+              <span>참여했던 프로젝트 중 주요 역할을 수행한 프로젝트를 소개드립니다.</span>
+              <span>카드를 클릭하여 상세 하이라이트를 확인해주세요.</span>
             </div>
           </motion.div>
         </header>
