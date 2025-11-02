@@ -40,7 +40,7 @@ export default function AboutIntro() {
             </span>
             ) 앱 런칭을 목표로, <strong>기획과 웹 어드민 개발</strong>을 담당하고 있습니다. 지난
             엔터테인먼트 경력, 현재의 주력 기술을 연결해 사용자에게{" "}
-            <strong>감각적이고 효율적인 UX</strong>를 제공하고자 합니다.
+            <strong>감각적이고 효율적인 경험</strong>을 제공하고자 합니다.
           </p>
         </div>
 
