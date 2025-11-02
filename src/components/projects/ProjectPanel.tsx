@@ -1,7 +1,7 @@
 // src/components/projects/ProjectPanel.tsx
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { XIcon } from "lucide-react";
 import type { Project } from "@/constants/projects";
 
@@ -12,9 +12,9 @@ type Props = {
 };
 
 export default function ProjectPanel({ open, project, onClose }: Props) {
-  const screenY = useMemo(() => {
-    return document.documentElement.clientHeight;
-  }, []);
+  // const screenY = useMemo(() => {
+  //   return document.documentElement.clientHeight;
+  // }, []);
 
   // ESC 닫기
   useEffect(() => {

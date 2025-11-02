@@ -38,8 +38,8 @@ export default function AboutIntro() {
               onClick={() => window.open("https://www.instagram.com/fstvl.life")}>
               @fstvl.life
             </span>
-            ) 앱 런칭을 목표로, <strong>기획과 웹 어드민 개발</strong>을 직접 담당하고 있습니다.
-            지난 엔터테인먼트 경력, 현재의 주력 기술을 연결해 사용자에게{" "}
+            ) 앱 런칭을 목표로, <strong>기획과 웹 어드민 개발</strong>을 담당하고 있습니다. 지난
+            엔터테인먼트 경력, 현재의 주력 기술을 연결해 사용자에게{" "}
             <strong>감각적이고 효율적인 UX</strong>를 제공하고자 합니다.
           </p>
         </div>

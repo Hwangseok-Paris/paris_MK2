@@ -107,7 +107,7 @@ export const projects: Project[] = [
     title: "교보톡톡 상담 솔루션",
     company: "교보생명",
     period: "2023.09 ~ 2024.03",
-    role: "프론트엔드 3인 팀 리딩",
+    role: "프론트엔드 3인 팀 리딩 및 개발",
     category: "Insurance",
     stack: ["Vue3", "Pinia", "Tailwind", "Stomp.js", "Vite", "SVN"],
     summary:
@@ -116,6 +116,7 @@ export const projects: Project[] = [
       "일정·리스크 관리 및 코드 리뷰 리딩",
       "Pinia 상태관리 구조화 및 공통 컴포넌트화",
       "WebView-React Native 브릿지 통신 구현",
+      "웹 소켓(Stomp.js) 통신 이슈 처리",
     ],
   },
   {

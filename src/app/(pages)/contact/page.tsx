@@ -1,21 +1,17 @@
 import Container from "@/components/layout/Container";
-import ContactIntro from "@/components/contact/ContactIntro";
-import ContactForm from "@/components/contact/ContactForm";
-import SocialList from "@/components/contact/SocialList";
+// import ContactIntro from "@/components/contact/ContactIntro";
+// import ContactForm from "@/components/contact/ContactForm";
+// import SocialList from "@/components/contact/SocialList";
+// import ContactSection from "../../../components/contact/ContactSection";
+import ContactBox from "../../../components/contact/ContactBox";
 
 export default function ContactPage() {
   return (
-    <section className="py-12 md:py-16">
+    <section className="">
       <Container>
-        <div className="grid gap-8 md:grid-cols-[1.1fr,0.9fr]">
-          <div className="space-y-8">
-            <ContactIntro />
-            <ContactForm />
-          </div>
-          <aside className="h-fit rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-800/60 backdrop-blur p-5 md:p-6">
-            <SocialList />
-          </aside>
-        </div>
+        <main className="flex min-h-[calc(100vh-178px)] md:min-h-[calc(100vh-142px)] items-center justify-center px-6 md:px-8">
+          <ContactBox />
+        </main>
       </Container>
     </section>
   );

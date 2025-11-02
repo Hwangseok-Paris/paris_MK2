@@ -44,7 +44,7 @@ export default function Header() {
             </Link>
           </nav>
 
-          <div className="flex items-center justify-end gap-4  w-20">
+          <div className="flex items-center justify-end gap-4 w-20">
             <ThemeToggle />
 
             {/* 모바일 햄버거 */}
@@ -75,7 +75,7 @@ export default function Header() {
 
       {/* 모바일 드롭다운 메뉴 */}
       {open && (
-        <nav className="md:hidden border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+        <nav className="md:hidden border-b border-gray-200 bg-white/95 dark:border-gray-700 dark:bg-gray-900/95 absolute w-full">
           <Container>
             <ul className="flex flex-col space-y-2 py-4 text-sm font-medium">
               <li>

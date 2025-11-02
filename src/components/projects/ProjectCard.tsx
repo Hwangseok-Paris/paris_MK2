@@ -39,7 +39,7 @@ export default function ProjectCard({ project, onClick }: Props) {
       <button
         onMouseMove={onMove}
         onMouseLeave={onLeave}
-        className="group relative text-left"
+        className="group relative text-left w-full"
         onClick={() => onClick(project)}>
         <div
           ref={ref}
