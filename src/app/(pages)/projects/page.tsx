@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import ProjectsHeader from "@/components/projects/ProjectsHeader";
 import ProjectsContainer from "@/components/projects/ProjectsContainer";
 
