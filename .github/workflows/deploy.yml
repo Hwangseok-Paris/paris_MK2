@@ -59,6 +59,8 @@ jobs:
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
       - name: SSH deploy
         uses: appleboy/ssh-action@v1.2.0
@@ -76,6 +78,12 @@ jobs:
               sed -i 's/^IMAGE_TAG=.*/IMAGE_TAG=${{ needs.build-and-push.outputs.deploy_tag }}/' .env
             else
               echo "IMAGE_TAG=${{ needs.build-and-push.outputs.deploy_tag }}" >> .env
+            fi
+            # DATABASE_URL 설정(없으면 추가, 있으면 교체)
+            if grep -q '^DATABASE_URL=' .env 2>/dev/null; then
+              sed -i 's|^DATABASE_URL=.*|DATABASE_URL='"${DATABASE_URL//|/\\|}"'|' .env
+            else
+              echo "DATABASE_URL=${DATABASE_URL}" >> .env
             fi
             aws ecr get-login-password --region ap-northeast-2 \
               | docker login --username AWS --password-stdin 690039431106.dkr.ecr.ap-northeast-2.amazonaws.com
