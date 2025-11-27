@@ -30,7 +30,7 @@ export default {
       },
       animation: {
         // 이름: [keyframes] [duration] [timing] [repeat]
-        wiggle: "wiggle 1s ease-in-out 3",
+        wiggle: "wiggle 1s ease-in-out infinite",
       },
     },
   },
