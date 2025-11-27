@@ -1,17 +1,18 @@
 import Container from "@/components/layout/Container";
 import Link from "next/link";
 import ProjectCards, { type ProjectCardItem } from "@/components/sections/ProjectCards";
+import { getProjects } from "@/lib/db";
 
-export default function ProjectsPreview() {
-  const projects: ProjectCardItem[] = [
-    {
-      title: "페스티벌라이프",
-      desc: "국내 최대 공연/페스티벌 커뮤니티 '페스티벌 라이프' 앱 개발 프로젝트",
-      image: "/logo/festivalLife.svg",
-      path: "",
-    },
-  ];
-
+export default async function ProjectsPreview() {
+  const projects = await getProjects();
+  const featured: ProjectCardItem[] = projects
+    .filter((p) => p.id === "festivallife-admin")
+    .map((p) => ({
+      title: p.title,
+      desc: p.summary,
+      path: "/projects",
+      image: "logo/festivalLife.svg",
+    }));
   return (
     <section className=" border-gray-200 py-16 dark:border-gray-700">
       <Container>
@@ -22,7 +23,7 @@ export default function ProjectsPreview() {
           </Link>
         </div>
 
-        <ProjectCards projects={projects} />
+        <ProjectCards projects={featured} />
       </Container>
     </section>
   );
