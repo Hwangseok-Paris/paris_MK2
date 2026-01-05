@@ -9,9 +9,12 @@ const DynamicHero = dynamicImport(() => import("@/components/sections/Hero"), {
   loading: () => <HeroSkeleton />,
 });
 
-const DynamicProjectsPreview = dynamicImport(() => import("@/components/sections/ProjectsPreview"), {
-  loading: () => <ProjectsPreviewSkeleton />,
-});
+const DynamicProjectsPreview = dynamicImport(
+  () => import("@/components/sections/ProjectsPreview"),
+  {
+    loading: () => <ProjectsPreviewSkeleton />,
+  },
+);
 
 // import History from "../components/home/History";
 
