@@ -33,6 +33,44 @@ Next Candidates:
 
 ## Log
 
+## 2026-06-07 - Projects Responsive QA and Visual Fixes
+
+Role Flow:
+- PM: Confirmed that non-Osstem project copy refinement is deferred until separate project data is provided, and scoped this cycle to Projects responsive QA.
+- Planner: Focused verification on `/projects` desktop, tablet, and mobile behavior without changing the data model, filters, or adding libraries.
+- Developer: Fixed the missing light-mode page background/text baseline, improved Projects card surface visibility, and constrained ProjectPanel content scrolling on mobile.
+- QA: Verified responsive layouts, filter behavior, dialog focus/close behavior, mobile bottom-sheet scrolling, static checks, tests, and build.
+
+Summary:
+- Added explicit light-mode `body` background and text color so Projects content does not render as black text over a transparent/dark browser background.
+- Added a visible light-mode gradient surface to project cards while keeping the existing dark-mode style.
+- Removed excessive mobile bottom-sheet padding and applied max-height directly to ProjectPanel content so long project details scroll internally.
+- Confirmed mobile Stack content is reachable by scrolling inside the bottom sheet.
+
+Files:
+- Created: None.
+- Modified: `src/app/layout.tsx`, `src/components/projects/ProjectCard.tsx`, `src/components/projects/ProjectPanel.tsx`, `docs/task-log.md`.
+- Not touched: `src/constants/projects.ts`, project copy for non-Osstem entries, filters, routes, package files, lockfiles, public assets.
+
+Verification:
+- Browser QA on `/projects` at 1440x900, 768x1024, and 375x812.
+- Checked no horizontal overflow in desktop, tablet, and mobile viewports.
+- Checked Featured card layout, filter wrapping, filter active state, desktop dialog open/close, body scroll lock, close-button focus, and focus restoration.
+- Checked mobile bottom-sheet open/close and internal scroll to the Stack section.
+- `npx tsc --noEmit`
+- `npm run lint` passes with 12 existing warnings.
+- `npm test -- --runInBand`
+- `npm run build` succeeds with existing Next workspace-root, baseline-browser-mapping, and Tailwind module-type warnings.
+
+Open Questions:
+- None for this QA scope.
+
+Next Candidates:
+- Refine non-Osstem project copy after the separate agent provides updated project data.
+- Clean existing lint warnings in About, ThemeToggle, History, BackgroundCanvas, and `src/lib/db.ts`.
+- Resolve the existing Next workspace root inference warning caused by multiple lockfiles.
+- Consider structured project metadata later only if component-level filtering and copy management become hard to maintain.
+
 ## 2026-06-06 - Improve Projects Information Architecture
 
 Role Flow:

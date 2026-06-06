@@ -77,8 +77,8 @@ export default function ProjectPanel({ open, project, onClose }: Props) {
 
   const stop = (e: React.MouseEvent) => e.stopPropagation();
 
-  const Content = ({ titleId }: { titleId: string }) => (
-    <div className="p-5 md:p-6 space-y-4 overflow-y-auto m-1">
+  const Content = ({ titleId, className = "" }: { titleId: string; className?: string }) => (
+    <div className={`m-1 space-y-4 overflow-y-auto p-5 pb-8 md:p-6 ${className}`}>
       {project ? (
         <>
           <div className="mb-1 flex flex-wrap items-center gap-2 text-sm opacity-80">
@@ -140,7 +140,7 @@ export default function ProjectPanel({ open, project, onClose }: Props) {
         role="dialog"
         aria-modal="true"
         aria-labelledby={mobileTitleId}
-        className="fixed inset-x-0 bottom-0 z-50 pb-30 block md:hidden
+        className="fixed inset-x-0 bottom-0 z-50 block md:hidden
                     bg-white dark:bg-zinc-900 rounded-t-2xl shadow-lg
                     transition-transform duration-300 translate-y-0">
         <button
@@ -150,8 +150,8 @@ export default function ProjectPanel({ open, project, onClose }: Props) {
           <XIcon size={18} />
         </button>
 
-        <div className="max-h-[72vh]" onClick={stop}>
-          <Content titleId={mobileTitleId} />
+        <div onClick={stop}>
+          <Content titleId={mobileTitleId} className="max-h-[78dvh]" />
         </div>
       </section>
 
@@ -176,7 +176,7 @@ export default function ProjectPanel({ open, project, onClose }: Props) {
           </button>
 
           <div className="max-h-[78vh]">
-            <Content titleId={desktopTitleId} />
+            <Content titleId={desktopTitleId} className="max-h-[78vh]" />
           </div>
         </div>
       </section>

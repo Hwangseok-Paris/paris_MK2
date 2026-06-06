@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${geistSans.variable} min-h-screen antialiased transition-colors duration-700 ease-in-out dark:bg-gray-900 dark:text-gray-200`}>
+        className={`${geistSans.variable} min-h-screen bg-white text-gray-900 antialiased transition-colors duration-700 ease-in-out dark:bg-gray-900 dark:text-gray-200`}>
         <ThemeProvider>
           <Header />
           <main className="flex-1">{children}</main>

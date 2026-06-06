@@ -11,7 +11,7 @@ interface Props {
 
 export default function ProjectCard({ project, onOpen, emphasis = false }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  const cardClassName = `flex flex-col border shadow-xl min-w-[230px] border-black/4 dark:border-white/10 bg-gradient-to-br dark:from-white/6 dark:to-white/2 p-5 backdrop-blur-sm rounded-2xl transition-all duration-150 will-change-transform ${
+  const cardClassName = `flex flex-col border shadow-xl min-w-[230px] border-black/4 bg-gradient-to-br from-white/95 to-white/70 dark:border-white/10 dark:from-white/8 dark:to-white/3 p-5 backdrop-blur-sm rounded-2xl transition-all duration-150 will-change-transform ${
     emphasis ? "min-h-[270px]" : "sm:min-h-[230px]"
   } [transform:perspective(900px)_rotateX(var(--rx))_rotateY(var(--ry))_translate3d(var(--tx),var(--ty),0)]`;
 
