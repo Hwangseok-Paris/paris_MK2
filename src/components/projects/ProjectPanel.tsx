@@ -81,31 +81,43 @@ export default function ProjectPanel({ open, project, onClose }: Props) {
     <div className="p-5 md:p-6 space-y-4 overflow-y-auto m-1">
       {project ? (
         <>
-          <div className="text-sm opacity-80 mb-1">[{project.company}]</div>
+          <div className="mb-1 flex flex-wrap items-center gap-2 text-sm opacity-80">
+            <span>[{project.company}]</span>
+            <span className="rounded-full border px-2 py-0.5 text-[11px]">{project.category}</span>
+          </div>
           <h2 id={titleId} className="text-lg md:text-xl font-semibold pr-10">
             {project.title}
           </h2>
-          <p className=" opacity-80">{project.summary}</p>
+          <p className="opacity-80">{project.summary}</p>
+
+          <div className="rounded-xl border border-black/10 p-3 text-sm dark:border-white/10">
+            <div className="mb-1 text-xs font-semibold uppercase opacity-60">Role</div>
+            <div className="opacity-85">{project.role}</div>
+          </div>
 
           <div className="text-sm opacity-80 space-y-1">
             <div>기간: {project.period}</div>
-            <div>역할: {project.role}</div>
-            <div>카테고리: {project.category}</div>
           </div>
 
-          <div className="flex flex-wrap gap-2 pt-2">
-            {project.stack.map((s) => (
-              <span key={s} className="rounded-full border px-3 py-1 text-[11px] opacity-80">
-                {s}
-              </span>
-            ))}
+          <div>
+            <h3 className="mb-2 text-sm font-semibold">Key Contributions</h3>
+            <ul className="list-disc pl-5 text-sm space-y-1">
+              {project.highlights.map((h, i) => (
+                <li key={i}>{h}</li>
+              ))}
+            </ul>
           </div>
 
-          <ul className="list-disc pl-5 text-sm space-y-1">
-            {project.highlights.map((h, i) => (
-              <li key={i}>{h}</li>
-            ))}
-          </ul>
+          <div>
+            <h3 className="mb-2 text-sm font-semibold">Stack</h3>
+            <div className="flex flex-wrap gap-2">
+              {project.stack.map((s) => (
+                <span key={s} className="rounded-full border px-3 py-1 text-[11px] opacity-80">
+                  {s}
+                </span>
+              ))}
+            </div>
+          </div>
         </>
       ) : (
         <div className="text-sm opacity-70">프로젝트 정보를 불러오는 중…</div>

@@ -33,6 +33,43 @@ Next Candidates:
 
 ## Log
 
+## 2026-06-06 - Improve Projects Information Architecture
+
+Role Flow:
+- PM: Confirmed the first information-architecture scope: featured projects, career-axis filters, frontend positioning, and no project data model change today.
+- Planner: Kept the existing `Project` data shape and scoped the implementation to component-internal constants plus display order changes.
+- Developer: Added a role-focused Projects header, Featured Projects section, filter controls, and reordered project cards/details for recruiter scanning.
+- QA: Verified static checks, tests, build, and browser behavior for the Projects page.
+
+Summary:
+- Added career-positioning copy and focus chips to the Projects header.
+- Added Featured Projects for Osstem, Festivallife, Kyobo TalkTalk, and NH Investment.
+- Added filters: All, representative, ownership/solo work, realtime consulting, finance/insurance, hybrid/app, and AI/Voice.
+- Reordered cards and detail panels so company/category, title, role, summary, contributions, stack, and period are easier to scan.
+- Kept the existing project data model and avoided new libraries.
+
+Files:
+- Created: None.
+- Modified: `src/components/projects/ProjectsHeader.tsx`, `src/components/projects/ProjectsContainerClient.tsx`, `src/components/projects/ProjectCard.tsx`, `src/components/projects/ProjectPanel.tsx`, `docs/task-log.md`.
+- Not touched: `src/constants/projects.ts`, routes, package files, lockfiles, public assets.
+
+Verification:
+- `npx tsc --noEmit`
+- `npm run lint`
+- `npm test -- --runInBand`
+- `npm run build`
+- Browser QA on `/projects` for featured projects, filters, dialog open/close, focus restoration, and desktop overflow.
+- Reviewed responsive Tailwind classes for wrapping filters and one-column mobile grids; direct mobile viewport QA was not available in the current in-app browser session.
+
+Open Questions:
+- Whether each project should later expose structured fields such as problem, role, contribution, result, ownership level, and impact.
+
+Next Candidates:
+- Add richer project metadata only when the current component-level filtering becomes hard to maintain.
+- Refine copy for non-Osstem projects so each card has a sharper problem, role, contribution, and result narrative.
+- Run direct mobile viewport QA in a resizable browser or device preview before finalizing visual polish.
+- Review Projects visual density after real browser QA and decide whether Featured should be 2-column or 4-column on wide screens.
+
 ## 2026-06-06 - Record Korean Commit Message Rule
 
 Role Flow:
