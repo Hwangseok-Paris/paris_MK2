@@ -15,7 +15,6 @@ export default function Footer() {
             <Link href="https://blog.naver.com/hwangseok89" target="_blank" rel="noopener">
               Blog
             </Link>
-            <Link href="/privacy">Privacy</Link>
           </nav>
         </div>
       </Container>

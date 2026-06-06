@@ -5,10 +5,10 @@ import type { Project } from "@/constants/projects";
 
 interface Props {
   project: Project;
-  onClick: (p: Project) => void;
+  onOpen: (project: Project, trigger: HTMLButtonElement) => void;
 }
 
-export default function ProjectCard({ project, onClick }: Props) {
+export default function ProjectCard({ project, onOpen }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   const onMove = (e: React.MouseEvent) => {
@@ -39,8 +39,10 @@ export default function ProjectCard({ project, onClick }: Props) {
       <button
         onMouseMove={onMove}
         onMouseLeave={onLeave}
-        className="group relative text-left w-full"
-        onClick={() => onClick(project)}>
+        className="group relative w-full text-left outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900 rounded-2xl"
+        onClick={(e) => onOpen(project, e.currentTarget)}
+        aria-haspopup="dialog"
+        aria-label={`${project.title} 상세 보기`}>
         <div
           ref={ref}
           className="flex flex-col border shadow-xl sm:min-h-[230px] min-w-[230px] border-black/4  dark:border-white/10 bg-gradient-to-br  dark:from-white/6 dark:to-white/2 p-5 backdrop-blur-sm rounded-2xl  transition-all duration-150 will-change-transform

@@ -27,6 +27,30 @@ Follow-up:
 
 ## Decision Log
 
+## 2026-06-06 - Korean Commit Messages with Body
+
+Status: Accepted
+
+Context:
+- The portfolio repository should keep commit history readable for the user.
+- Short English-only commit messages can hide useful implementation context.
+
+Decision:
+- Codex should write commit messages in Korean by default.
+- Commits should preferably include a concise Korean title and a body that summarizes the important changes, reasons, verification, or follow-up notes.
+- Unrelated local metadata changes such as `.DS_Store` should not be included unless explicitly requested.
+
+Rationale:
+- Korean commit messages fit the user's working style and make repository history easier to review.
+- A body with meaningful content preserves the reasoning behind portfolio changes without requiring the user to inspect every diff.
+
+Impact:
+- Applies to future commits in this repository.
+- Affects Codex git workflow and final reports.
+
+Follow-up:
+- Keep commit messages scoped to the actual staged changes.
+
 ## 2026-06-06 - PM Approval Gate and Follow-up Tracking
 
 Status: Accepted

@@ -55,6 +55,13 @@ The normal workflow is defined in `workflows/portfolio-cycle.md`.
 - `docs/task-log.md` stores work history, outcomes, and suggested next steps.
 - Agent files define role responsibilities, inputs, outputs, and prohibitions.
 
+## Git and Commit Rules
+
+- Write commit messages in Korean by default.
+- Prefer a concise Korean title plus a commit body that explains the main changes.
+- Keep the commit body practical: mention what changed, why it changed, and important verification or follow-up notes when relevant.
+- Do not include unrelated local metadata changes such as `.DS_Store` unless the user explicitly asks.
+
 ## Output Expectations
 
 When Codex finishes a repository task, it should report:

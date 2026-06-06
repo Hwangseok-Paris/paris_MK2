@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion, Variants } from "framer-motion";
 import type { Project } from "@/constants/projects";
 import ProjectCard from "./ProjectCard";
@@ -25,11 +25,18 @@ type Props = {
 
 export default function ProjectsContainerClient({ projects }: Props) {
   const [modalState, setModalState] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<Project | null>();
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
 
-  const onOpen = (p: Project) => {
+  const onOpen = (p: Project, trigger: HTMLButtonElement) => {
+    triggerRef.current = trigger;
     setSelectedProject(p);
     setModalState(true);
+  };
+
+  const onClose = () => {
+    setModalState(false);
+    window.setTimeout(() => triggerRef.current?.focus(), 0);
   };
 
   return (
@@ -41,16 +48,7 @@ export default function ProjectsContainerClient({ projects }: Props) {
         className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {projects.map((p) => (
           <motion.div key={p.id} variants={item}>
-            <div
-              role="button"
-              tabIndex={0}
-              onClick={() => onOpen(p)}
-              onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onOpen(p)}
-              className="block w-full text-left outline-none"
-              aria-haspopup="dialog"
-              aria-label={`${p.title} 상세 보기`}>
-              <ProjectCard project={p} onClick={onOpen} />
-            </div>
+            <ProjectCard project={p} onOpen={onOpen} />
           </motion.div>
         ))}
       </motion.div>
@@ -58,7 +56,7 @@ export default function ProjectsContainerClient({ projects }: Props) {
       <ProjectPanel
         open={modalState}
         project={selectedProject}
-        onClose={() => setModalState(false)}
+        onClose={onClose}
       />
     </>
   );

@@ -13,18 +13,21 @@ export type Project = {
 export const projects: Project[] = [
   {
     id: "osstem-hybrid",
-    title: "신규 앱(하이브리드) 서비스 통합 프로젝트",
+    title: "오스템 모바일 앱 프레임워크 구축",
     company: "오스템임플란트",
     period: "2025.07 ~ 진행중",
-    role: "웹-네이티브 브릿지 연동, Android APP 개발, 웹(Vue3) 개발",
+    role: "Android/iOS 앱 및 모바일 웹 연동 개발 단독 담당, WebView Bridge 설계·구현, 검증·배포 대응",
     category: "Hybrid APP",
-    stack: ["Kotlin", "Vue3"],
+    stack: ["Kotlin", "Swift", "SwiftUI", "WKWebView", "Vue3", "WebView Bridge", "TestFlight"],
     summary:
-      "기존 Full-WebView 앱을 네이티브 GNB 셸과 웹 콘텐츠 영역을 분리하는 Partial Hybrid 구조로 개편",
+      "기존 Full WebView 앱을 Partial Hybrid 구조로 전환하기 위해 Android/iOS 앱과 모바일 웹 연동 개발을 단독 담당하고, 웹-네이티브 브릿지와 운영 기능을 정비",
     highlights: [
-      "신규 앱 디버깅 및 개발",
-      "네이티브-웹 인터페이스 재설계",
-      "기존 서비스 모바일 개편 가이드 제작",
+      "기존 앱의 Partial Hybrid 구조 개편 범위에서 Android/iOS 앱 개발과 모바일 웹 연동 개발을 단독 담당",
+      "요건 수령부터 설계, 구현, 검증, 배포 대응까지 수행",
+      "Full WebView 구조를 네이티브 GNB·하단 툴바 기반 Partial Hybrid 구조로 전환",
+      "GNB·하단 툴바 표시 제어, 위치 요청, 전체화면, 버전 체크·강제 업데이트 등 WebView Bridge 연동",
+      "유니버설 링크·딥링크, 외부 앱 스킴, SSO·쿠키 동기화 등 앱 운영 흐름 구현·검증",
+      "웹 채널 적용을 위한 모바일 웹 개편 가이드와 AOS/iOS 앱 개발·운영 인수인계 문서 정리",
     ],
   },
   {

@@ -2,6 +2,7 @@
 
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 export type ProjectCardItem = {
   title: string;
@@ -29,6 +30,31 @@ export default function ProjectCards({ projects }: Props) {
     show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
   };
 
+  const renderCard = (p: ProjectCardItem) => (
+    <div className="rounded-2xl border border-white/20 bg-white/10 p-6 shadow-xl backdrop-blur-md transition-transform duration-300 hover:scale-[1.02]">
+      <div className="mb-4 h-32 rounded-xl bg-[#FF1A42] flex justify-center overflow-hidden">
+        {p.image ? (
+          <Image
+            src={p.image}
+            width={320}
+            height={180}
+            alt={`${p.title} 프로젝트 이미지`}
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="h-full w-full min-w-[200px] max-w-[320px] object-contain p-10"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-sm text-white/80">
+            Coming soon
+          </div>
+        )}
+      </div>
+      <div className="px-1">
+        <h3 className="text-lg font-semibold text-black dark:text-white">{p.title}</h3>
+        <p className="mt-1 text-sm text-black dark:text-white/80">{p.desc}</p>
+      </div>
+    </div>
+  );
+
   return (
     <>
       {/* 카드 3개 자리 — 이후 map으로 대체 */}
@@ -42,28 +68,17 @@ export default function ProjectCards({ projects }: Props) {
           projects.map((p) => (
             <motion.div
               key={p.title}
-              variants={item}
-              className="rounded-2xl border border-white/20 bg-white/10 p-6 shadow-xl backdrop-blur-md hover:scale-[1.02] transition-transform duration-300">
-              <div className="mb-4 h-32 rounded-xl bg-[#FF1A42] flex justify-center overflow-hidden">
-                {p.image ? (
-                  <Image
-                    src={p.image}
-                    width={320}
-                    height={180}
-                    alt="프로젝트이미지"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="h-full w-full min-w-[200px] max-w-[320px] object-contain p-10"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-sm text-white/80">
-                    Coming soon
-                  </div>
-                )}
-              </div>
-              <div className="px-1">
-                <h3 className="text-lg font-semibold text-black dark:text-white">{p.title}</h3>
-                <p className="mt-1 text-sm text-black dark:text-white/80">{p.desc}</p>
-              </div>
+              variants={item}>
+              {p.path ? (
+                <Link
+                  href={p.path}
+                  className="block rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900"
+                  aria-label={`${p.title} 프로젝트 전체 보기`}>
+                  {renderCard(p)}
+                </Link>
+              ) : (
+                renderCard(p)
+              )}
             </motion.div>
           ))}
       </motion.div>

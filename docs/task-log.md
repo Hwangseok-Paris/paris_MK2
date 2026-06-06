@@ -33,6 +33,102 @@ Next Candidates:
 
 ## Log
 
+## 2026-06-06 - Record Korean Commit Message Rule
+
+Role Flow:
+- PM: Confirmed that commit messages should be Korean and include useful content where possible.
+- Planner: Scoped the change to repository workflow documentation.
+- Developer: Added commit message guidance to `AGENTS.md` and recorded the durable decision.
+- QA: Checked that this is documentation-only and should not affect service code.
+
+Summary:
+- Future commits should use Korean commit messages by default.
+- Commit bodies should summarize important changes, reasons, verification, or follow-up notes when relevant.
+- Unrelated `.DS_Store` changes should stay out of commits unless explicitly requested.
+
+Files:
+- Created: None.
+- Modified: `AGENTS.md`, `docs/decisions.md`, `docs/task-log.md`.
+- Not touched: `src`, `app`, `components`, `styles`, `public`, lockfiles.
+
+Verification:
+- Documentation review only.
+
+Open Questions:
+- None.
+
+Next Candidates:
+- Apply this commit style to the current Projects quick fixes commit.
+
+## 2026-06-06 - Refine Osstem Project Career Data
+
+Role Flow:
+- PM: Confirmed that career data should be clarified before changing the Projects information architecture.
+- Planner: Scoped the change to the existing `Project` data shape without adding new fields or changing UI structure.
+- Developer: Updated the Osstem hybrid app project copy to reflect solo ownership of the Android/iOS app and mobile web integration scope, bridge work, deployment support, and handoff documentation.
+- QA: Checked that the content stays within the existing project data contract.
+
+Summary:
+- Repositioned the Osstem project as an existing Full WebView app refactor into a Partial Hybrid structure.
+- Refined the public project title to `오스템 모바일 앱 프레임워크 구축`.
+- Added Kotlin, Swift, SwiftUI, WKWebView, WebView Bridge, and TestFlight to the displayed stack.
+- Clarified that the work included sole responsibility for the Android/iOS app and mobile web integration scope, from requirements through design, implementation, verification, deployment support, web channel guide support, and AOS/iOS handoff documentation.
+
+Files:
+- Created: None.
+- Modified: `src/constants/projects.ts`, `docs/task-log.md`.
+- Not touched: UI components, routes, `getProjects()` data flow, package files, lockfiles.
+
+Verification:
+- Confirmed the iOS source evidence from `/Users/paris/Documents/Codeclick/osstem/osstem-app_ios` before writing the portfolio copy.
+
+Open Questions:
+- Whether to explicitly mention AI-assisted iOS workflow in the public portfolio copy. Current copy omits it to avoid distracting from the accountable work scope.
+
+Next Candidates:
+- Restructure Projects page around career data: featured projects, role/impact-first cards, and detailed sections for problem, role, contribution, and result.
+- Add richer project fields later only if the UI needs them, such as `impact`, `problem`, `contribution`, `result`, and `featured`.
+
+## 2026-06-06 - Projects Quick Accessibility Fixes
+
+Role Flow:
+- PM: Confirmed the first implementation scope: remove `/privacy`, keep the current ProjectPanel structure, include home featured card linking, and fix validation scripts.
+- Planner: Scoped changes to existing Projects, home preview, Footer, package scripts, and Jest configuration without adding libraries.
+- Developer: Removed nested project card controls, improved ProjectPanel dialog behavior, linked the featured project card, removed the missing privacy link, and fixed lint/test generated-file scanning.
+- QA: Ran static checks, tests, build, and browser checks for desktop and mobile Projects interactions.
+
+Summary:
+- Projects cards now use one native button per project instead of a `role="button"` wrapper around another button.
+- ProjectPanel now renders only while open, has dialog labels, focuses the close button on open, traps Tab within the active dialog, locks body scroll, and restores focus to the triggering card on close.
+- Home featured project cards now link to `/projects` when a `path` is provided.
+- Footer no longer links to the missing `/privacy` route.
+- `npm run lint` now runs ESLint against source/config files instead of generated `.next` output.
+- Jest now ignores `.next` output to avoid haste-map package collisions after builds.
+
+Files:
+- Created: None.
+- Modified: `src/components/projects/ProjectsContainerClient.tsx`, `src/components/projects/ProjectCard.tsx`, `src/components/projects/ProjectPanel.tsx`, `src/components/sections/ProjectCards.tsx`, `src/components/Footer.tsx`, `package.json`, `jest.config.ts`, `docs/task-log.md`.
+- Not touched: Project data model, `getProjects()` data flow, routes, lockfiles, public assets.
+
+Verification:
+- `npx tsc --noEmit`
+- `npm run lint` passes with 12 existing warnings.
+- `npm test -- --runInBand`
+- `npm run build`
+- Browser QA on `/projects`: no nested project buttons, no closed dialog in DOM, dialog label exists, focus moves to close button, Escape close restores focus to the triggering card.
+- Browser QA on mobile `/projects`: no horizontal overflow at 375px, one visible bottom-sheet dialog, close restores focus.
+- Browser QA on `/`: featured project card links to `/projects`; no `/privacy` links remain.
+
+Open Questions:
+- None for this scope.
+
+Next Candidates:
+- Decide and implement Projects information architecture improvements: representative project emphasis, category/stack filtering, current-project signaling, and stronger outcome summaries.
+- Clean existing lint warnings in About, ThemeToggle, History, BackgroundCanvas, and `src/lib/db.ts`.
+- Address performance/accessibility risks in `BackgroundCanvas`, especially `prefers-reduced-motion` and resize handling.
+- Resolve build warning about Next workspace root inference caused by multiple lockfiles.
+- Review About/Contact semantic structure, including `ul` child structure and nested `main`.
+
 ## 2026-06-06 - Document PM Approval and Follow-up Workflow
 
 Role Flow:

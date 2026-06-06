@@ -1,7 +1,7 @@
 // src/components/projects/ProjectPanel.tsx
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useId, useRef } from "react";
 import { XIcon } from "lucide-react";
 import type { Project } from "@/constants/projects";
 
@@ -12,36 +12,79 @@ type Props = {
 };
 
 export default function ProjectPanel({ open, project, onClose }: Props) {
-  // const screenY = useMemo(() => {
-  //   return document.documentElement.clientHeight;
-  // }, []);
+  const titleIdBase = useId();
+  const mobileTitleId = `${titleIdBase}-mobile`;
+  const desktopTitleId = `${titleIdBase}-desktop`;
+  const panelRootRef = useRef<HTMLDivElement>(null);
 
-  // ESC 닫기
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
-
-  // 스크롤 잠금
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+
+    const getActiveDialog = () => {
+      const dialogs = Array.from(
+        panelRootRef.current?.querySelectorAll<HTMLElement>('[role="dialog"]') ?? [],
+      );
+      return dialogs.find((dialog) => dialog.getClientRects().length > 0);
+    };
+
+    const getFocusable = () => {
+      const dialog = getActiveDialog();
+      if (!dialog) return [];
+
+      return Array.from(
+        dialog.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((el) => el.getClientRects().length > 0);
+    };
+
+    window.setTimeout(() => getFocusable()[0]?.focus(), 0);
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      if (e.key !== "Tab") return;
+
+      const focusable = getFocusable();
+      if (focusable.length === 0) {
+        e.preventDefault();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
     };
-  }, [open]);
+  }, [open, onClose]);
 
   const stop = (e: React.MouseEvent) => e.stopPropagation();
 
-  const Content = () => (
+  const Content = ({ titleId }: { titleId: string }) => (
     <div className="p-5 md:p-6 space-y-4 overflow-y-auto m-1">
       {project ? (
         <>
           <div className="text-sm opacity-80 mb-1">[{project.company}]</div>
-          <h2 className="text-lg md:text-xl font-semibold">{project.title}</h2>
+          <h2 id={titleId} className="text-lg md:text-xl font-semibold pr-10">
+            {project.title}
+          </h2>
           <p className=" opacity-80">{project.summary}</p>
 
           <div className="text-sm opacity-80 space-y-1">
@@ -70,25 +113,24 @@ export default function ProjectPanel({ open, project, onClose }: Props) {
     </div>
   );
 
+  if (!open) return null;
+
   return (
-    <>
+    <div ref={panelRootRef}>
       <div
         onClick={onClose}
-        aria-hidden={!open}
-        className={`fixed inset-0 z-40 bg-black/40 transition-opacity ${
-          open ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
+        aria-hidden="true"
+        className="fixed inset-0 z-40 bg-black/40 transition-opacity opacity-100"
       />
 
       {/* 모바일: 바텀시트 */}
       <section
         role="dialog"
         aria-modal="true"
-        className={`fixed inset-x-0 bottom-0 z-50 pb-30 block md:hidden
+        aria-labelledby={mobileTitleId}
+        className="fixed inset-x-0 bottom-0 z-50 pb-30 block md:hidden
                     bg-white dark:bg-zinc-900 rounded-t-2xl shadow-lg
-                    transition-transform duration-300 ${
-                      open ? "translate-y-0" : "translate-y-full"
-                    }`}>
+                    transition-transform duration-300 translate-y-0">
         <button
           aria-label="닫기"
           onClick={onClose}
@@ -97,7 +139,7 @@ export default function ProjectPanel({ open, project, onClose }: Props) {
         </button>
 
         <div className="max-h-[72vh]" onClick={stop}>
-          <Content />
+          <Content titleId={mobileTitleId} />
         </div>
       </section>
 
@@ -105,14 +147,15 @@ export default function ProjectPanel({ open, project, onClose }: Props) {
       <section
         role="dialog"
         aria-modal="true"
-        className={`fixed inset-0 z-50 hidden md:flex items-center justify-center
-                    transition-opacity ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}
+        aria-labelledby={desktopTitleId}
+        className="fixed inset-0 z-50 hidden md:flex items-center justify-center
+                    transition-opacity opacity-100"
         onClick={onClose}>
         <div
           onClick={stop}
-          className={`relative w-full max-w-[720px] bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl
+          className="relative w-full max-w-[720px] bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl
                       border border-black/10 dark:border-white/10
-                      transition-transform duration-300 ${open ? "scale-100" : "scale-95"}`}>
+                      transition-transform duration-300 scale-100">
           <button
             aria-label="닫기"
             onClick={onClose}
@@ -121,10 +164,10 @@ export default function ProjectPanel({ open, project, onClose }: Props) {
           </button>
 
           <div className="max-h-[78vh]">
-            <Content />
+            <Content titleId={desktopTitleId} />
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
