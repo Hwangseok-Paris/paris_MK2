@@ -22,6 +22,9 @@ The user does not need to repeat this checklist in every request. Treat it as th
 
 - Treat this repository as a Next.js, TypeScript, Tailwind portfolio project.
 - Read the current repository structure before proposing or implementing changes.
+- Before implementation work, run the PM step first: clarify the goal, verify current behavior, identify missing decisions, and ask the user enough questions to avoid preventable omissions.
+- Do not start implementation just because the user describes a desired change. Start Developer work only after the user explicitly approves the planned work or says to start.
+- When a task has multiple discovered issues or improvement candidates, the PM must keep track of unresolved items. If only the highest-priority items are implemented, report the remaining items as follow-up candidates in the current result and bring them up again when planning the next related task.
 - Prefer existing code patterns, component boundaries, routing structure, and styling conventions.
 - Do not add libraries unless the user explicitly asks for it and the reason is documented.
 - If a new library may be needed, present candidate libraries first with each library's purpose, main features, pros, cons, and fit for this project.
