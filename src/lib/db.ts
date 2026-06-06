@@ -3,7 +3,6 @@ import type { Project } from "@/constants/projects";
 import { projects as fallbackProjects } from "@/constants/projects";
 
 declare global {
-  // eslint-disable-next-line no-var
   var pgPool: Pool | undefined;
 }
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 
 import { useThemeContext } from "@/context/ThemeContext";
@@ -12,13 +11,7 @@ import { useThemeContext } from "@/context/ThemeContext";
  *  3. 아이콘(🌞·🌙) 스위치
  */
 export default function ThemeToggle() {
-  const [dark, setDark] = useState(false);
-
   const { mode, toggle } = useThemeContext();
-  /* 초기 상태 동기화 */
-  useEffect(() => {
-    setDark(document.documentElement.classList.contains("dark"));
-  }, []);
 
   // const toggle = () => {
   //   const html = document.documentElement;

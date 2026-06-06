@@ -4,7 +4,6 @@ import Container from "@/components/layout/Container";
 import AboutIntro from "@/components/about/AboutIntro";
 import Highlights from "@/components/about/Highlights";
 import Stacks from "@/components/about/Stacks";
-import History from "@/components/home/History";
 
 import { motion, Variants } from "framer-motion";
 

@@ -36,21 +36,21 @@ export default function Timeline() {
       },
       (ctx) => {
         if (ctx.conditions!.isDesktop) {
-          history.forEach(({ year }, idx) => {
+          history.forEach(({ year }) => {
             ScrollTrigger.create({
               trigger: `#y${year}`,
               start: "top bottom",
               end: "bottom bottom",
               scrub: 1,
               markers: false,
-              onEnter: () => swapEnter(year, idx),
-              onEnterBack: () => swapPCEnterBack(year, idx),
-              onLeaveBack: () => swapPCLeaveBack(year, idx),
-              onLeave: () => swapPCLeave(year, idx),
+              onEnter: () => swapEnter(year),
+              onEnterBack: () => swapPCEnterBack(year),
+              onLeaveBack: () => swapPCLeaveBack(year),
+              onLeave: () => swapPCLeave(year),
             });
           });
 
-          function swapEnter(year: string, idx: number) {
+          function swapEnter(year: string) {
             // console.log("onEnter");
             if (!boxRef.current) return;
             gsap.fromTo(
@@ -76,7 +76,7 @@ export default function Timeline() {
               });
             }
           }
-          function swapPCLeaveBack(year: string, idx: number) {
+          function swapPCLeaveBack(year: string) {
             // console.log("LeaveBack");
             if (!boxRef.current) return;
             gsap.fromTo(
@@ -102,7 +102,7 @@ export default function Timeline() {
             }
           }
 
-          function swapPCLeave(year: string, idx: number) {
+          function swapPCLeave(year: string) {
             // console.log("Leave");
             if (!boxRef.current) return;
             gsap.fromTo(boxRef.current, { x: 0, y: 0, opacity: 1 }, { x: 400, y: 0, opacity: 0 });
@@ -123,7 +123,7 @@ export default function Timeline() {
               });
             }
           }
-          function swapPCEnterBack(year: string, idx: number) {
+          function swapPCEnterBack(year: string) {
             // console.log("EnterBack");
             if (!boxRef.current) return;
             gsap.fromTo(boxRef.current, { x: 400, y: 0, opacity: 0 }, { x: 0, y: 0, opacity: 1 });
@@ -147,7 +147,7 @@ export default function Timeline() {
         }
 
         if (ctx.conditions!.isMobile) {
-          history.forEach(({ year }, idx) => {
+          history.forEach(({ year }) => {
             ScrollTrigger.create({
               trigger: `#y${year}`,
               start: "top bottom",
@@ -155,14 +155,14 @@ export default function Timeline() {
               markers: false,
               scrub: 1,
               snap: 1 / (history.length - 1),
-              onEnter: () => swapEnter(year, idx),
-              onEnterBack: () => swapPCEnterBack(year, idx),
-              onLeaveBack: () => swapPCLeaveBack(year, idx),
-              onLeave: () => swapPCLeave(year, idx),
+              onEnter: () => swapEnter(year),
+              onEnterBack: () => swapPCEnterBack(year),
+              onLeaveBack: () => swapPCLeaveBack(year),
+              onLeave: () => swapPCLeave(year),
             });
           });
 
-          function swapEnter(year: string, idx: number) {
+          function swapEnter(year: string) {
             // console.log("onEnter");
             if (!mobileBoxRef.current) return;
             gsap.fromTo(
@@ -189,7 +189,7 @@ export default function Timeline() {
             }
           }
 
-          function swapPCLeaveBack(year: string, idx: number) {
+          function swapPCLeaveBack(year: string) {
             // console.log("LeaveBack");
             if (!mobileBoxRef.current) return;
             gsap.fromTo(
@@ -215,7 +215,7 @@ export default function Timeline() {
             }
           }
 
-          function swapPCLeave(year: string, idx: number) {
+          function swapPCLeave(year: string) {
             // console.log("Leave");
             if (!mobileBoxRef.current) return;
             gsap.fromTo(
@@ -240,7 +240,7 @@ export default function Timeline() {
               });
             }
           }
-          function swapPCEnterBack(year: string, idx: number) {
+          function swapPCEnterBack(year: string) {
             // console.log("EnterBack");
             if (!mobileBoxRef.current) return;
             gsap.fromTo(

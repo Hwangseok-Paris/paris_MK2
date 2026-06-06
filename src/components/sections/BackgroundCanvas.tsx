@@ -2,6 +2,34 @@
 
 import { useEffect, useRef } from "react";
 
+const MAX_COMETS = 8; // on-screen comets
+const TRAIL_LEN = 30; // fixed tail size
+const SPEED_MIN = 1; // px / frame (deep)
+const SPEED_MAX = 6; // px / frame (near)
+
+const COLOURS_LIGHT = [
+  "#34d399", // emerald-400
+  "#38bdf8", // sky-400
+  "#f472b6", // pink-400
+  "#fbbf24", // amber-400
+  "#fb7185", // rose-400
+  "#4ade80", // green-400
+];
+
+const COLOURS_DARK = [
+  "#e0f2fe", // sky-100
+  "#bae6fd", // sky-200
+  "#fecaca", // rose-200
+  "#fde68a", // amber-200
+  "#a5f3fc", // cyan-200
+  "#ddd6fe", // violet-200
+];
+
+const getPalette = () =>
+  document.documentElement.classList.contains("dark") ? COLOURS_DARK : COLOURS_LIGHT;
+
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
 /**
  * BackgroundCanvas – comet style (fixed fading tail)
  *
@@ -13,34 +41,6 @@ export default function BackgroundCanvas() {
   /* Canvas handles */
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
-
-  /* Tunables */
-  const MAX_COMETS = 8; // on‑screen comets
-  const TRAIL_LEN = 30; // fixed tail size
-  const SPEED_MIN = 1; // px / frame (deep)
-  const SPEED_MAX = 6; // px / frame (near)
-
-  const COLOURS_LIGHT = [
-    "#34d399", // emerald‑400
-    "#38bdf8", // sky‑400
-    "#f472b6", // pink‑400
-    "#fbbf24", // amber‑400
-    "#fb7185", // rose‑400
-    "#4ade80", // green‑400
-  ];
-  const COLOURS_DARK = [
-    "#e0f2fe", // sky‑100
-    "#bae6fd", // sky‑200
-    "#fecaca", // rose‑200
-    "#fde68a", // amber‑200
-    "#a5f3fc", // cyan‑200
-    "#ddd6fe", // violet‑200
-  ];
-
-  /* Helpers */
-  const palette = () =>
-    document.documentElement.classList.contains("dark") ? COLOURS_DARK : COLOURS_LIGHT;
-  const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -78,7 +78,7 @@ export default function BackgroundCanvas() {
         y: (Math.random() * height) / devicePixelRatio,
         z,
         vx: dir * speed,
-        colour: palette()[Math.floor(Math.random() * palette().length)],
+        colour: getPalette()[Math.floor(Math.random() * getPalette().length)],
         trail: [],
       });
     };
@@ -133,7 +133,7 @@ export default function BackgroundCanvas() {
 
     /* Theme change: recolour & reverse direction */
     const themeObserver = new MutationObserver(() => {
-      const p = palette();
+      const p = getPalette();
       comets.forEach((c) => {
         c.colour = p[Math.floor(Math.random() * p.length)];
         c.vx *= -1;

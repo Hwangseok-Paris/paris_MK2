@@ -33,6 +33,40 @@ Next Candidates:
 
 ## Log
 
+## 2026-06-07 - Clean Existing Lint Warnings
+
+Role Flow:
+- PM: Confirmed Projects copy work is deferred and selected the existing lint warnings as the next maintenance task.
+- Planner: Scoped the work to warning cleanup without changing project data, UI structure, package files, or adding libraries.
+- Developer: Removed unused imports/state/parameters, removed an obsolete eslint-disable comment, and moved BackgroundCanvas constants/helpers outside the component to satisfy hook dependency rules.
+- QA: Verified lint, TypeScript, tests, and production build.
+
+Summary:
+- Removed the unused `History` import from the About page.
+- Removed unused local theme state from `ThemeToggle`.
+- Removed unused `idx` callback parameters from the home `History` animation logic.
+- Stabilized `BackgroundCanvas` effect dependencies by moving static tunables, color palettes, and helpers to module scope.
+- Removed an obsolete eslint-disable comment from `src/lib/db.ts`.
+
+Files:
+- Created: None.
+- Modified: `src/app/(pages)/about/page.tsx`, `src/components/common/ThemeToggle.tsx`, `src/components/home/History.tsx`, `src/components/sections/BackgroundCanvas.tsx`, `src/lib/db.ts`, `docs/task-log.md`.
+- Not touched: Project data, Projects UI, routes, package files, lockfiles, public assets.
+
+Verification:
+- `npm run lint` passes with 0 warnings.
+- `npx tsc --noEmit`
+- `npm test -- --runInBand`
+- `npm run build` succeeds with existing Next workspace-root, baseline-browser-mapping, and Tailwind module-type warnings.
+
+Open Questions:
+- None for this scope.
+
+Next Candidates:
+- Resolve the existing Next workspace root inference warning caused by multiple lockfiles.
+- Decide whether to address baseline-browser-mapping and Tailwind module-type build warnings separately.
+- Refine non-Osstem project copy after the separate agent provides updated project data.
+
 ## 2026-06-07 - Projects Responsive QA and Visual Fixes
 
 Role Flow:
