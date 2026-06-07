@@ -27,6 +27,32 @@ Follow-up:
 
 ## Decision Log
 
+## 2026-06-07 - Build Warning Configuration Cleanup
+
+Status: Accepted
+
+Context:
+- `npm run build` emitted warnings for Next.js workspace root inference, stale `baseline-browser-mapping` data, and Tailwind config module type detection.
+- The warnings did not break the build, but they made verification output noisy and could hide future build issues.
+
+Decision:
+- Set `turbopack.root` explicitly in `next.config.ts`.
+- Track `baseline-browser-mapping` directly as a dev dependency so the Baseline browser data can be kept current.
+- Rename the Tailwind config from `tailwind.config.ts` to `tailwind.config.mjs` instead of adding `"type": "module"` to the whole package.
+
+Rationale:
+- Explicit Turbopack root keeps Next.js from selecting the wrong parent directory when multiple lockfiles exist nearby.
+- Directly tracking `baseline-browser-mapping` resolves the stale-data warning without changing runtime application code.
+- Using `.mjs` scopes ESM treatment to the Tailwind config and avoids broader side effects on scripts such as the standalone start command and Jest's Next config loading.
+
+Impact:
+- Affects build configuration, lint target configuration, Tailwind config loading, and package metadata.
+- Does not change portfolio UI, project data, routing, or service behavior.
+
+Follow-up:
+- Keep `baseline-browser-mapping` updated during dependency maintenance.
+- Re-check build output after future Next.js or Tailwind upgrades.
+
 ## 2026-06-06 - Korean Commit Messages with Body
 
 Status: Accepted

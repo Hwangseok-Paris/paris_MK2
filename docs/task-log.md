@@ -33,6 +33,40 @@ Next Candidates:
 
 ## Log
 
+## 2026-06-07 - Clean Build Warnings
+
+Role Flow:
+- PM: Confirmed the next maintenance scope should address the existing Next workspace-root, baseline-browser-mapping, and Tailwind module-type build warnings.
+- Planner: Scoped the work to build configuration, package metadata, Tailwind config loading, and documentation updates without changing UI, routes, project data, or service behavior.
+- Developer: Set an explicit Turbopack root, updated Baseline browser data handling, renamed the Tailwind config to `.mjs`, and updated lint/CSS config references.
+- QA: Verified TypeScript, lint, Jest, and production build output.
+
+Summary:
+- Added `turbopack.root` to `next.config.ts` so Next.js no longer infers the wrong workspace root from nearby lockfiles.
+- Added `baseline-browser-mapping` as a dev dependency and updated it to `2.10.34`.
+- Renamed `tailwind.config.ts` to `tailwind.config.mjs` and updated `globals.css` plus the lint script to use the new path.
+- Recorded the durable build-warning cleanup decision.
+
+Files:
+- Created: `tailwind.config.mjs`.
+- Modified: `next.config.ts`, `package.json`, `package-lock.json`, `src/app/globals.css`, `docs/decisions.md`, `docs/task-log.md`.
+- Removed: `tailwind.config.ts`.
+- Not touched: Project data, Projects UI, routes, service code, public assets.
+
+Verification:
+- `npm run dev`, then requested `/` and `/projects`; both returned `200 OK` after clearing stale `.next/dev` cache from the earlier `.mts` attempt.
+- `npx tsc --noEmit`
+- `npm run lint`
+- `npm test -- --runInBand`
+- `npm run build` succeeds without the previous Next workspace-root, baseline-browser-mapping, or Tailwind module-type warnings.
+
+Open Questions:
+- None for this scope.
+
+Next Candidates:
+- Refine non-Osstem project copy after the separate agent provides updated project data.
+- Consider dependency audit remediation separately from this warning-cleanup scope.
+
 ## 2026-06-07 - Clean Existing Lint Warnings
 
 Role Flow:
