@@ -6,9 +6,12 @@ import Link from "next/link";
 
 export type ProjectCardItem = {
   title: string;
+  eyebrow?: string;
+  signal?: string;
   desc: string;
   image?: string;
   path?: string;
+  stack?: string[];
 };
 
 interface Props {
@@ -31,8 +34,8 @@ export default function ProjectCards({ projects }: Props) {
   };
 
   const renderCard = (p: ProjectCardItem) => (
-    <div className="rounded-2xl border border-white/20 bg-white/10 p-6 shadow-xl backdrop-blur-md transition-transform duration-300 hover:scale-[1.02]">
-      <div className="mb-4 h-32 rounded-xl bg-[#FF1A42] flex justify-center overflow-hidden">
+    <article className="flex h-full min-h-[300px] flex-col rounded-2xl border border-black/5 bg-white/90 p-5 shadow-xl backdrop-blur-md transition-transform duration-300 hover:scale-[1.02] dark:border-white/10 dark:bg-white/[0.06]">
+      <div className="mb-4 flex h-24 items-center justify-center overflow-hidden rounded-xl border border-black/5 bg-gradient-to-br from-primary-50 to-emerald-50 dark:border-white/10 dark:from-white/10 dark:to-white/[0.03]">
         {p.image ? (
           <Image
             src={p.image}
@@ -40,24 +43,41 @@ export default function ProjectCards({ projects }: Props) {
             height={180}
             alt={`${p.title} 프로젝트 이미지`}
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="h-full w-full min-w-[200px] max-w-[320px] object-contain p-10"
+            className="h-full w-full min-w-[200px] max-w-[320px] object-contain p-8"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-sm text-white/80">
-            Coming soon
+          <div className="flex h-full w-full flex-col items-center justify-center px-4 text-center">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-primary-700 dark:text-primary-300">
+              {p.eyebrow?.split("/")[1]?.trim() ?? "Selected Work"}
+            </span>
+            <span className="mt-1 text-sm font-semibold text-black/70 dark:text-white/75">
+              {p.eyebrow?.split("/")[0]?.trim()}
+            </span>
           </div>
         )}
       </div>
-      <div className="px-1">
-        <h3 className="text-lg font-semibold text-black dark:text-white">{p.title}</h3>
-        <p className="mt-1 text-sm text-black dark:text-white/80">{p.desc}</p>
+      <div className="flex flex-1 flex-col px-1">
+        {p.eyebrow && <p className="mb-2 text-xs font-medium text-black/55 dark:text-white/55">{p.eyebrow}</p>}
+        <h3 className="text-lg font-semibold leading-snug text-black dark:text-white">{p.title}</h3>
+        {p.signal && <p className="mt-3 text-sm font-semibold text-primary-700 dark:text-primary-300">{p.signal}</p>}
+        <p className="mt-3 line-clamp-3 text-sm leading-6 text-black/75 dark:text-white/75">{p.desc}</p>
+        {p.stack && (
+          <div className="mt-auto flex flex-wrap gap-1.5 pt-5">
+            {p.stack.map((stack) => (
+              <span
+                key={stack}
+                className="rounded-full border border-black/10 px-2.5 py-1 text-[11px] text-black/70 dark:border-white/15 dark:text-white/70">
+                {stack}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
-    </div>
+    </article>
   );
 
   return (
     <>
-      {/* 카드 3개 자리 — 이후 map으로 대체 */}
       <motion.div
         variants={container}
         initial="hidden"
@@ -73,7 +93,7 @@ export default function ProjectCards({ projects }: Props) {
                 <Link
                   href={p.path}
                   className="block rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900"
-                  aria-label={`${p.title} 프로젝트 전체 보기`}>
+                  aria-label={`${p.title} 상세 보기`}>
                   {renderCard(p)}
                 </Link>
               ) : (

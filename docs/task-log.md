@@ -33,6 +33,41 @@ Next Candidates:
 
 ## Log
 
+## 2026-06-07 - Add Project Detail Deep Links
+
+Role Flow:
+- PM: Confirmed the desired user flow: home project highlights should preserve project-specific intent instead of linking only to the generic Projects page.
+- Planner: Scoped the work to URL-query detail links, existing ProjectPanel reuse, home preview copy/card updates, and documentation.
+- Developer: Connected `project` query state to the Projects detail panel, updated Projects card clicks to write project IDs into the URL, and expanded home highlights to three representative project cards.
+- QA: Verified static checks plus browser flows for home-to-detail, close behavior, internal Projects card clicks, and invalid project IDs.
+
+Summary:
+- Home `Career Highlights` now shows Osstem, Kyobo TalkTalk, and Festivallife representative projects.
+- Home project cards link to `/projects?project={projectId}`.
+- Projects page opens `ProjectPanel` automatically when the `project` query matches an existing project ID.
+- Projects page card clicks update the URL to the selected project deep link.
+- Closing the panel removes the `project` query and returns to `/projects`.
+
+Files:
+- Created: None.
+- Modified: `src/components/sections/ProjectsPreview.tsx`, `src/components/sections/ProjectCards.tsx`, `src/components/projects/ProjectsContainerClient.tsx`, `docs/project-context.md`, `docs/decisions.md`, `docs/task-log.md`.
+- Not touched: Project data, routes, package files, lockfiles, public assets.
+
+Verification:
+- `npx tsc --noEmit`
+- `npm run lint`
+- `npm test -- --runInBand`
+- `npm run build`
+- Browser QA on `http://localhost:3000/`: confirmed three home highlight links and Osstem card opens `/projects?project=osstem-hybrid`.
+- Browser QA on `http://localhost:3000/projects`: confirmed closing detail returns to `/projects`, internal Kyobo card click opens `/projects?project=kyobo-talktalk`, and invalid project ID shows the list without a dialog.
+
+Open Questions:
+- Whether non-Osstem project copy should be refined before expanding detail-panel structure.
+
+Next Candidates:
+- Refine non-Osstem project copy after the separate agent provides updated project data.
+- Consider detail-panel IA improvements only after copy quality is strong enough to support problem, contribution, and result sections.
+
 ## 2026-06-07 - Clean Build Warnings
 
 Role Flow:

@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { motion, Variants } from "framer-motion";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Project } from "@/constants/projects";
 import ProjectCard from "./ProjectCard";
 import ProjectPanel from "./ProjectPanel";
@@ -23,7 +24,7 @@ type Props = {
   projects: Project[];
 };
 
-const featuredProjectIds = ["osstem-hybrid", "festivallife-admin", "kyobo-talktalk", "nh-investment"];
+const featuredProjectIds = ["osstem-hybrid", "kyobo-talktalk", "festivallife-admin", "nh-investment"];
 
 const filters = [
   { id: "all", label: "All" },
@@ -96,14 +97,21 @@ const matchesFilter = (project: Project, filter: FilterId) => {
 };
 
 export default function ProjectsContainerClient({ projects }: Props) {
-  const [modalState, setModalState] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeFilter, setActiveFilter] = useState<FilterId>("all");
   const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const selectedProjectId = searchParams.get("project");
 
   const featuredProjects = useMemo(
     () => featuredProjectIds.map((id) => projects.find((project) => project.id === id)).filter(Boolean) as Project[],
     [projects],
+  );
+
+  const selectedProject = useMemo(
+    () => projects.find((project) => project.id === selectedProjectId) ?? null,
+    [projects, selectedProjectId],
   );
 
   const filteredProjects = useMemo(
@@ -111,16 +119,32 @@ export default function ProjectsContainerClient({ projects }: Props) {
     [activeFilter, projects],
   );
 
-  const onOpen = (p: Project, trigger: HTMLButtonElement) => {
-    triggerRef.current = trigger;
-    setSelectedProject(p);
-    setModalState(true);
-  };
+  const updateProjectQuery = useCallback(
+    (projectId?: string, historyMode: "push" | "replace" = "replace") => {
+      const nextParams = new URLSearchParams(searchParams.toString());
 
-  const onClose = () => {
-    setModalState(false);
+      if (projectId) {
+        nextParams.set("project", projectId);
+      } else {
+        nextParams.delete("project");
+      }
+
+      const nextQuery = nextParams.toString();
+      const nextUrl = nextQuery ? `${pathname}?${nextQuery}` : pathname;
+      router[historyMode](nextUrl, { scroll: false });
+    },
+    [pathname, router, searchParams],
+  );
+
+  const onOpen = useCallback((p: Project, trigger: HTMLButtonElement) => {
+    triggerRef.current = trigger;
+    updateProjectQuery(p.id, "push");
+  }, [updateProjectQuery]);
+
+  const onClose = useCallback(() => {
+    updateProjectQuery();
     window.setTimeout(() => triggerRef.current?.focus(), 0);
-  };
+  }, [updateProjectQuery]);
 
   return (
     <>
@@ -189,7 +213,7 @@ export default function ProjectsContainerClient({ projects }: Props) {
       </section>
 
       <ProjectPanel
-        open={modalState}
+        open={Boolean(selectedProject)}
         project={selectedProject}
         onClose={onClose}
       />

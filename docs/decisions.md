@@ -27,6 +27,31 @@ Follow-up:
 
 ## Decision Log
 
+## 2026-06-07 - Project Detail Deep Links
+
+Status: Accepted
+
+Context:
+- Home Featured project cards previously linked only to `/projects`, which dropped the user's project-specific intent.
+- Projects page cards opened details through local React state only, so specific project details could not be addressed by URL.
+
+Decision:
+- Use `/projects?project={projectId}` as the deep-link format for opening a project detail panel.
+- Keep the existing `ProjectPanel` UI and state-driven card interaction, but synchronize open project state with the URL query.
+- Home project highlight cards should link to the relevant project deep link instead of the generic Projects page.
+
+Rationale:
+- Recruiters can move from a home highlight directly into the relevant evidence without losing context.
+- The Projects page remains the canonical place for details, filters, and the full project set.
+- Reusing the existing panel avoids adding a new modal, drawer, or duplicate home-detail UI.
+
+Impact:
+- Affects home project preview links and Projects page detail-open behavior.
+- Enables direct sharing of project detail URLs.
+
+Follow-up:
+- Consider adding richer project fields later if the detail panel needs stronger problem, contribution, and result sections.
+
 ## 2026-06-07 - Build Warning Configuration Cleanup
 
 Status: Accepted

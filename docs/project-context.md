@@ -59,8 +59,9 @@ Project entries use the `Project` type in `src/constants/projects.ts`:
 ### Current Home Preview
 
 - `src/components/sections/ProjectsPreview.tsx` loads projects through `getProjects()`.
-- The preview currently filters for the `festivallife-admin` project.
-- The preview links to `/projects`.
+- The preview currently highlights `osstem-hybrid`, `kyobo-talktalk`, and `festivallife-admin`.
+- Each preview card links to `/projects?project={projectId}` so the Projects page can open the matching detail panel.
+- The preview also links to `/projects` for the full Projects list.
 
 ### Current Projects Page
 
@@ -69,6 +70,7 @@ Project entries use the `Project` type in `src/constants/projects.ts`:
 - `ProjectsContainerClient` renders a responsive grid of project cards.
 - `ProjectCard` displays period, company, title, summary, category, and part of the stack.
 - Clicking or keyboard-activating a project opens `ProjectPanel`.
+- Project detail open state can also be represented by the `project` query parameter, for example `/projects?project=osstem-hybrid`.
 - `ProjectPanel` displays details including company, title, summary, period, role, category, stack, and highlights.
 - `ProjectPanel` currently behaves as a mobile bottom sheet and a desktop centered dialog-style panel.
 
