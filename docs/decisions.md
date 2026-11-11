@@ -27,6 +27,13 @@ Follow-up:
 
 ## Decision Log
 
+## 2026-11-11 - ver2 로컬 전용 개발과 운영 버전 분리
+
+Status: Accepted (사용자 지시)
+
+- 새 포트폴리오 작업 브랜치는 `ver2`로 명명하고 로컬에서만 확인한다. 사용자 배포 승인 전 원격 push·main 병합·Vercel 프리뷰/운영 배포를 하지 않는다.
+- 공개 주소는 `https://paris.me.kr`. 확인 당시 Vercel에서 이전 디자인을 제공하며 등록된 Vercel 주소와 정적 자산이 일치했다. 새 디자인 커밋은 원격에 없으므로 운영 롤백은 수행하지 않았다.
+
 ## 2026-11-11 - Projects 디자인 기준 확정
 
 Status: Accepted (사용자 확정·커밋 요청)
