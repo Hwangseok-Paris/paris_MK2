@@ -1,33 +1,21 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
-import { motion, Variants } from "framer-motion";
+import { useCallback, useId, useMemo, useRef, useState } from "react";
+import { LayoutGroup } from "framer-motion";
+import Link from "next/link";
+import { ArrowUpLeft, ArrowUpRight } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import type { Project } from "@/constants/projects";
+import { featuredProjectIds, type Project } from "@/constants/projects";
 import ProjectCard from "./ProjectCard";
 import ProjectPanel from "./ProjectPanel";
-
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08, delayChildren: 0.05 },
-  },
-};
-
-const item: Variants = {
-  hidden: { opacity: 0, y: 12 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
-};
+import { sortProjectsByDate } from "@/lib/project-sort";
 
 type Props = {
   projects: Project[];
 };
 
-const featuredProjectIds = ["osstem-hybrid", "kyobo-talktalk", "festivallife-admin", "nh-investment"];
-
 const filters = [
-  { id: "all", label: "All" },
+  { id: "all", label: "전체" },
   { id: "featured", label: "대표" },
   { id: "ownership", label: "리딩·단독" },
   { id: "realtime", label: "실시간 상담" },
@@ -37,6 +25,7 @@ const filters = [
 ] as const;
 
 type FilterId = (typeof filters)[number]["id"];
+type SortOrder = "featured" | "newest" | "oldest";
 
 const projectText = (project: Project) =>
   [
@@ -54,7 +43,9 @@ const projectText = (project: Project) =>
 
 const matchesFilter = (project: Project, filter: FilterId) => {
   const text = projectText(project);
-  const hasAiToken = /(^|[^a-z])ai([^a-z]|$)/.test(text);
+  // 개발 과정의 AI 활용은 AI 서비스 분류와 구분합니다.
+  const aiText = [project.title, project.category, ...project.stack].join(" ").toLowerCase();
+  const hasAiToken = /(^|[^a-z])ai([^a-z]|$)/.test(aiText);
 
   switch (filter) {
     case "featured":
@@ -98,16 +89,15 @@ const matchesFilter = (project: Project, filter: FilterId) => {
 
 export default function ProjectsContainerClient({ projects }: Props) {
   const [activeFilter, setActiveFilter] = useState<FilterId>("all");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
+  const [hoveredProject, setHoveredProject] = useState<string | null>(null);
+  const [focusedProject, setFocusedProject] = useState<string | null>(null);
+  const highlightGroup = useId();
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const selectedProjectId = searchParams.get("project");
-
-  const featuredProjects = useMemo(
-    () => featuredProjectIds.map((id) => projects.find((project) => project.id === id)).filter(Boolean) as Project[],
-    [projects],
-  );
 
   const selectedProject = useMemo(
     () => projects.find((project) => project.id === selectedProjectId) ?? null,
@@ -137,86 +127,66 @@ export default function ProjectsContainerClient({ projects }: Props) {
   );
 
   const onOpen = useCallback((p: Project, trigger: HTMLButtonElement) => {
+    setHoveredProject(null);
     triggerRef.current = trigger;
     updateProjectQuery(p.id, "push");
   }, [updateProjectQuery]);
 
   const onClose = useCallback(() => {
     updateProjectQuery();
-    window.setTimeout(() => triggerRef.current?.focus(), 0);
   }, [updateProjectQuery]);
+
+  const primary = featuredProjectIds
+    .map((id) => filteredProjects.find((project) => project.id === id))
+    .filter((project): project is Project => Boolean(project));
+  const others = filteredProjects.filter((project) => !featuredProjectIds.includes(project.id));
+  const groups = sortOrder === "featured" ? [
+    { title: "대표 프로젝트", items: primary, offset: 0 },
+    { title: "프로젝트 기록", items: others, offset: primary.length },
+  ] : [{ title: "프로젝트", items: sortProjectsByDate(filteredProjects, sortOrder), offset: 0 }];
 
   return (
     <>
-      <section className="mb-12">
-        <div className="mb-4 flex items-end justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-semibold tracking-tight">Featured Projects</h2>
-            <p className="mt-1 text-sm opacity-70">책임 범위와 성장 방향을 가장 잘 보여주는 대표 프로젝트입니다.</p>
-          </div>
-          <span className="hidden text-xs opacity-60 md:inline">{featuredProjects.length} selected</span>
-        </div>
-
-        <motion.div
-          variants={container}
-          initial="hidden"
-          animate="show"
-          className="grid gap-5 md:grid-cols-2">
-          {featuredProjects.map((p) => (
-            <motion.div key={p.id} variants={item}>
-              <ProjectCard project={p} onOpen={onOpen} emphasis />
-            </motion.div>
+      <div className="project-controls">
+        <nav className="filters" aria-label="프로젝트 필터">
+          {filters.map((filter) => (
+            <button key={filter.id} type="button" aria-pressed={activeFilter === filter.id} onClick={() => { setHoveredProject(null); setActiveFilter(filter.id); }}>
+              {filter.label}
+            </button>
           ))}
-        </motion.div>
-      </section>
-
-      <section>
-        <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h2 className="text-xl font-semibold tracking-tight">All Projects</h2>
-            <p className="mt-1 text-sm opacity-70">역할, 도메인, 기술 확장성을 기준으로 프로젝트를 살펴볼 수 있습니다.</p>
-          </div>
-          <div className="flex flex-wrap gap-2" aria-label="프로젝트 필터">
-            {filters.map((filter) => {
-              const selected = activeFilter === filter.id;
-
-              return (
-                <button
-                  key={filter.id}
-                  type="button"
-                  aria-pressed={selected}
-                  onClick={() => setActiveFilter(filter.id)}
-                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
-                    selected
-                      ? "border-primary-500 bg-primary-500 text-white"
-                      : "border-black/10 bg-black/[0.03] text-black/70 hover:border-primary-500/60 dark:border-white/15 dark:bg-white/[0.06] dark:text-white/75"
-                  }`}>
-                  {filter.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <motion.div
-          key={activeFilter}
-          variants={container}
-          initial="hidden"
-          animate="show"
-          className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredProjects.map((p) => (
-            <motion.div key={p.id} variants={item}>
-              <ProjectCard project={p} onOpen={onOpen} />
-            </motion.div>
+        </nav>
+        <label className="project-sort">
+          <span className="sr-only">프로젝트 시작일 기준 정렬</span>
+          <select value={sortOrder} onChange={event => { setHoveredProject(null); setSortOrder(event.target.value as SortOrder); }}>
+            <option value="newest">최신순</option>
+            <option value="oldest">오래된순</option>
+            <option value="featured">대표순</option>
+          </select>
+        </label>
+      </div>
+      <p className="sr-only" aria-live="polite">
+        {filteredProjects.length}개 프로젝트 · {sortOrder === "featured" ? "대표순" : sortOrder === "newest" ? "시작일 최신순" : "시작일 오래된순"}
+      </p>
+      <LayoutGroup id={highlightGroup}>
+        <div className="project-list" onPointerLeave={() => setHoveredProject(null)} onBlurCapture={event => {
+          if (!(event.relatedTarget instanceof Element) || !event.relatedTarget.closest(".row-trigger")) setFocusedProject(null);
+        }}>
+          {groups.map(({ title, items, offset }) => items.length > 0 && (
+            <section key={title} aria-label={title}>
+              <div className="group-heading"><h2>{title}</h2><span>{String(items.length).padStart(2, "0")}</span></div>
+              {items.map((project, index) => <ProjectCard key={project.id} project={project} index={offset + index} onOpen={onOpen}
+                highlighted={!selectedProject && (hoveredProject ?? focusedProject) === project.id}
+                onHover={setHoveredProject} onKeyboardFocus={id => { setHoveredProject(null); setFocusedProject(id); }} />)}
+            </section>
           ))}
-        </motion.div>
-      </section>
-
-      <ProjectPanel
-        open={Boolean(selectedProject)}
-        project={selectedProject}
-        onClose={onClose}
-      />
+        </div>
+      </LayoutGroup>
+      {filteredProjects.length === 0 && <p className="empty">해당하는 프로젝트가 없습니다.</p>}
+      <div className="page-footer">
+        <Link href="/">홈으로<ArrowUpLeft aria-hidden="true" /></Link>
+        <Link href="/contact">연락하기<ArrowUpRight aria-hidden="true" /></Link>
+      </div>
+      <ProjectPanel open={Boolean(selectedProject)} project={selectedProject} onClose={onClose} returnFocusRef={triggerRef} />
     </>
   );
 }

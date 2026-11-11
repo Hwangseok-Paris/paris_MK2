@@ -1,0 +1,80 @@
+/* Approved About split layout and centered Contact. */
+body:has(.folio-profile-page) { display: flex; flex-direction: column; min-height: 100dvh; }
+body:has(.folio-profile-page) > main { display: flex; flex-direction: column; flex: 1; }
+.folio-profile .viewport { container: profile / inline-size; width: 100%; max-width: 1480px; margin-inline: auto; }
+.folio-profile .site {
+  --paper: light-dark(#f5f4ef, #17191b);
+  --ink: light-dark(#22282d, #eeede7);
+  --muted: light-dark(#62686c, #aeb3b6);
+  --rule: light-dark(#c9ccc7, #44484b);
+  --tint: light-dark(#e6eaf0, #232b37);
+  --accent: light-dark(#3156a3, #b0c1ee);
+  background: var(--paper); color: var(--ink); padding-inline: 44px;
+  font: 400 17px/1.9 -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+  letter-spacing: -.025em;
+}
+.folio-profile .site * { box-sizing: border-box; min-width: 0; }
+.folio-profile .site :is(h1, h2, p, dl, dd) { margin: 0; }
+.folio-profile .site a { color: inherit; text-decoration: none; }
+.folio-profile .site a:hover { text-decoration: underline; text-underline-offset: 5px; }
+.folio-profile .site button { font: inherit; color: inherit; border: 0; background: none; padding: 0; }
+.folio-profile .site svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+
+
+
+
+
+.folio-profile-page, .folio-profile-page > .viewport, .folio-profile-page .site { display: flex; flex-direction: column; flex: 1; }
+.folio-profile .about-layout { padding-top: 35px; display: grid; grid-template-columns: .95fr 1.05fr; gap: 56px; margin-bottom: 35px; }
+.folio-profile .identity { padding: 6px 0 25px; }
+.folio-profile .identity h2 { font-size: 19px; font-weight: 500; line-height: 1.6; }
+.folio-profile .identity p { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.folio-profile .intro-copy { max-width: 41em; }
+.folio-profile .intro-copy p { font-size: 17px; font-weight: 400; line-height: 1.95; word-break: keep-all; }
+.folio-profile .intro-copy p + p { margin-top: 18px; }
+.folio-profile .tech-section { background: var(--tint); padding: 24px 28px; }
+.folio-profile .tech-section h2 { font-size: 22px; font-weight: 500; margin-bottom: 18px; }
+.folio-profile .tech-item { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 20px; border-top: 1px solid var(--rule); padding: 16px 0; }
+.folio-profile .tech-item dt { font-size: 12px; color: var(--muted); padding-top: 3px; }
+.folio-profile .tech-item dd { font-size: 16px; line-height: 1.8; word-break: keep-all; }
+.folio-profile .tech-item small { display: block; font-size: 12px; color: var(--muted); line-height: 1.9; margin-top: 7px; }
+.folio-profile .page-end { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 4px 0 24px; }
+.folio-profile .page-end a { display: flex; gap: 16px; align-items: center; min-height: 44px; font-size: 13px; }
+.folio-profile.folio-shell-footer .site { padding-block: 0; }
+.folio-profile .copyright { padding: 22px 0 26px; align-items: center; }
+.folio-contact .contact-content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 60px 0; text-align: center; }
+.folio-contact h1 { font-size: 24px; font-weight: 500; line-height: 1.5; letter-spacing: -.035em; }
+.folio-contact .contact-details { position: relative; max-width: calc(100% - 44px); }
+.folio-contact .email { display: flex; align-items: center; min-height: 44px; font-size: 18px; line-height: 1.65; }
+.folio-contact .site .email:hover { color: var(--accent); }
+.folio-contact .site .copy { position: absolute; left: 100%; top: 50%; transform: translateY(-50%); display: grid; place-items: center; width: 44px; height: 44px; color: var(--muted); }
+.folio-contact .site .copy:hover { color: var(--ink); }
+.folio-contact .site .copy svg { width: 16px; height: 16px; }
+.folio-contact .copy-error { position: absolute; top: calc(100% + 12px); left: 50%; transform: translateX(-50%); width: 100%; font-size: 12px; line-height: 1.6; color: var(--muted); word-break: keep-all; }
+@container profile (max-width: 1100px) {
+  .folio-profile .site { padding-inline: 28px; }
+  .folio-profile .about-layout { grid-template-columns: .9fr 1.1fr; gap: 32px; }
+  .folio-profile .tech-item { grid-template-columns: 1fr; gap: 7px; }
+}
+@container profile (max-width: 760px) {
+  .folio-profile .site { padding-inline: 20px; }
+
+
+
+
+  .folio-profile .about-layout { padding-top: 28px; grid-template-columns: 1fr; gap: 28px; margin-bottom: 24px; }
+  .folio-profile .identity { padding: 0 0 21px; }
+  .folio-profile .identity h2 { font-size: 17px; }
+  .folio-profile .identity p { font-size: 12px; }
+  .folio-profile .intro-copy p { font-size: 16px; line-height: 1.9; }
+  .folio-profile .intro-copy p + p { margin-top: 16px; }
+  .folio-profile .tech-section { padding: 24px 20px; margin-inline: -20px; }
+  .folio-profile .tech-section h2 { font-size: 21px; }
+  .folio-profile .page-end { padding: 0 0 19px; }
+  .folio-profile .page-end a { font-size: 12px; }
+  .folio-profile .copyright { padding: 19px 0 22px; font-size: 11px; }
+  .folio-contact .contact-content { gap: 14px; padding: 48px 0; }
+  .folio-contact h1 { font-size: 22px; }
+  .folio-contact .email { font-size: 17px; }
+}

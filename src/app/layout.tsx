@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" className="dark">
       <body
         className={`${geistSans.variable} min-h-screen bg-white text-gray-900 antialiased transition-colors duration-700 ease-in-out dark:bg-gray-900 dark:text-gray-200`}>
         <ThemeProvider>

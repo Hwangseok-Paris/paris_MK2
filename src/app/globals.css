@@ -1,5 +1,8 @@
 @config "../../tailwind.config.mjs";
 @import "tailwindcss";
+@import "./folio.css";
+@import "./profile.css";
+@import "./header.css";
 
 html {
   scrollbar-gutter: stable;

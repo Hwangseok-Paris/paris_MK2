@@ -1,48 +1,21 @@
-"use client";
-
-import Image from "next/image";
-import { useThemeContext } from "@/context/ThemeContext";
-import { useMemo } from "react";
-
-const stacks = [
-  { name: "Vue 3", icon: "/icons/vuedotjs.svg" },
-  { name: "React", icon: "/icons/react.svg" },
-  { name: "TypeScript", icon: "/icons/typescript.svg" },
-  { name: "JavaScript", icon: "/icons/javascript.svg" },
-  { name: "Pinia", icon: "/icons/pinia.svg" },
-  { name: "Tailwind", icon: "/icons/tailwindcss.svg" },
-  { name: "React Query", icon: "/icons/reactquery.svg" },
-  { name: "Next.js", icon: "/icons/nextdotjs.svg" },
-  { name: "AWS", icon: "/icons/amazonwebservices.svg" },
-  { name: "Docker", icon: "/icons/docker.svg" },
-  { name: "Git", icon: "/icons/git.svg" },
-  { name: "Android", icon: "/icons/android.svg" },
-];
-
 export default function Stacks() {
-  const { mode } = useThemeContext();
-
-  useMemo(() => {
-    stacks.map((s) => {
-      if (s.name === "Next.js") {
-        s.icon = mode === "dark" ? "/icons/nextdotjs_dark.svg" : "/icons/nextdotjs_light.svg";
-      }
-    });
-  }, [mode]);
-
   return (
-    <div>
-      <h2 className="text-xl md:text-2xl font-semibold">Stack Snapshot</h2>
-      <div className="mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
-        {stacks.map((s) => (
-          <div
-            key={s.name}
-            className="group rounded-2xl border border-gray-200 dark:border-gray-800 p-4 bg-white/60 dark:bg-gray-800/60 backdrop-blur flex flex-col items-center gap-2 hover:translate-y-[-2px] transition-transform">
-            <Image src={s.icon} alt={s.name} width={28} height={28} />
-            <span className="text-xs text-gray-700 dark:text-gray-300">{s.name}</span>
-          </div>
-        ))}
-      </div>
-    </div>
+    <section className="tech-section" aria-labelledby="tech-heading">
+      <h2 id="tech-heading">사용 기술</h2>
+      <dl className="tech-grid">
+        <div className="tech-item">
+          <dt>언어</dt>
+          <dd>TypeScript · JavaScript<br />Kotlin · Swift<small>Kotlin·Swift는 오스템 앱 개발에 사용</small></dd>
+        </div>
+        <div className="tech-item"><dt>프레임워크·라이브러리</dt><dd>React · Vue 3 · Next.js</dd></div>
+        <div className="tech-item"><dt>상태 관리·데이터 조회</dt><dd>Pinia · Zustand<br />React Query</dd></div>
+        <div className="tech-item"><dt>CSS 프레임워크</dt><dd>Tailwind CSS</dd></div>
+        <div className="tech-item"><dt>버전 관리</dt><dd>Git · GitLab · SVN</dd></div>
+        <div className="tech-item">
+          <dt>개발·배포 환경</dt>
+          <dd>GCP · AWS · Docker<small>GCP — 삼성전자 CIA<br />AWS·Docker — Festival Life</small></dd>
+        </div>
+      </dl>
+    </section>
   );
 }
