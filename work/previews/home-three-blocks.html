@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css">
+<style>
+#split-home{--paper:light-dark(#f5f4ef,#17191b);--ink:light-dark(#22282d,#eeede7);--quiet:light-dark(#62686c,#aeb3b6);--accent:light-dark(#b93828,#ed8773);container:split / inline-size;background:var(--paper);color:var(--ink);font-family:Pretendard,sans-serif;letter-spacing:-.015em;width:100%}
+#split-home *{box-sizing:border-box;min-width:0}
+#split-home .layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:8%;padding:100px 6% 72px;align-items:center;min-height:640px}
+#split-home :is(h1,h2,p){margin:0}
+#split-home h1{font:600 clamp(30px,4.8cqw,52px)/1.12 'Chakra Petch',sans-serif;letter-spacing:-.035em}
+#split-home .job{font:600 18px/1.4 'Chakra Petch',sans-serif;margin-top:10px;color:var(--quiet)}
+#split-home .bio{font-size:16px;line-height:1.8;word-break:keep-all;overflow-wrap:break-word;margin-top:28px;max-width:480px}
+#split-home .featured{margin-top:38px}
+#split-home h2{font-size:12px;font-weight:400;color:var(--quiet);margin-bottom:12px}
+#split-home .work{display:flex;flex-direction:column;align-items:flex-start;gap:0}
+#split-home button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;text-align:left;padding:0}
+#split-home .work button{font-size:14px;line-height:1.7;min-height:34px}
+#split-home .email{display:inline-flex;align-items:center;gap:8px;color:var(--quiet);font-size:12px;min-height:44px;margin-top:30px;overflow-wrap:anywhere;text-decoration:none}
+#split-home .menu{display:flex;flex-direction:column;gap:18px;align-self:center}
+#split-home .menu button{display:flex;align-items:center;justify-content:space-between;gap:12px;font:500 clamp(32px,5.6cqw,62px)/1.3 'Chakra Petch',sans-serif;letter-spacing:-.04em;min-height:70px;transition:color .25s,transform .25s}
+#split-home .menu .arrow{font-family:Pretendard,sans-serif;font-size:26px;opacity:0;transform:translateX(-10px);transition:opacity .25s,transform .25s}
+#split-home :is(h1,.job,.featured,.email){transition:color .25s,transform .25s}
+#split-home[data-active="about"] :is(h1,.job),#split-home[data-active="projects"] .featured,#split-home[data-active="contact"] .email{color:var(--accent)}
+#split-home[data-active="projects"] .featured{transform:translateX(5px)}
+#split-home[data-active="contact"] .email{text-decoration:underline;text-underline-offset:6px}
+#split-home .menu button.is-active{color:var(--accent);transform:translateX(8px)}
+#split-home .menu button.is-active .arrow{opacity:1;transform:translateX(0)}
+#split-home :is(button,a):focus-visible{outline:2px solid currentColor;outline-offset:6px}
+#split-home .work button:hover{text-decoration:underline;text-underline-offset:4px}
+@container split (max-width:650px){#split-home .layout{grid-template-columns:1fr;gap:42px;padding:64px 24px 40px;min-height:0}#split-home h1{font-size:clamp(30px,8cqw,44px)}#split-home .bio{font-size:15px}#split-home .job{font-size:16px}#split-home .menu{gap:4px}#split-home .menu button{font-size:36px;min-height:62px}#split-home .menu .arrow{opacity:1;transform:none;font-size:22px}#split-home .work button{min-height:44px}}
+@media(prefers-reduced-motion:reduce){#split-home *,#split-home .menu .arrow{transition:none!important;transform:none!important}}
+</style>
+<style>
+#split-home .layout{padding:0;gap:0;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);align-items:stretch;min-height:690px}
+#split-home .left{padding:90px 10% 70px;align-self:center}
+#split-home .menu{gap:0;align-self:stretch;display:grid;grid-template-rows:repeat(3,minmax(0,1fr))}
+#split-home .menu button{border-radius:0;width:100%;height:100%;min-height:0;padding:38px 12%;font-size:clamp(30px,4.7cqw,52px);background:light-dark(#eae9e3,#222629);transition:background .35s,color .35s}
+#split-home .menu button:nth-child(2){background:light-dark(#dedfd8,#2d3336)}
+#split-home .menu button:nth-child(3){background:light-dark(#d2d5ce,#384044)}
+#split-home .menu .arrow{opacity:.5;transform:none;font-size:24px}
+#split-home .menu button.is-active{transform:none;background:var(--active-block);color:var(--active-ink)}
+#split-home .menu button.is-active .arrow{opacity:1;transform:translate(5px,-5px)}
+#split-home{transition:background .4s,color .4s}
+#split-home[data-active="about"]{--paper:light-dark(#e4e8e0,#222d28);--ink:light-dark(#263e32,#e2efdf);--quiet:light-dark(#4b6253,#b7cbbd);--active-block:light-dark(#b8cbb0,#aec69e);--active-ink:#203025;--accent:var(--ink)}
+#split-home[data-active="projects"]{--paper:light-dark(#e0e6ed,#202b3b);--ink:light-dark(#233c59,#e0e9f7);--quiet:light-dark(#4d617b,#b7c8e0);--active-block:light-dark(#abc3e3,#aac4ea);--active-ink:#233b59;--accent:var(--ink)}
+#split-home[data-active="contact"]{--paper:light-dark(#eee0d6,#342823);--ink:light-dark(#643d2b,#f5e4d8);--quiet:light-dark(#7a5947,#d8beae);--active-block:light-dark(#e7bba2,#e6b297);--active-ink:#4d3022;--accent:var(--ink)}
+#split-home[data-active="projects"] .featured{transform:none}
+#split-home[data-active="contact"] .email{text-decoration:none}
+#split-home .left{transition:color .4s}
+#split-home .menu button span:first-child{transition:transform .3s}
+#split-home .menu button.is-active span:first-child{transform:translateX(8px)}
+@container split (max-width:650px){#split-home .layout{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);min-height:660px}#split-home .left{padding:44px 16px}#split-home h1{font-size:clamp(24px,5.6cqw,36px);overflow-wrap:anywhere}#split-home .job{font-size:14px}#split-home .bio{font-size:14px;line-height:1.8}#split-home .menu button{font-size:clamp(18px,4.4cqw,30px);padding:22px 12%;flex-wrap:wrap;align-content:center;gap:12px}#split-home .menu .arrow{font-size:20px}#split-home .email{font-size:11px;word-break:break-all}#split-home .featured{margin-top:28px}#split-home .work button{font-size:12px}}
+</style>
+<div id="split-home" aria-label="소개와 우측 세로 메뉴 홈 시안">
+<div class="layout">
+<div class="left">
+<section aria-labelledby="split-name"><h1 id="split-name">Hwangseok Kim</h1><p class="job">Frontend Developer</p><p class="bio">상담 서비스와 데이터 분석·검수 도구의 화면 구조와 기능을 설계하고 개발해 왔습니다. 직접 개발하면서 기획·디자인·백엔드와 구현 방향을 협의하고, 프로젝트에 따라 개발팀을 이끌며 업무와 기술 방향을 조율했습니다.</p></section>
+<section class="featured" aria-labelledby="split-featured"><h2 id="split-featured">Featured</h2><div class="work"><button type="button" data-area="projects">삼성전자 Content Intelligence AI</button><button type="button" data-area="projects">오스템 모바일 앱 프레임워크</button><button type="button" data-area="projects">NH투자증권 챗봇</button></div></section>
+<a class="email" href="mailto:hwangseokparis@gmail.com">hwangseokparis@gmail.com <span aria-hidden="true">↗</span></a>
+</div>
+<nav class="menu" aria-label="페이지 메뉴 시안"><button type="button" data-area="about"><span>About</span><span class="arrow" aria-hidden="true">↗</span></button><button type="button" data-area="projects"><span>Projects</span><span class="arrow" aria-hidden="true">↗</span></button><button type="button" data-area="contact"><span>Contact</span><span class="arrow" aria-hidden="true">↗</span></button></nav>
+</div></div>
+<script>
+(()=>{const root=document.getElementById('split-home');const menu=[...root.querySelectorAll('.menu button')];function activate(area){root.dataset.active=area;menu.forEach(b=>b.classList.toggle('is-active',b.dataset.area===area))}menu.forEach(b=>{b.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch')activate(b.dataset.area)});b.addEventListener('pointerleave',()=>activate(''));b.addEventListener('focus',()=>activate(b.dataset.area));b.addEventListener('blur',()=>activate(''));b.addEventListener('click',()=>activate(b.dataset.area))});if(globalThis.Tweak){const state={effect:''};const t=new Tweak({container:root,onChange:()=>activate(state.effect)});t.addSelect(state,'effect',{label:'Hover 미리보기',options:[{label:'기본',value:''},{label:'About',value:'about'},{label:'Projects',value:'projects'},{label:'Contact',value:'contact'}]})}})();
+</script>

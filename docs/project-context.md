@@ -26,12 +26,12 @@ This repository is a personal portfolio for Paris, a frontend developer. It pres
 ## Current UX Structure
 
 - Root layout wraps all pages with `Header`, `Footer`, and `ThemeProvider`.
-- Home uses the approved type-index layout: short `Hero`, `ProjectsPreview` (three selected projects), full-list link, then the approved About introduction. Technology names appear within each project; the old SkillSet logo grid and animated background are not mounted on Home.
+- Home uses a full-height 1.8:1 desktop split: introduction/Featured on the left, equal-height About/Projects/Contact links on the right. Below 650px, navigation becomes a fixed three-column bottom bar with safe-area and content clearance and the introduction spans the full width. Mobile and hover-unavailable devices use static navigation without color effects. No home header/footer. Neutral default; only the active right block fills (380ms), with the left sweep starting at 260ms and lasting 600ms to overlap the eased tail. HomeNavigation also supports radial. Previous color layers remain until covered; reduced-motion switches immediately. Existing copy and Chakra Petch/Pretendard are retained. Dark is the default; theme toggle controls are removed from home and the shared header. Home styling uses component Tailwind utilities; personal-home.css contains only the two clip-path keyframes.
 - About uses the approved split layout under `src/app/(pages)/about`: confirmed introduction on the left and six technology groups on the right, stacked on mobile. Repeated project highlights and the old animated technology cards are no longer mounted.
 - Projects page exists under `src/app/(pages)/projects`.
 - Contact under `src/app/(pages)/contact` fills the available viewport between the header and footer. The small Contact heading and email text are centered; the copy icon sits outside the email's centering width. Only `hwangseokparis@gmail.com` is exposed as a contact method. Copy success is announced only after the Clipboard API resolves; failure selects the address and shows manual-copy guidance.
 - Theme behavior is managed through `ThemeProvider` and `ThemeToggle`. Both server-rendered HTML and the provider start in dark mode. Manual toggling remains available and persists during client navigation; a fresh load starts dark (no stored preference policy).
-- `src/app/folio.css` scopes home/Projects; `src/app/profile.css` scopes About/Contact. A single Header and `src/app/header.css` serve every route. Its left label is Paris on Home and Projects/About/Contact on other routes (24px desktop, 22px mobile). Always-visible 홈/작업/소개/연락 links use `/`, `/projects`, `/about`, `/contact` and `aria-current`. About/Projects have their h1 in this header instead of repeated body titles; Contact retains its centered body heading. Contact has no footer social links. The root layout supplies the single main landmark.
+- `src/app/folio.css` scopes home/Projects; `src/app/profile.css` scopes About/Contact. A shared Header and `src/app/header.css` serve non-home routes, with Projects/About/Contact labels (24px desktop, 22px mobile). Always-visible 홈/작업/소개/연락 links use `/`, `/projects`, `/about`, `/contact` and `aria-current`. About/Projects have their h1 in this header instead of repeated body titles; Contact retains its centered body heading. Contact has no footer social links. The root layout supplies the single main landmark.
 - `src/constants/project-presentation.ts` holds display titles, requested company names, and project introductions separately from career/contribution data. Unknown IDs fall back to source title/company/summary. Content Intelligence AI is spelled out; its company is SAMSUNG ELECTRONICS, and the Osstem project uses OSSTEM IMPLANT. Samsung Securities remains separate.
 
 ## Projects Section 기준
@@ -63,7 +63,7 @@ Project entries use the `Project` type in `src/constants/projects.ts`:
 
 - `src/components/sections/ProjectsPreview.tsx` loads projects through `getProjects()`.
 - The preview highlights `samsung-cia`, `osstem-hybrid`, and `nh-investment`, in that order.
-- Approved home summaries/roles are mapped separately in `ProjectsPreview`; `Project.summary` contains the approved detail introduction.
+- Home shows only the three approved project titles; detailed roles, summaries and technologies remain in Projects. `Project.summary` contains the approved detail introduction.
 - Each preview detail link points to `/projects?project={projectId}` so the Projects page can open the matching detail panel.
 - The preview also links to `/projects` for the full Projects list.
 

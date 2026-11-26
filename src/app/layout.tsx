@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
+import "./personal-home.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "../context/ThemeContext";
@@ -9,6 +10,8 @@ const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
+
+export const viewport: Viewport = { viewportFit: "cover" };
 
 export const metadata: Metadata = {
   title: "Paris | Portfolio",

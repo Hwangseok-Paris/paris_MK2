@@ -28,6 +28,7 @@ function LegacyFooter() {
 
 export default function Footer() {
   const pathname = usePathname();
+  if (pathname === "/") return null;
   const profile = pathname === "/about" || pathname === "/contact";
   if (pathname !== "/" && pathname !== "/projects" && !profile) return <LegacyFooter />;
   return (

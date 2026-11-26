@@ -1,0 +1,137 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css">
+<style>
+#block-variants .proposal{--base:light-dark(#f5f4ef,#17191b);--ink:light-dark(#22282d,#eeede7);--quiet:light-dark(#62686c,#b2b6b8);--line:light-dark(#d4d6cf,#3b4041);--tint:light-dark(#e8ece3,#25302b);--solid:light-dark(#bdceb0,#bdceb0);--on:#253424;--accent:light-dark(#45613c,#c0d6b0);container:proposal / inline-size;position:relative;isolation:isolate;background:var(--base);color:var(--ink);font-family:Pretendard,sans-serif;overflow:hidden}
+#block-variants .proposal *{box-sizing:border-box;min-width:0}
+#block-variants .layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);min-height:690px;position:relative}
+#block-variants .left{padding:80px 10%;align-self:center;position:relative;z-index:1}
+#block-variants :is(h1,h2,p){margin:0}
+#block-variants h1{font:600 clamp(30px,4.7cqw,50px)/1.15 'Chakra Petch',sans-serif;letter-spacing:-.035em}
+#block-variants .job{font:600 18px/1.4 'Chakra Petch',sans-serif;color:var(--quiet);margin-top:10px}
+#block-variants .bio{font-size:16px;line-height:1.8;letter-spacing:-.018em;word-break:keep-all;overflow-wrap:break-word;margin-top:28px}
+#block-variants .featured{margin-top:36px}
+#block-variants h2{font-size:12px;font-weight:400;color:var(--quiet);margin-bottom:12px}
+#block-variants .work{list-style:none;padding:0;margin:0;font-size:14px;line-height:2}
+#block-variants .email{display:inline-block;color:var(--quiet);font-size:12px;line-height:1.8;overflow-wrap:anywhere;margin-top:32px;text-decoration:none}
+#block-variants .menu{display:grid;grid-template-rows:repeat(3,minmax(0,1fr));position:relative;z-index:1}
+#block-variants .menu button{appearance:none;background:transparent;color:inherit;border:0;border-radius:0;cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:30px 12%;width:100%;font:500 clamp(28px,4.7cqw,50px)/1.2 'Chakra Petch',sans-serif;letter-spacing:-.035em;position:relative;transition:color .3s,background .35s}
+#block-variants .menu .label{transition:transform .3s}
+#block-variants .arrow{font:400 24px/1 Pretendard,sans-serif;opacity:0;transform:translate(-6px,6px);transition:opacity .3s,transform .3s}
+#block-variants .active .arrow{opacity:1;transform:translate(0,0)}
+#block-variants .active .label{transform:translateX(6px)}
+#block-variants :is(button,a):focus-visible{outline:2px solid currentColor;outline-offset:-6px}
+#block-variants [data-active="projects"]{--tint:light-dark(#e3e9f0,#222e3e);--solid:#adc5e4;--on:#223a58;--accent:light-dark(#345b86,#adc5e4)}
+#block-variants [data-active="contact"]{--tint:light-dark(#efe2d7,#372a24);--solid:#e7b89a;--on:#533421;--accent:light-dark(#8a4a2a,#e7b89a)}
+/* Color wash: no visible block edges until interaction. */
+#block-variants .wash{transition:background .4s}
+#block-variants .wash[data-active]:not([data-active=""]){background:var(--tint)}
+#block-variants .wash .menu button.active{background:var(--solid);color:var(--on)}
+/* Selected right block and the whole left pane change; other blocks retain the base. */
+#block-variants .band .left{align-self:stretch;display:flex;flex-direction:column;justify-content:center;background:var(--base);transition:background .4s}
+#block-variants .band[data-active]:not([data-active=""]) .left{background:var(--tint)}
+#block-variants .band .menu button{background:var(--base)}
+#block-variants .band .menu button+button::before{content:"";position:absolute;left:12%;right:12%;top:0;height:1px;background:var(--line)}
+#block-variants .band .menu button.active{background:var(--solid);color:var(--on)}
+#block-variants .wash .menu button:not(.active){background:var(--base)}
+/* Expanding plane: selected block spreads left, with the whole page changing tone. */
+#block-variants .plane::before{content:"";position:absolute;inset:0;background:var(--solid);clip-path:inset(var(--clip,0 0 66.666667% 60%));opacity:0;transition:clip-path .5s cubic-bezier(.22,.7,.3,1),background .3s,opacity .2s;pointer-events:none}
+#block-variants .plane[data-active]:not([data-active=""])::before{opacity:1;clip-path:inset(0)}
+#block-variants .plane[data-active]:not([data-active=""]){color:var(--on);--quiet:var(--on)}
+#block-variants .plane .menu button.active{background:light-dark(#ffffff22,#ffffff22)}
+#block-variants .plane .menu button.active .label{transform:translateX(10px)}
+@container proposal (max-width:650px){#block-variants .layout{min-height:740px;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}#block-variants .left{padding:44px 16px}#block-variants h1{font-size:clamp(24px,5.8cqw,36px)}#block-variants .job{font-size:14px}#block-variants .bio{font-size:15px;line-height:1.8;margin-top:22px}#block-variants .menu button{font-size:clamp(18px,4.4cqw,30px);padding:20px 10%;flex-wrap:wrap;align-content:center}#block-variants .arrow{font-size:20px}#block-variants .work{font-size:12px;line-height:1.9}#block-variants .email{font-size:11px;word-break:break-all}}
+@media(prefers-reduced-motion:reduce){#block-variants *,#block-variants *::before{transition:none!important}#block-variants .label,#block-variants .arrow{transform:none!important}}
+
+/* Color spreads from the active menu edge across the left pane. */
+#block-variants .wash,#block-variants .band{--motion-tint:light-dark(#dce9d1,#29432f);--solid:#b9df91;--on:#20341b}
+#block-variants :is(.wash,.band)[data-active="projects"]{--motion-tint:light-dark(#d8e6fa,#253d62);--solid:#8ebcfa;--on:#183356}
+#block-variants :is(.wash,.band)[data-active="contact"]{--motion-tint:light-dark(#f5ddce,#57362b);--solid:#f2a57f;--on:#4d2a1a}
+#block-variants .wash[data-active]:not([data-active=""]){background:var(--base)}
+#block-variants :is(.wash,.band) .left{position:relative;isolation:isolate;align-self:stretch;display:flex;flex-direction:column;justify-content:center;background:var(--base)}
+#block-variants .band[data-active]:not([data-active=""]) .left{background:var(--base)}
+#block-variants :is(.wash,.band) .left::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--motion-tint);clip-path:circle(0% at 100% var(--origin-y,50%));transition:clip-path .65s cubic-bezier(.2,.75,.25,1),background .45s;pointer-events:none}
+#block-variants :is(.wash,.band)[data-active]:not([data-active=""]) .left::before{clip-path:circle(150% at 100% var(--origin-y,50%))}
+#block-variants :is(.wash,.band) .menu button{isolation:isolate;overflow:hidden;background:var(--base);transition:color .25s}
+#block-variants :is(.wash,.band) .menu button::after{content:"";position:absolute;inset:0;background:var(--solid);z-index:-1;transform:scaleX(0);transform-origin:right center;transition:transform .38s cubic-bezier(.2,.75,.25,1),background .3s}
+#block-variants :is(.wash,.band) .menu button.active{background:var(--base);color:var(--on)}
+#block-variants :is(.wash,.band) .menu button.active::after{transform:scaleX(1)}
+#block-variants .band .left::before{clip-path:inset(0 0 0 100%);transition:clip-path .55s cubic-bezier(.2,.75,.25,1),background .4s}
+#block-variants .band[data-active]:not([data-active=""]) .left::before{clip-path:inset(0)}
+@media(prefers-reduced-motion:reduce){#block-variants *::after{transition:none!important}}
+</style>
+<div id="block-variants" class="viz-carousel" aria-label="홈 화면 세 가지 시안" data-previous-label="이전" data-next-label="다음">
+<section data-variant="컬러 워시">
+<div class="proposal wash" id="proposal-wash" aria-label="컬러 워시 홈">
+<div class="layout"><div class="left">
+<h1>Hwangseok Kim</h1><p class="job">Frontend Developer</p>
+<p class="bio">상담 서비스와 데이터 분석·검수 도구의 화면 구조와 기능을 설계하고 개발해 왔습니다. 직접 개발하면서 기획·디자인·백엔드와 구현 방향을 협의하고, 프로젝트에 따라 개발팀을 이끌며 업무와 기술 방향을 조율했습니다.</p>
+<section class="featured"><h2>Featured</h2><ul class="work"><li>삼성전자 Content Intelligence AI</li><li>오스템 모바일 앱 프레임워크</li><li>NH투자증권 챗봇</li></ul></section>
+<a class="email" href="mailto:hwangseokparis@gmail.com">hwangseokparis@gmail.com ↗</a>
+</div><nav class="menu" aria-label="홈 메뉴 효과 미리보기">
+<button type="button" data-area="about"><span class="label">About</span><span class="arrow" aria-hidden="true">↗</span></button>
+<button type="button" data-area="projects"><span class="label">Projects</span><span class="arrow" aria-hidden="true">↗</span></button>
+<button type="button" data-area="contact"><span class="label">Contact</span><span class="arrow" aria-hidden="true">↗</span></button>
+</nav></div></div></section>
+<section data-variant="좌측 전체 연동" hidden>
+<div class="proposal band" id="proposal-band" aria-label="좌측 전체 연동 홈">
+<div class="layout"><div class="left">
+<h1>Hwangseok Kim</h1><p class="job">Frontend Developer</p>
+<p class="bio">상담 서비스와 데이터 분석·검수 도구의 화면 구조와 기능을 설계하고 개발해 왔습니다. 직접 개발하면서 기획·디자인·백엔드와 구현 방향을 협의하고, 프로젝트에 따라 개발팀을 이끌며 업무와 기술 방향을 조율했습니다.</p>
+<section class="featured"><h2>Featured</h2><ul class="work"><li>삼성전자 Content Intelligence AI</li><li>오스템 모바일 앱 프레임워크</li><li>NH투자증권 챗봇</li></ul></section>
+<a class="email" href="mailto:hwangseokparis@gmail.com">hwangseokparis@gmail.com ↗</a>
+</div><nav class="menu" aria-label="홈 메뉴 효과 미리보기">
+<button type="button" data-area="about"><span class="label">About</span><span class="arrow" aria-hidden="true">↗</span></button>
+<button type="button" data-area="projects"><span class="label">Projects</span><span class="arrow" aria-hidden="true">↗</span></button>
+<button type="button" data-area="contact"><span class="label">Contact</span><span class="arrow" aria-hidden="true">↗</span></button>
+</nav></div></div></section>
+
+</div>
+<style>
+#block-variants :is(.wash,.band) .left::before{display:none}
+#block-variants .color-layer{position:absolute;inset:0;z-index:-1;pointer-events:none}
+#block-variants .color-layer.settled{background:var(--layer-color,transparent)}
+#block-variants .color-layer.incoming{background:var(--next-color,transparent);opacity:0}
+#block-variants .wash .color-layer.incoming.running{opacity:1;animation:spread-color .72s cubic-bezier(.16,.65,.22,1) both}
+#block-variants .band .color-layer.incoming.running{opacity:1;animation:sweep-color .68s cubic-bezier(.16,.65,.22,1) both}
+@keyframes spread-color{from{clip-path:circle(0% at 100% var(--start-y,50%))}to{clip-path:circle(150% at 100% var(--start-y,50%))}}
+@keyframes sweep-color{from{clip-path:inset(0 0 0 100%)}to{clip-path:inset(0)}}
+#block-variants .color-layer.settled{transition:background .45s ease}
+@media(prefers-reduced-motion:reduce){#block-variants .color-layer.incoming.running{animation:none;opacity:1}#block-variants .color-layer.settled{transition:none}}
+</style>
+<script>
+(()=>{
+ const root=document.getElementById('block-variants');
+ root.querySelectorAll('.proposal').forEach(panel=>{
+  const left=panel.querySelector('.left');
+  const settled=document.createElement('div');settled.className='color-layer settled';settled.setAttribute('aria-hidden','true');
+  const incoming=document.createElement('div');incoming.className='color-layer incoming';incoming.setAttribute('aria-hidden','true');
+  left.prepend(settled,incoming);
+  const buttons=[...panel.querySelectorAll('.menu button')];
+  let current='', finishTimer, leaveTimer;
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function commit(){clearTimeout(finishTimer);if(incoming.classList.contains('running')){settled.style.setProperty('--layer-color',incoming.style.getPropertyValue('--next-color'));incoming.classList.remove('running')}}
+  function activate(area){
+   clearTimeout(leaveTimer);
+   if(area===current)return;
+   commit();current=area;panel.dataset.active=area;
+   buttons.forEach(b=>b.classList.toggle('active',b.dataset.area===area));
+   if(!area){settled.style.setProperty('--layer-color','transparent');return}
+   const index=buttons.findIndex(b=>b.dataset.area===area);
+   const color=getComputedStyle(panel).getPropertyValue('--motion-tint');
+   incoming.style.setProperty('--next-color',color);
+   incoming.style.setProperty('--start-y',((index+.5)*100/3)+'%');
+   void incoming.offsetWidth;
+   incoming.classList.add('running');
+   if(reduced)commit();else finishTimer=setTimeout(commit,740);
+  }
+  buttons.forEach(b=>{
+   b.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch')activate(b.dataset.area)});
+   b.addEventListener('focus',()=>activate(b.dataset.area));
+   b.addEventListener('click',()=>activate(b.dataset.area));
+  });
+  panel.querySelector('.menu').addEventListener('pointerleave',()=>{leaveTimer=setTimeout(()=>activate(''),100)});
+  panel.querySelector('.menu').addEventListener('focusout',e=>{if(!panel.querySelector('.menu').contains(e.relatedTarget))activate('')});
+  if(globalThis.Tweak){const state={active:''};const t=new Tweak({container:panel,onChange:()=>activate(state.active)});t.addSelect(state,'active',{label:'강조 상태',options:[{label:'기본',value:''},{label:'About',value:'about'},{label:'Projects',value:'projects'},{label:'Contact',value:'contact'}]})}
+ });
+})();
+</script>
