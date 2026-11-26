@@ -1,3 +1,0 @@
-/* Custom shapes; layout, colors and motion utilities live in the components. */
-@keyframes home-spread { from { clip-path: circle(0% at 100% var(--origin-y)); } to { clip-path: circle(150% at 100% var(--origin-y)); } }
-@keyframes home-sweep { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0); } }

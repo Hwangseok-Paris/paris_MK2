@@ -1,26 +1,40 @@
 @config "../../tailwind.config.mjs";
-@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600&display=swap");
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css");
 @import "tailwindcss";
-@import "./folio.css";
-@import "./profile.css";
-@import "./header.css";
 
-html {
-  scrollbar-gutter: stable;
+/* Preserve the existing viewport/container breakpoints, including their endpoints. */
+@custom-variant narrow (@media (max-width: 760px));
+@custom-variant short-screen (@media (max-height: 450px));
+@custom-variant projects-md (@container projects (max-width: 1100px));
+@custom-variant projects-sm (@container projects (max-width: 760px));
+@custom-variant profile-md (@container profile (max-width: 1100px));
+@custom-variant profile-sm (@container profile (max-width: 760px));
+@custom-variant folio-md (@container folio (max-width: 1100px));
+@custom-variant folio-tablet (@container folio (max-width: 800px));
+@custom-variant folio-sm (@container folio (max-width: 600px));
+
+@theme {
+  --color-paper: light-dark(#f5f4ef, #17191b);
+  --color-ink: light-dark(#22282d, #eeede7);
+  --color-muted: light-dark(#62686c, #aeb3b6);
+  --color-rule: light-dark(#c9ccc7, #44484b);
+  --color-tint: light-dark(#e6eaf0, #232b37);
+  --color-accent: light-dark(#3156a3, #b0c1ee);
+  --color-row-hover: light-dark(#ebeae4, #222528);
+  --color-veil: light-dark(#11182099, #080a0cd9);
+  --color-menu-face: light-dark(#e4e7e3, #23282b);
+  --color-menu-current: light-dark(#d8e6fa, #253d62);
+  --color-menu-current-ink: light-dark(#183356, #c7dcfa);
+  --color-menu-symbol: light-dark(#3156a3, #aebfdb);
+  --font-chakra: "Chakra Petch", sans-serif;
+  --font-project-title: "Chakra Petch", Pretendard, sans-serif;
+  --font-portfolio: Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+  --font-profile: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+  --font-index: ui-monospace, monospace;
+  --font-panel: Arial, Helvetica, sans-serif;
 }
 
-/* body {
-  background: radial-gradient(1200px 600px at 10% -10%, rgba(255, 255, 255, 0.06), transparent 60%),
-    radial-gradient(1000px 600px at 110% 10%, rgba(255, 255, 255, 0.06), transparent 60%),
-    var(--bg, #0b0b0b);
-} */
-
-@layer utilities {
-  @keyframes fadeUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-}
+/* Bespoke clip-path motion cannot be expressed with stock utility animations. */
+@keyframes home-spread { from { clip-path: circle(0% at 100% var(--origin-y)); } to { clip-path: circle(150% at 100% var(--origin-y)); } }
+@keyframes home-sweep { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0); } }

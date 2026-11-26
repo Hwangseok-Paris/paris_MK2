@@ -28,6 +28,7 @@ For portfolio improvement tasks, also read `docs/portfolio-improvement-plan.md`,
 - Do not start implementation just because the user describes a desired change. Start Developer work only after the user explicitly approves the planned work or says to start.
 - When a task has multiple discovered issues or improvement candidates, the PM must keep track of unresolved items. If only the highest-priority items are implemented, report the remaining items as follow-up candidates in the current result and bring them up again when planning the next related task.
 - Prefer existing code patterns, component boundaries, routing structure, and styling conventions.
+- Use Tailwind utilities for UI styling across the entire project, not only the file mentioned in a request. Keep component layout, typography, responsive rules, and interaction states in TSX. Shared theme tokens, responsive variants, and bespoke keyframes may live in `globals.css`; do not recreate separate component stylesheets or move selector CSS into `@apply`.
 - Do not add libraries unless the user explicitly asks for it and the reason is documented.
 - If a new library may be needed, present candidate libraries first with each library's purpose, main features, pros, cons, and fit for this project.
 - Wait for the user's explicit decision before installing, adding, or importing any new library.

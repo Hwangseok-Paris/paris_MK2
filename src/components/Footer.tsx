@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { portfolioViewport, portfolioSurface, projectsTypography, profileTypography, projectsGutter, profileGutter } from "@/components/layout/portfolioStyles";
 import Container from "@/components/layout/Container";
 import Link from "next/link";
 
@@ -32,16 +33,18 @@ export default function Footer() {
   const profile = pathname === "/about" || pathname === "/contact";
   if (pathname !== "/" && pathname !== "/projects" && !profile) return <LegacyFooter />;
   return (
-    <footer className={`folio folio-shell-footer ${profile ? "folio-profile" : pathname === "/" ? "folio-home" : "folio-projects"}`}>
-      <div className="viewport"><div className={pathname === "/" ? "site" : "site underlay"}>
-        <div className="copyright">
-          <p>© {new Date().getFullYear()} Paris. All rights reserved.</p>
-          {pathname !== "/contact" && <nav aria-label="외부 링크">
-            <Link href="https://github.com/Hwangseok-Paris" target="_blank" rel="noopener noreferrer">GitHub</Link>
-            <Link href="https://blog.naver.com/hwangseok89" target="_blank" rel="noopener noreferrer">Blog</Link>
-          </nav>}
+    <footer className={`folio folio-shell-footer ${portfolioSurface} ${profile ? "folio-profile" : "folio-projects"}`}>
+      <div className={`viewport ${portfolioViewport} ${profile ? "@container/profile" : "@container/projects"}`}>
+        <div className={`site underlay bg-paper ${profile ? `${profileTypography} ${profileGutter} py-0` : `${projectsTypography} ${projectsGutter} py-[22px]`}`}>
+          <div className={`copyright flex flex-wrap justify-between gap-4 border-t border-rule text-xs text-muted ${profile ? "items-center leading-[1.9] pt-[22px] pb-[26px] profile-sm:pt-[19px] profile-sm:pb-[22px] profile-sm:text-[11px]" : "pt-5 leading-[1.7]"}`}>
+            <p className="flex items-center">© {new Date().getFullYear()} Paris. All rights reserved.</p>
+            {pathname !== "/contact" && <nav className="flex gap-5" aria-label="외부 링크">
+              <Link className="inline-flex min-h-11 items-center hover:underline hover:underline-offset-[5px]" href="https://github.com/Hwangseok-Paris" target="_blank" rel="noopener noreferrer">GitHub</Link>
+              <Link className="inline-flex min-h-11 items-center hover:underline hover:underline-offset-[5px]" href="https://blog.naver.com/hwangseok89" target="_blank" rel="noopener noreferrer">Blog</Link>
+            </nav>}
+          </div>
         </div>
-      </div></div>
+      </div>
     </footer>
   );
 }
