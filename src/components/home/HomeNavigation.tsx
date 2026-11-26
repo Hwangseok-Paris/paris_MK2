@@ -16,9 +16,9 @@ const colors = {
     "[--home-tint:#f5ddce] dark:[--home-tint:#57362b] [--home-solid:#f2a57f] [--home-on:#4d2a1a] [--origin-y:83.3333%]",
 };
 const items: { area: Area; label: string }[] = [
-  { area: "about", label: "About" },
-  { area: "projects", label: "Projects" },
-  { area: "contact", label: "Contact" },
+  { area: "about", label: "ABOUT" },
+  { area: "projects", label: "PROJECTS" },
+  { area: "contact", label: "CONTACT" },
 ];
 
 export default function HomeNavigation({
@@ -117,7 +117,7 @@ export default function HomeNavigation({
           </Link>
         ))}
       </nav>
-      <div className="relative isolate order-1 flex min-w-0 items-center max-[650px]:order-2 max-[650px]:items-start">
+      <div className="relative isolate order-1 flex min-w-0 items-start max-[650px]:order-2">
         <div
           className={`pointer-events-none absolute inset-0 -z-10 isolate motion-reduce:transition-none ${active ? "opacity-100 transition-none" : "opacity-0 transition-opacity duration-[450ms] ease-[ease]"}`}
           aria-hidden="true">
@@ -133,18 +133,17 @@ export default function HomeNavigation({
             />
           ))}
         </div>
-        <div className="m-auto w-full max-w-[680px] px-[clamp(24px,5vw,80px)] py-[clamp(48px,7vw,100px)] max-[650px]:my-0 max-[650px]:px-6 max-[650px]:py-11">
+        {/* About sits at one sixth of the viewport; subtract half its line height. */}
+        <div className="mx-15 w-full max-w-[680px] px-[clamp(24px,0vw,80px)] pt-[max(48px,calc(100svh/6-clamp(16.8px,2.7vw,38.4px)))] pb-[clamp(48px,7vw,100px)] max-[650px]:px-6 max-[650px]:py-11">
           {children}
           <a
-            className="mt-[30px] inline-flex min-h-11 items-center gap-1.5 text-xs text-[var(--personal-muted)] [overflow-wrap:anywhere] hover:underline hover:underline-offset-[5px] max-[650px]:break-all max-[650px]:text-[11px] [&_svg]:size-3.5"
+            className="mt-[30px] inline-flex min-h-11 items-center gap-1.5 text-s text-[var(--personal-muted)] [overflow-wrap:anywhere] hover:underline hover:underline-offset-[5px] max-[650px]:break-all max-[650px]:text-[11px] [&_svg]:size-3.5"
             href="mailto:hwangseokparis@gmail.com">
             hwangseokparis@gmail.com
             <ArrowUpRight aria-hidden="true" />
           </a>
-
         </div>
       </div>
-
     </div>
   );
 }
