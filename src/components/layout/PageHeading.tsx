@@ -1,9 +1,9 @@
 export default function PageHeading({ title, period }: { title: string; period?: string }) {
   return (
     <div className="mb-[37px] pt-[66px] [@media(max-width:760px)]:pt-10">
-      <div className="flex items-end gap-5">
+      <div className="flex flex-wrap items-end gap-x-5 gap-y-2">
         <h1
-          className="m-0 font-['Chakra_Petch',sans-serif] text-[64px] leading-[1.05] font-medium tracking-[-.065em] [@media(max-width:760px)]:text-[46px]"
+          className="m-0 shrink-0 font-['Chakra_Petch',sans-serif] text-[64px] leading-[1.05] font-medium tracking-[-.065em] whitespace-nowrap [@media(max-width:760px)]:text-[46px]"
           lang="en">
           {title}
         </h1>

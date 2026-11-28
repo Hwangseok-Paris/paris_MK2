@@ -5,8 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import type { Project } from "@/constants/projects";
 import {
   projectDisplayTitle,
-  projectDisplayCompany,
-  projectOriginalTitle,
+  projectCompanyLabel,
   projectOverview,
   projectTitleLanguage,
 } from "@/constants/project-presentation";
@@ -27,6 +26,8 @@ export default function ProjectCard({
   onKeyboardFocus,
 }: Props) {
   const reducedMotion = useReducedMotion();
+  const company = projectCompanyLabel(p);
+  const periodWithNote = p.period.match(/^(.+?)(\s+)(\([^)]*\)|\[[^\]]*\])$/);
   return (
     <article
       className="project-row relative border-b border-rule"
@@ -47,17 +48,23 @@ export default function ProjectCard({
         type="button"
         className="row-trigger grid w-full grid-cols-[130px_minmax(0,1fr)_20px] gap-5 border-0 bg-transparent py-[27px] text-left projects-md:grid-cols-[115px_minmax(0,1fr)_18px] projects-sm:grid-cols-[minmax(0,1fr)_18px] projects-sm:gap-x-4 projects-sm:gap-y-[13px] projects-sm:py-[25px]"
         aria-haspopup="dialog"
-        aria-label={`${projectOriginalTitle(p)} 상세 보기`}
+        aria-label={`${projectDisplayTitle(p)} 상세 보기`}
         onClick={(event) => onOpen(p, event.currentTarget)}
         onFocus={(event) =>
           onKeyboardFocus(event.currentTarget.matches(":focus-visible") ? p.id : null)
         }>
-        <span className="row-period col-start-1 row-start-1 font-project-title text-[11px] leading-[1.6] font-normal tracking-normal text-muted projects-sm:mt-0">{p.period}</span>
+        <span className="row-period col-start-1 row-start-1 font-project-title text-[11px] leading-[1.6] font-normal tracking-normal text-muted projects-sm:mt-0">
+          {periodWithNote ? <>
+            <span className="inline-block whitespace-nowrap">{periodWithNote[1]}</span>
+            {periodWithNote[2]}
+            <span className="inline-block whitespace-nowrap">{periodWithNote[3]}</span>
+          </> : p.period}
+        </span>
         <span className="row-identity col-start-2 row-start-1 flex flex-col items-start projects-sm:col-start-1 projects-sm:row-start-2">
-          <span className="row-company mt-[9px] text-[11px] leading-[1.5] tracking-[.04em] text-muted">
-            {projectDisplayCompany(p)}
-          </span>
-          <span className="row-title -order-1 font-project-title text-[31px] leading-[1.2] font-medium tracking-[-.035em] text-balance [overflow-wrap:anywhere] projects-sm:mt-0 projects-sm:text-[29px]" lang={projectTitleLanguage(p.id)}>
+          {company && <span className="row-company mt-[9px] text-[11px] leading-[1.5] tracking-[.04em] text-muted">
+            {company}
+          </span>}
+          <span className="row-title -order-1 font-project-title text-[31px] leading-[1.2] font-medium tracking-[-.035em] text-balance break-keep [overflow-wrap:anywhere] projects-sm:mt-0 projects-sm:text-[29px]" lang={projectTitleLanguage(p)}>
             {projectDisplayTitle(p)}
           </span>
         </span>

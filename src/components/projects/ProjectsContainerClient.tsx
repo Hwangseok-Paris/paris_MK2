@@ -9,88 +9,13 @@ import { featuredProjectIds, type Project } from "@/constants/projects";
 import ProjectCard from "./ProjectCard";
 import ProjectPanel from "./ProjectPanel";
 import { sortProjectsByDate } from "@/lib/project-sort";
+import { filters, matchesFilter, type FilterId } from "@/lib/project-filter";
 
 type Props = {
   projects: Project[];
 };
 
-const filters = [
-  { id: "all", label: "전체" },
-  { id: "featured", label: "대표" },
-  { id: "ownership", label: "리딩·단독" },
-  { id: "realtime", label: "실시간 상담" },
-  { id: "finance", label: "금융·보험" },
-  { id: "hybrid", label: "Hybrid·App" },
-  { id: "ai", label: "AI·Voice" },
-] as const;
-
-type FilterId = (typeof filters)[number]["id"];
 type SortOrder = "featured" | "newest" | "oldest";
-
-const projectText = (project: Project) =>
-  [
-    project.title,
-    project.company,
-    project.period,
-    project.role,
-    project.category,
-    project.summary,
-    project.stack.join(" "),
-    project.highlights.join(" "),
-  ]
-    .join(" ")
-    .toLowerCase();
-
-const matchesFilter = (project: Project, filter: FilterId) => {
-  const text = projectText(project);
-  // 개발 과정의 AI 활용은 AI 서비스 분류와 구분합니다.
-  const aiText = [project.title, project.category, ...project.stack].join(" ").toLowerCase();
-  const hasAiToken = /(^|[^a-z])ai([^a-z]|$)/.test(aiText);
-
-  switch (filter) {
-    case "featured":
-      return featuredProjectIds.includes(project.id);
-    case "ownership":
-      return text.includes("단독") || text.includes("리딩") || text.includes("pl");
-    case "realtime":
-      return (
-        text.includes("실시간") ||
-        text.includes("상담") ||
-        text.includes("챗봇") ||
-        text.includes("connect always")
-      );
-    case "finance":
-      return (
-        project.category === "Finance" ||
-        project.category === "Insurance" ||
-        text.includes("은행") ||
-        text.includes("보험") ||
-        text.includes("투자증권")
-      );
-    case "hybrid":
-      return (
-        text.includes("hybrid") ||
-        text.includes("webview") ||
-        text.includes("android") ||
-        text.includes("ios") ||
-        text.includes("앱") ||
-        text.includes("브릿지")
-      );
-    case "ai":
-      return (
-        project.category === "AI/Voice" ||
-        hasAiToken ||
-        text.includes("voice") ||
-        text.includes("stt") ||
-        text.includes("tts") ||
-        text.includes("whisper") ||
-        text.includes("음성")
-      );
-    case "all":
-    default:
-      return true;
-  }
-};
 
 export default function ProjectsContainerClient({ projects }: Props) {
   const [activeFilter, setActiveFilter] = useState<FilterId>("all");
@@ -102,6 +27,7 @@ export default function ProjectsContainerClient({ projects }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  // URL을 기준으로 선택해 직접 링크와 브라우저 뒤로 가기에도 같은 상세를 표시합니다.
   const selectedProjectId = searchParams.get("project");
 
   const selectedProject = useMemo(
@@ -126,6 +52,7 @@ export default function ProjectsContainerClient({ projects }: Props) {
 
       const nextQuery = nextParams.toString();
       const nextUrl = nextQuery ? `${pathname}?${nextQuery}` : pathname;
+      // 상세를 열고 닫아도 사용자가 보고 있던 목록의 스크롤 위치를 유지합니다.
       router[historyMode](nextUrl, { scroll: false });
     },
     [pathname, router, searchParams],
@@ -135,12 +62,14 @@ export default function ProjectsContainerClient({ projects }: Props) {
     (p: Project, trigger: HTMLButtonElement) => {
       setHoveredProject(null);
       triggerRef.current = trigger;
+      // 진입 이력을 추가해 브라우저 뒤로 가기로 상세를 닫을 수 있게 합니다.
       updateProjectQuery(p.id, "push");
     },
     [updateProjectQuery],
   );
 
   const onClose = useCallback(() => {
+    // 현재 상세 URL을 목록 URL로 교체해 닫기 동작 자체는 새 이력으로 쌓지 않습니다.
     updateProjectQuery();
   }, [updateProjectQuery]);
 
@@ -158,6 +87,7 @@ export default function ProjectsContainerClient({ projects }: Props) {
 
   return (
     <>
+      {/* 필터와 정렬 */}
       <div className="project-controls flex items-center justify-between gap-6 pt-0 projects-sm:flex-wrap projects-sm:gap-[3px]">
         <nav className="filters flex flex-1 gap-6 overflow-x-auto [scrollbar-width:thin] projects-sm:basis-full projects-sm:gap-x-[19px] projects-sm:gap-y-0" aria-label="프로젝트 필터">
           {filters.map((filter) => (
@@ -197,6 +127,7 @@ export default function ProjectsContainerClient({ projects }: Props) {
             ? "시작일 최신순"
             : "시작일 오래된순"}
       </p>
+      {/* 목록과 키보드·포인터 강조 */}
       <LayoutGroup id={highlightGroup}>
         <div
           className="project-list isolate"
@@ -247,6 +178,7 @@ export default function ProjectsContainerClient({ projects }: Props) {
           <ArrowUpRight aria-hidden="true" />
         </Link>
       </div>
+      {/* URL로 선택한 프로젝트 상세 */}
       <ProjectPanel
         open={Boolean(selectedProject)}
         project={selectedProject}

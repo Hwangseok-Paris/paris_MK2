@@ -34,7 +34,7 @@ export default function ContactBox() {
 
   return (
     <section className="contact-content flex flex-1 flex-col items-center justify-center gap-4 py-[60px] text-center profile-sm:gap-3.5 profile-sm:py-12" aria-labelledby="contact-heading">
-      <h1 id="contact-heading" className="text-2xl leading-[1.5] font-medium tracking-[-.035em] profile-sm:text-[22px]">Contact</h1>
+      <h1 id="contact-heading" className="font-chakra text-2xl leading-[1.5] font-medium tracking-[-.035em] profile-sm:text-[22px]">Contact</h1>
       <div className="contact-details relative max-w-[calc(100%-44px)]">
         <a ref={emailRef} href={`mailto:${email}`} className="email flex min-h-11 items-center text-lg leading-[1.65] hover:text-accent hover:underline hover:underline-offset-[5px] profile-sm:text-[17px]" aria-label={`${email}으로 이메일 보내기`}>
           hwangseokparis<wbr />@gmail.com

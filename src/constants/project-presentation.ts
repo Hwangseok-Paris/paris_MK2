@@ -1,33 +1,29 @@
 import type { Project } from "./projects";
 
-// Display titles approved in the type-index mockups; career data stays in Project.
-const titles: Record<string, string> = {
-  "samsung-cia": "Content Intelligence AI",
-  "osstem-hybrid": "Mobile App Framework",
-  "nh-investment": "Chatbot",
-  "kyobo-talktalk": "Kyobo TalkTalk",
-  "samsung-parser-viewer": "Parser Viewer",
-  "lg-ecrm": "eCRM AI Agent",
-  "scb-connectalways": "Consultation Customization",
-  "realtime-voice-translate": "Voice & Chat PoC",
-  "kyobo-direct": "Direct Chat",
-  "festivallife-admin": "Festival Life",
-  "amore-bts": "My Skin Solution",
-  "kakaoi-connect-always": "Connect Always",
-  "hana-bank": "Hana Talk MVP",
+// Keep the recorded project name recognizable across home, list and detail.
+export const projectDisplayTitle = (project: Pick<Project, "id" | "title">) =>
+  project.title;
+
+export const projectTitleLanguage = (project: Pick<Project, "id" | "title">) =>
+  /[가-힣]/.test(projectDisplayTitle(project)) ? "ko" : "en";
+export const projectDisplayCompany = (project: Pick<Project, "id" | "company">) => {
+  if (project.id === "amore-bts") return "아모레퍼시픽";
+  return project.company;
 };
 
-export const projectDisplayTitle = (project: Pick<Project, "id" | "title">) =>
-  titles[project.id] ?? project.title;
+const normalizeName = (value: string) => value.normalize("NFKC").replace(/\s+/g, "").toLowerCase();
+const companyAliases: Record<string, string[]> = {
+  "오스템임플란트": ["오스템"],
+  "교보생명": ["교보"],
+  "페스티벌라이프": ["Festival Life"],
+};
 
-export const projectOriginalTitle = (project: Pick<Project, "id" | "title">) =>
-  project.id === "samsung-cia" ? "삼성전자 Content Intelligence AI" : project.title;
-
-export const projectTitleLanguage = (id: string) => titles[id] ? "en" : "ko";
-export const projectDisplayCompany = (project: Pick<Project, "id" | "company">) => {
-  if (project.id === "samsung-cia") return "SAMSUNG ELECTRONICS";
-  if (project.id === "osstem-hybrid") return "OSSTEM IMPLANT";
-  return project.company;
+export const projectCompanyLabel = (project: Pick<Project, "id" | "title" | "company">) => {
+  const company = projectDisplayCompany(project);
+  if (!company) return undefined;
+  const title = normalizeName(projectDisplayTitle(project));
+  const names = [company, ...(companyAliases[normalizeName(company)] ?? [])];
+  return names.some((name) => title.includes(normalizeName(name))) ? undefined : company;
 };
 
 // Service introductions for the list. Personal responsibilities stay in the detail panel.
@@ -49,3 +45,43 @@ const overviews: Record<string, string> = {
 
 export const projectOverview = (project: Pick<Project, "id" | "summary">) =>
   overviews[project.id] ?? project.summary;
+
+// Match the approved sentence, not its array position: older DB copy must not
+// acquire a heading intended for a different contribution.
+const contributionTitles: Record<string, Record<string, string>> = {
+  "samsung-cia": {
+    "Agent가 반환하는 데이터를 화면에 표시하기 위한 위젯·템플릿 구조와 응답 규약을 설계했습니다.": "응답 구조 설계",
+    "질문과 분석 결과를 연결하는 채팅 화면, SSE 기반 진행 상태·결과 표시, 콘텐츠 검색·필터·상세 조회를 구현했습니다.": "대화와 분석 화면",
+    "백엔드·Agent 개발자들과 연동 방식, 멀티턴 대화의 슬롯 응답 선택과 대화 이력 처리 방향을 협의했습니다.": "Agent 연동 협의",
+    "Agent 응답의 형식을 검증하고, 일부 결과에 오류가 발생해도 나머지 내용은 확인할 수 있도록 오류 처리를 구현했습니다.": "부분 오류 대응",
+  },
+  "samsung-parser-viewer": {
+    "원본 문서와 파싱 결과를 나란히 표시하고, 선택한 요소의 원본 위치를 확인할 수 있는 하이라이트와 페이지 이동을 구현했습니다.": "원본 대조",
+    "신뢰도가 낮은 항목을 찾는 필터, 유형별 데이터 편집, 수정 반영과 수정이력·변경 전후 비교를 구현했습니다.": "편집과 수정 이력",
+    "초기 FastAPI 샘플 API를 작성한 뒤 백엔드 개발자에게 인계하고 연동을 협의했습니다.": "API 연동 협업",
+    "AI를 활용해 문서 요소의 표시·편집 동작에 대한 Vitest 기반 회귀 테스트를 보완하고, 기존 동작이 유지되는지 확인하며 API·타입·화면 컴포넌트의 역할을 분리했습니다.": "회귀 테스트와 구조 개선",
+  },
+  "osstem-hybrid": {
+    "네이티브 상단 메뉴·하단 툴바와 웹 화면을 연결하고, 표시 제어·위치 요청·전체화면·버전 확인과 강제 업데이트 등의 브릿지 연동을 구현했습니다.": "웹·앱 브릿지",
+    "딥링크·유니버설 링크·외부 앱 실행, SSO·쿠키 동기화 등 앱 진입과 인증에 필요한 동작을 구현·검증했습니다.": "진입과 인증",
+    "배포 대응을 맡고, 모바일 웹 개편 가이드와 Android·iOS 개발·운영 인수인계 문서를 작성했습니다.": "배포와 인수인계",
+    "구조 설계·코드 작성·문제 해결에는 AI 에이전트를 활용했습니다. 코드를 직접 검토해 수정 방향을 정하고 필요한 세부 사항을 수정했으며, 앱 실행과 동작 검증도 직접 수행했습니다.": "AI 활용과 검증",
+  },
+  "festivallife-admin": {
+    "관리자 화면에 필요한 데이터 항목과 구조를 정리하고, 백엔드에서 제공할 API 응답 형식을 정의해 개발자에게 전달했습니다.": "데이터와 API 응답 설계",
+  },
+  "kyobo-talktalk": {
+    "업무 분담·일정 관리·코드 리뷰·기술 방향 결정을 맡았습니다.": "팀 리딩",
+    "실시간 채팅과 API 연동·비동기 처리를 구현하고, Pinia로 화면 상태를 관리했습니다.": "채팅과 상태 관리",
+    "기획자·디자이너·퍼블리셔·백엔드 및 앱 개발자와 화면·기능의 구현 방향을 협의했습니다.": "구현 방향 협의",
+    "앱 개발자와 웹·앱 브릿지 통신 방향을 정하고 서버 연동과 함께 구현했습니다.": "웹·앱 연동",
+  },
+  "nh-investment": {
+    "채팅 진입 시 사용자 정보에 맞는 서비스를 제공하도록 Skill Builder에서 여러 API를 연동했습니다.": "맞춤 서비스 연동",
+    "대화 이력의 저장과 상담원 화면 조회에 맞지 않던 기존 구조를 검토하고 관련 아키텍처를 재구성했습니다. 상담이력서비스를 구현하는 외주 개발자가 원활하게 작업할 수 있도록 소통하며 개발 과정을 조율했습니다.": "상담 이력 구조 개선",
+    "개발 도구에서 발생한 버그를 검증하고 카카오엔터프라이즈 개발자에게 피드백하며 연동 문제를 협의했습니다.": "도구 오류 검증",
+  },
+};
+
+export const projectContributionTitle = (projectId: string, contribution: string) =>
+  contributionTitles[projectId]?.[contribution];

@@ -33,6 +33,258 @@ Next Candidates:
 
 ## Log
 
+## 2026-11-28 - 누적 포트폴리오 개선 커밋 정리
+
+- 요청: 사용자가 지금까지 수정한 내용을 정리해 커밋하도록 승인했다. 현재 `ver2` 브랜치에서 누적 변경 전체를 하나의 한국어 커밋으로 묶는다.
+- 범위: About 소개·경력·기술 배치, 이력서 기준 프로젝트 기간/기여 보강, 실제 제목·회사 중복·폰트/줄바꿈 정리, 대표 역할·상세 소제목·메타데이터, 상세 하단 목록 복귀, PC 홈 좌측 스크롤/우측 고정, 컴포넌트·필터 분리, 미사용 의존성/폰트/테마 제거, 관련 테스트·문서.
+- 확인: 서비스 코드는 직전 구현 검증 이후 바뀌지 않았다. 최종 전체 lint·Jest7 suites/30 tests·프로덕션 빌드/TypeScript 통과와 PC/모바일 회귀 결과를 사용하고 커밋 전 diff 공백·신규 파일·포함 범위를 다시 확인했다. 이번 단계의 추가 변경은 이 작업 기록뿐이다.
+- 제외: `.gitignore` 정책에 따라 로컬 시안/검증 자료 `output/`을 포함하지 않는다. 검증 PNG는0개이며 환경변수·운영 데이터·로컬 메타데이터를 추가하지 않는다. 원격 push·배포는 이번 요청에 포함되지 않는다.
+
+## 2026-11-28 - 승인된 홈 좌측 스크롤·우측 고정 반영
+
+- PM/Planner: 사용자가 비교 시안 전체 반영과 PC 좌측 스크롤/숨긴 바·우측 고정·모바일 보존을 명시적으로 승인했다. 시작 문서·현재 소스·기존 시안을 확인했으며 추가 승인을 요청하지 않았다. 변경 전 소스 해시와 승인 시안/유지 화면16개를 확보했다.
+- Developer: HomeNavigation에 화면 높이 고정/좌측 내부 스크롤을 Tailwind로 구현했다. 배경 레이어와 본문을 분리하고 기존 flex 폭·내용·폰트·여백·모션은 보존했다. 루트 gutter는 PC 홈에만 해제했다. 별도 useHomeScroll 훅으로 PC tabIndex, 세션 위치 저장/복원, 늦은 Featured/폰트 높이 대응, 입력 우선, 저장소 예외, 이벤트/observer 정리를 묶었다. 시안 DOM 조정은 서비스에 쓰지 않았다.
+- 서비스 수정: `src/components/home/HomeNavigation.tsx`, `src/app/layout.tsx`. 신규: `src/components/home/useHomeScroll.ts`, `useHomeScroll.test.tsx`. 기존 `HomeNavigation.test.tsx`에는 ResizeObserver mock을 추가했다. 문서: decisions·project-context·portfolio-improvement-plan·task-log. 검토용 index/inject는 중복 적용을 막고 완료된 실제 홈을 표시하도록 갱신했다. 원자료·의존성·다른 서비스 파일은 이번 시작 snapshot과 같다.
+- 화면 QA: 1440×900/600/350,1280×720,1024×600,900×350,650×600은 승인 시안과 본문/크기/캡처 해시가 같았다. 649×600,390×844,320×568 홈 및1440/390px의 About·Projects·Contact는 이전과 같다(총16개). 10개 홈 크기의 왼쪽 휠/PageDown/하단 연락처 접근, 문서·오른쪽 고정, 숨긴 스크롤바, 가로 넘침 없음을 확인했다.
+- 기능 QA: 홈3개 색상 전환/배경 고정, reduced-motion, NH 상세 딥링크/Escape/뒤로 가기, 새로고침, PC→모바일→PC 전환에서180px 위치 복원, 모바일 상세/하단 메뉴,1024px 터치 환경 정적 색상과 고정 배치를 확인했다. 페이지 JS 오류 없음. PC/모바일 캡처 직접 확인 후 PNG를 삭제했다.
+- 코드 QA: 전체 lint 경고 없음, Jest7 suites/30 tests, 프로덕션 빌드/TypeScript 및 diff 공백 검사 통과. 새4테스트는 복귀/모바일 전환·지연 콘텐츠 복원·사용자 입력 우선·저장소 차단을 검증한다. 초기 QA 스크립트의 잘못된 버튼 이름과 테스트 getter/setter mock 복구 누수는 검증 코드에서 수정 후 재실행했다. 기존 reduced-motion 안내 외 테스트 실패 없음. 독립 읽기 전용 코드 리뷰에서 수정 필요 결함 없음.
+- 결과: 승인 범위 로컬 구현·검증 완료. 자료는 Git 제외된 `output/home-scroll-implementation/`에 보관하며 PNG0개 유지. localhost:3000 개발 서버와4310 검토 페이지 유지. 커밋·push·배포·Notion 변경 없음. 이번 범위의 미완료 항목은 없으며 기존 실기기/Safari·실제 공유·운영 데이터/API 정책 점검은 별도 후속이다.
+
+## 2026-11-28 - 홈 좌측 스크롤·우측 고정 시안 검토
+
+- PM: 사용자가 왼쪽만 스크롤하고 오른쪽을 고정하며 스크롤바를 숨기는 방향을 제안했다. 시작 문서와 실제 HomeNavigation/루트 구조를 읽고 PC에 적용하며 기존 모바일 동작을 유지하는 범위로 구체화했다. 현재1440×900 홈/우측은 약982px,1440×600은 약932px까지 늘어나며 루트 stable gutter가15px를 차지함을 확인했다.
+- Planner: 왼쪽 고정 외곽과 스크롤 본문을 분리해 색상 레이어를 보존하고, 본문 wrapper의 flex shrink를 유지하는 안으로 정했다. 루트 gutter는 PC 홈에 한정해 해제한다. 우측 메뉴는 viewport의 동일3단 높이이며 짧은 높이에서는 세로 padding을 제거해 글자 잘림을 막는다. PC 스크롤 영역의 키보드 접근과 방문 후 위치 복원을 포함한다. 650px 미만은 기존 문서 스크롤/하단 메뉴 그대로다.
+- 시안: 실제 localhost:3000을 검토용 로컬 프록시4310으로 표시하고 Tailwind를 별도로 생성했다. `/__review`에서 현재/제안 전환과 전체 화면 보기를 제공한다. 초기 hydration 전에 DOM을 조정하는 시안 문제는 앱 파일 변경 없이 hydration 이후 적용으로 수정했다. 이 DOM 조정은 검토 전용이며 서비스 구현 방식으로 사용하지 않는다.
+- QA: 1440×900/600/350,1280×720,1024×600,900×350,650×600,649×600,390×844,320×568에서 본문 보존·가로 넘침 없음·PC 문서/우측 고정·왼쪽 휠/PageDown·연락처 접근·숨긴 스크롤바를 확인했다. 모바일3폭은 기존 화면과 캡처 해시가 같다. 스크롤한 상태의 홈3개 색상 전환, 다른 페이지 gutter 유지, NH 상세 진입/뒤로 가기와 읽던 위치180px 복원도 확인했다. 원래 문서 스크롤의 복귀 동작과 대조했다. 최종 시안에서 페이지 JS 오류 없음.
+- 생성: Git 제외된 `output/home-scroll-preview/`의 비교 HTML·Tailwind CSS·시안 스크립트·프록시 서버·검증 스크립트/JSON. 수정 문서: decisions·portfolio-improvement-plan·task-log. 서비스 코드·데이터·의존성 변경 없음. 서비스 lint/빌드/단위 테스트는 반복하지 않았다. PC/모바일 PNG는 직접 확인 후 삭제했다.
+- 결과: 구체 시안 준비 완료, 서비스 구현 승인 대기. 검토 서버4310과 기존 개발 서버3000을 유지했다. 커밋·push·배포·Notion 변경 없음. 기존 별도 운영 점검 후보는 이 홈 제안과 구분한다.
+
+## 2026-11-28 - 미사용 테마 색상·키프레임 정리
+
+- PM/Planner: 사용자가 이전 후보 정리를 승인하며 현재 화면·기능 보존을 요청했다. 시작 문서·현재 소스·조건부 Footer/404 및 생성 CSS를 확인했다. 변경 전 53개 화면·63개 필터/정렬 결과와 홈/메뉴/목록/연락처/404의 10개 상태, 소스/설정 snapshot을 확보했다. 소비되지 않는 정의만 제거하고 실제 홈 색상/모션·다크 모드 정책을 보존하는 범위로 진행했다.
+- Developer: globals의 `--color-tint` 한 줄과 Tailwind의 black/white 재정의·primary 팔레트·wiggle keyframes/animation 및 빈 theme.extend를 제거했다. 파일 전체 ESLint 비활성화 주석도 없애고 `tailwindConfig` 변수로 default export를 정리했다. content·class darkMode·@config·실사용 토큰·홈 키프레임은 그대로다.
+- 수정 파일: 서비스 스타일/설정 `src/app/globals.css`, `tailwind.config.mjs`; 문서 decisions·project-context·portfolio-improvement-plan·task-log. 서비스 스타일 설정 변경 있음. 추적 대상 신규 파일 없음. 나머지 src·프로젝트 원자료·package/lock·루트 layout·홈 컴포넌트는 작업 전과 byte 단위로 같다.
+- 코드 QA: 전체 lint 경고 없이 통과, 기존 Jest 6 suites/26 tests 통과, 최종 프로덕션 빌드/내장 TypeScript 및 diff 공백 검사 통과. 처음 ESLint 비활성화를 제거했을 때 나타난 익명 default export 경고는 이름 있는 설정 객체로 해결한 뒤 lint와 최종 빌드를 다시 확인했다. 테스트의 기존 reduced-motion 안내 외 실패 없음. 독립 읽기 전용 검토에서 제거 대상의 소비처 부재와 두 파일 외 서비스 변경 없음을 확인했다.
+- 화면 QA: localhost:3000의 변경 전 상태와 localhost:3001의 최종 standalone 빌드를 비교했다. Chromium 1440/390/320px 네 페이지·각13개 상세 및 홈649/650px 경계 등 53개 화면의 본문·DOM 배치·계산 스타일·캡처 해시 일치. 필터7×정렬3×폭3의 63개 결과 동일. 별도10상태에서 홈 세 메뉴 hover/색상 전환·벗어나기·reduced-motion·메뉴 hover·목록 hover/focus·이메일 hover·404의 색상/모션/캡처 일치, home-spread/sweep 정의 유지 확인. OS 라이트 설정에서도 .dark 정책이 유지됨을 확인했다.
+- 기능 QA: PC/모바일 Enter·Tab/Shift+Tab·Escape·목록으로, 포커스/배경 잠금 복구, 필터·정렬 유지, 쿼리/직접 딥링크·뒤로/앞으로 가기, 열린 패널 리사이즈, 메뉴 이동, Contact 복사 성공/실패, 홈 대표 링크와 일반 모션 정상. 페이지 오류·가로 넘침 없음.
+- 결과: 승인 범위 완료. 검증 자료는 Git 제외된 `output/theme-cleanup/`에 저장했고 PNG는 메모리에서만 비교해 파일 0개 유지. 임시 프로덕션 검증 서버는 종료하고 기존 개발 서버는 유지했다. 커밋·push·배포·Notion 변경 없음. 이번 정리의 미완료 항목 없음. 기존 API 대체 데이터 정책·실기기/Safari·공유/운영 검토만 별도 후속으로 유지한다.
+
+## 2026-11-28 - 미사용 의존성·폰트 설정 정리
+
+- PM/Planner: 사용자가 이전 후속 후보의 정리를 승인하며 현재 화면·기능 보존을 요청했다. 시작 문서와 기존 의존성 결정을 확인했다. 직접 import·scripts·설정·도구/peer 의존성을 별도 감사하고, 변경 전 소스/설정 snapshot·53개 화면·63개 필터/정렬·실제 폰트/요청 정보를 확보했다.
+- Developer: `gsap`, `@next/bundle-analyzer`, `@tailwindcss/cli`, `autoprefixer`, `ts-jest`를 npm으로 제거했다. 남은 버전 범위와 scripts는 유지했고 lockfile에서 패키지 45개 제거/추가 0개/남은 버전 변경 0개를 확인했다. 기존 결정의 baseline-browser-mapping과 Jest 설정용 ts-node, Testing Library DOM peer, 실제 CSS 빌드 도구를 유지했다.
+- 폰트: 루트 layout의 Geist import/호출/body 변수 클래스와 globals의 `--font-panel` 및 미사용 folio variant 3개만 제거했다. 소비되는 폰트 토큰 5개·Chakra/Pretendard imports·현재 반응형·홈 키프레임·색상은 동일하다. body에 새 font-family를 추가하지 않아 기본 404의 상속도 보존했다.
+- 수정 파일: `package.json`, `package-lock.json`, `src/app/layout.tsx`, `src/app/globals.css`; 문서 `docs/decisions.md`, `docs/project-context.md`, `docs/portfolio-improvement-plan.md`, `docs/task-log.md`. 서비스 코드/설정 변경 있음. 추적 대상 신규 파일 없음. 프로젝트 원자료·나머지 컴포넌트·Tailwind 설정과 기존 미커밋 작업을 보존했다.
+- 설치/코드 QA: `npm ci --ignore-scripts --no-audit --no-fund`, 전체 ESLint, Jest 6 suites/26 tests, 프로덕션 빌드와 내장 TypeScript 검사, diff 공백 검사 통과. 독립 검토에서 실제 설치된 lock 항목 670개의 버전 일치와 남은 direct 선언/설치의 일치를 확인했다. npm의 기존 optional WASM 패키지 `@emnapi/runtime` extraneous 표시는 남지만 기존/현재 lock과 버전이 같으며 새 direct 의존성이나 제거 누락이 아니다. 기존 전이 의존성 deprecation 안내와 테스트 reduced-motion 안내 외 실패 없음.
+- 화면/기능 QA: `npm start`의 standalone 결과를 localhost:3001에서 실행해 변경 전 localhost:3000과 비교했다. 정적 자산은 Docker 배치와 같은 경로로 로컬 연결해 검증했다. 1440/390/320px 네 페이지·13개 상세 및 홈 649/650px 경계 등 53개 화면의 본문·DOM 배치·계산 스타일·캡처 해시가 모두 같고, 필터 7개×정렬 3개×폭 3개인 63개 결과도 일치했다. 키보드/포커스·배경 잠금 복구·상세 닫기·딥링크·뒤로/앞으로 가기·리사이즈·메뉴 이동·Contact 복사 성공/실패·홈 대표 연결·일반 모션 통과. 페이지 오류·가로 넘침 없음.
+- 폰트 QA: 기본 404 포함 6개 경로/상태에서 기존에 글리프가 측정된 14개 샘플의 실제 서체/글리프 수가 같다. 최초 진단에서 목록 3개 샘플은 첫 paint 전이라 baseline 글리프가 비어 있어 비교가 실패했으며, 앱 변경 없이 진단에서 미측정 샘플을 구분했다. 해당 목록의 시각적 보존은 별도로 통과한 53개 화면 픽셀/스타일 비교에 포함된다. 모든 검사 경로의 Geist 변수와 불필요한 로컬 woff 요청이 제거됐음을 확인했다.
+- 결과: 승인 범위 완료. 검증 자료는 Git 제외된 `output/dependency-font-cleanup/`에 저장했고 PNG는 메모리에서만 비교해 output PNG 0개 유지. 임시 프로덕션 검증 서버는 종료하고 재설치 후 개발 서버를 localhost:3000으로 재시작했다. 커밋·push·배포·Notion 변경 없음.
+- 후속: 현재 의존성/폰트 정리 요청의 미완료 항목 없음. API 대체 데이터 정책·실기기/Safari·실제 공유/운영 확인은 기존 별도 후보다. 감사 중 확인한 미사용 테마 색상/키프레임은 이번 폰트/의존성 범위와 구분해 개선 계획의 선택 후보로 기록했다.
+
+## 2026-11-28 - 승인된 네 가지 컴포넌트 구조 정리
+
+- PM: 사용자가 앞선 네 가지 개선안 전체 구현과 현재 화면·기능·내용 보존을 승인했다. 시작 문서와 미커밋 작업본을 확인하고, 변경 전 소스/설정 snapshot 및 53개 화면·63개 필터/정렬 결과를 확보했다. 새 기능·디자인·의존성 정리로 범위를 넓히지 않았다.
+- Planner: ① 미사용 파일 제거 ② 화면별 폴더/이름 통일 ③ JSX/이유 중심 주석 ④ 필터 순수 로직 추출/제목 별칭 정리로 나누었다. 파일 소유 범위를 분리해 병렬 구현하고 root가 통합 검증·문서를 담당했다. 기존 서버/클라이언트 경계·데이터·DOM·Tailwind 클래스·상태/URL 동작 보존을 완료 기준으로 삼았다.
+- Developer: 미사용 컴포넌트 14개와 ThemeToggle 전용 테스트를 삭제했다. Hero·ProjectsPreview·ProjectsPreviewSkeleton을 home/으로 이동하고 Stacks→AboutTechStack 파일/export/import를 통일했다. 상세와 페이지 wrapper의 압축 JSX를 펼쳤으며 영역·고정 key·포커스/배경 잠금·URL 이동 이유를 한국어 주석으로 설명했다. 기존 필터 조건을 lib/project-filter.ts로 옮기고 컨테이너의 UI 상태/URL은 유지했다. projectOriginalTitle 별칭을 없애 카드의 접근성 제목도 projectDisplayTitle을 사용한다.
+- 신규 파일: `src/lib/project-filter.ts`, `src/lib/project-filter.test.ts`(9개 회귀 사례). 이동/이름 변경 4개: `sections/Hero.tsx` → `home/Hero.tsx`, `sections/ProjectsPreview.tsx` → `home/ProjectsPreview.tsx`, `sections/ProjectsPreviewSkeleton.tsx` → `home/ProjectsPreviewSkeleton.tsx`, `about/Stacks.tsx` → `about/AboutTechStack.tsx`(앞 경로는 src/components/ 기준).
+- 기존 서비스 파일 수정 7개: `src/app/page.tsx`, `src/app/(pages)/about/page.tsx`, `src/app/(pages)/projects/page.tsx`, `src/components/projects/ProjectPanel.tsx`, `ProjectCard.tsx`, `ProjectsContainerClient.tsx`, `src/constants/project-presentation.ts`. 삭제 14개 상세 목록은 개선 작업계획에 기록했다. 추가 삭제: `src/components/common/ThemeToggle.test.tsx`. 문서 수정: README·project-context·decisions·portfolio-improvement-plan·task-log. 실제 서비스 코드 변경 있음.
+- 코드 QA: 전체 ESLint, Jest 6 suites/26 tests, 프로덕션 빌드와 내장 TypeScript 검사, diff 공백 검사 통과. 기존 테스트 19개에서 삭제 컴포넌트 전용 2개를 제거하고 필터 회귀 9개를 추가했다. reduced-motion 안내 warn 외 실패 없음. 독립 검토에서 import 51개 해결 및 경로/이름/필터 추출을 정규화한 컴파일 AST의 동등성을 확인했다. 홈 이동 3개는 byte 동일하고 AboutTechStack은 함수명만 변경했다. 원자료 projects.ts·globals.css·루트 layout·package/lock·Tailwind 설정은 변경 전과 같다.
+- 화면 QA: 변경 전 localhost:3000과 프로덕션 빌드 localhost:3001을 Chromium으로 비교했다. 1440/390/320px의 홈·About·Projects·Contact 및 각 13개 상세, 649/650px 홈 경계로 총 53개 화면의 본문·DOM 배치·계산 스타일·화면 캡처 해시가 모두 동일했다. 필터 7개×정렬 3개×폭 3개의 63개 결과도 같다. 브라우저 오류·가로 넘침 없음.
+- 기능 QA: 1440/390/320px에서 Enter 열기, Tab/Shift+Tab 순환, Escape/목록으로 닫기, 포커스 복귀, 배경 inert/스크롤 잠금 복구, 필터·정렬 유지, 쿼리 보존, 직접 딥링크·뒤로/앞으로 가기, 열린 패널 리사이즈, 메뉴 키보드/페이지 이동, Contact 복사 성공/권한 실패 및 수동 선택, 홈 대표 프로젝트 연결 통과. 일반 모션의 행 강조와 패널 퇴장 후 복구도 확인했다.
+- 결과: 네 가지 모두 로컬 구현·검증 완료. 비교 결과와 원본 snapshot은 Git 제외된 `output/structure-cleanup/`에 보관한다. PNG는 메모리에서 비교했으며 파일 생성 없이 output PNG 0개를 유지했다. 기존 미커밋 작업 보존, 커밋·push·배포·Notion 변경 없음. 임시 프로덕션 검증 서버는 종료하고 기존 개발 서버는 유지했다.
+- 남은 별도 후보: 미사용 GSAP/폰트·variant 설정 정리, API와 페이지의 DB 대체 정책 검토. 실기기/Safari·실제 공유·운영 데이터 확인은 기존 후속 범위다. 이번에 승인된 네 가지 중 미완료 항목은 없다.
+
+## 2026-11-28 - 컴포넌트 구조·명명·주석·Tailwind 잔여 검토
+
+- PM: 시작 문서·기존 승인 범위와 미커밋 변경을 확인했다. 전체 구조는 검토, 잔여 CSS는 가능한 수정으로 구분했다. 실제 App Router 진입점과 import·데이터 흐름을 확인하고 서비스 파일 해시를 저장했다.
+- Planner: 구조·가독성·스타일을 병렬 읽기 전용 검토했다. 서버 조회/클라이언트 상태/표시 컴포넌트 경계는 적절하다. 앱에서 참조되지 않는 구형·백업 14개, 홈 파일의 home/sections 분산, 모호한 Stacks 이름과 제목 함수 별칭, 압축된 상세 JSX, UI에 섞인 순수 필터 정책을 후속 후보로 정리했다. 기존 동작의 이유를 설명하는 주석은 유지하고 영역 구분과 URL/포커스 계약 설명을 보완하도록 제안했다.
+- Developer: `HomeNavigation.tsx` 연락처의 정의되지 않은 Tailwind `text-s`만 제거했다. 서비스 CSS는 `globals.css` 하나이며 공통 설정·토큰·키프레임뿐임을 확인했다. 컴포넌트 CSS나 정적 inline style의 추가 전환 대상은 없다. README에 실제 코드 진입점/역할 안내를 추가하고 제안은 계획 문서에 기록했다. 소스 이동·삭제·기능 리팩터링은 수행하지 않았다.
+- 수정 파일(이번 작업): `src/components/home/HomeNavigation.tsx`, `README.md`, `docs/decisions.md`, `docs/portfolio-improvement-plan.md`, `docs/task-log.md`. 기존 미커밋 작업을 보존했다. 추적 대상 신규 파일 없음. 검증 JSON은 Git 제외된 `output/code-review/`에 저장했다.
+- QA: 전체 ESLint·Jest 6 suites/19 tests를 먼저 통과했다. 클래스 제거 후 대상 ESLint·HomeNavigation 3 tests를 통과했다. Chromium 1440/650/649/390/320px에서 연락처의 실제 텍스트·href·폰트·크기·행간·굵기·색·위치가 변경 전과 동일하고 가로 넘침이 없음을 확인했다. 소스 해시 비교로 HomeNavigation만 달라졌음을 확인했다. reduced-motion 안내 warn 외 테스트 실패 없음. PNG 생성 없음, `output/` PNG 0개 유지. 화면을 바꾸지 않는 한 클래스 제거라 전체 빌드는 반복하지 않았다.
+- 결과/후속: 검토와 요청 범위 스타일 점검 완료. 구형 파일 → 화면별 폴더/이름 → JSX/주석 → 필터 정책 순서로 정리하는 안을 계획에 남겼다. API/페이지의 DB 대체 정책 차이와 미사용 폰트·variant는 낮은 우선순위 후보다. 기존 실기기/Safari·실제 공유·운영 데이터 점검도 유지한다. 커밋·push·배포·Notion 변경 없음.
+
+## 2026-11-28 - 검증 완료 PNG 로컬 삭제
+
+- 사용자 요청으로 `output/`의 검증 PNG282개(약22.4MiB)를 삭제했다. 삭제 전 Git 추적 여부와 폴더 범위를 확인했고 삭제 후 해당 폴더에 PNG가0개임을 확인했다.
+- 서비스 이미지·코드·시안 HTML·검증 스크립트·JSON은 유지했다. 관련 결정과 컨텍스트를 갱신했으며 앞으로도 검증이 끝난 PNG는 보관하지 않는다. 기존 캡처 경로는 과거 검증 이력으로만 남는다.
+- 문서 수정: decisions·project-context·task-log. 서비스 코드 변경 없음. 서비스 테스트는 수행하지 않았다.
+
+## 2026-11-28 - 검토 PNG 등 로컬 산출물 제외
+
+- PM/Planner: 사용자가 작업 변경 목록의 많은 PNG를 지적했다. `output/` 미추적355개 파일 중 PNG282개(약22.4MiB)를 확인했고 Git 추적 파일이나 서비스·빌드 경로 의존이 없음을 점검했다.
+- Developer: `.gitignore`에 루트 `/output/`만 추가했다. 기존 시안·캡처·QA 파일은 로컬에 보존하며 서비스 자산·코드·의존성은 변경하지 않았다. 관련 결정과 프로젝트 컨텍스트를 갱신했다.
+- 수정: `.gitignore`, `docs/decisions.md`, `docs/project-context.md`, `docs/task-log.md`. 생성·삭제 없음. QA: diff 공백 검사, Git ignore 적용과 `output/`의 일반 미추적 목록 제외 확인. 서비스 변경이 없어 빌드/테스트는 수행하지 않았다.
+- 이후 검증 산출물은 이 폴더에 보관하고 Git에 강제로 추가하지 않는다. 이전 기능·운영 점검 후보는 그대로다.
+
+## 2026-11-28 - 상세 하단 링크 복사 제거
+
+- PM/Planner: 사용자가 상세 하단의 링크 복사 제거와 `목록으로`만 남기는 변경을 명시했다. 현재 컴포넌트와 복사 상태/안내/테스트 연결을 확인하고 기존 본문·딥링크·닫기·필터/정렬을 보존하는 범위로 진행했다.
+- Developer: `ProjectLinkCopy`와 전용 Clipboard·상태·입력·아이콘을 제거하고 상세 하단에 기존 목록으로 버튼을 직접 렌더링한다. 안내의 빈 여백도 제거했다. 복사 전용 테스트를 정리하고 기존 키보드 시나리오를 닫기↔목록으로 포커스 순환으로 맞췄다. 현재 비교 시안도 두 모드 모두 같은 하단을 사용한다.
+- 수정: 서비스 `src/components/projects/ProjectPanel.tsx`, 관련 `ProjectPanel.test.tsx`, `output/final-review/preview.js`; 문서 decisions·project-context·portfolio-improvement-plan·task-log. 검증 자료 생성: `output/remove-project-copy/`. 소스 해시로 해당 컴포넌트/테스트만 달라졌음을 확인했다. 프로젝트 원자료·Contact 복사·다른 서비스 파일 변경 없음.
+- QA: 대상 ESLint·TypeScript noEmit·Jest3건·diff 공백 검사 통과. 테스트의 reduced-motion 안내 외 실패 없음. Chromium1440/390/320px 각13상세의 원문·기여·기술 유지, 하단버튼1개/복사UI없음, Tab/Shift+Tab·목록으로/Escape·포커스 복귀·필터/정렬 보존·직접 딥링크를 확인했다. 가로 넘침·페이지 JS 오류 없음. 현재 시안두모드×3건의 목록으로/닫기/다시열기도 통과했고 PC·모바일 하단 캡처를 직접 확인했다.
+- 결과: 로컬 반영 완료. 커밋·push·배포·Notion 변경 없음. 이전 실기기/Safari·공유 메타정보·운영 데이터 점검 후보는 유지한다.
+
+## 2026-11-28 - 승인된 폰트·줄바꿈 4건 반영
+
+- PM/Planner: 사용자가 직전 검토의 네 가지 수정을 승인하고 나머지 구성·내용 유지를 명시했다. 기존 실물 시안과 현재 소스를 확인하고 구현 전 서비스 해시·4페이지 main 원문을 저장했다. 추가 승인이나 라이브러리 없이 해당 범위만 반영했다.
+- Developer: PageHeading 그룹은 필요할 때 기간만 다음 줄로 넘기고 제목 크기를 유지한다. 목록/상세 제목은 단어 단위 줄바꿈을 사용하며 긴 단어 넘침 방지도 유지한다. 기간의 날짜/괄호 주석을 각각 inline-block/nowrap으로 표시하고 원자료 `(초기 개발)` 및 공백을 보존했다. About·Contact의 본문은 Pretendard 우선, Contact 제목은 Chakra Petch다. 홈 `백엔드·Agent`만 nowrap span으로 묶었다.
+- 서비스 수정6개: `src/app/globals.css`, `src/components/layout/PageHeading.tsx`, `src/components/projects/ProjectCard.tsx`, `src/components/projects/ProjectPanel.tsx`, `src/components/contact/ContactBox.tsx`, `src/components/sections/Hero.tsx`. 관련 문서4개와 현재 상세 비교 시안 `output/final-review/preview.js`도 갱신했다. 검증 스크립트·원문/해시·JSON·캡처 생성: `output/typography-fix/`. 데이터·의존성·나머지 서비스 파일은 그대로다.
+- QA: 변경TSX5개 ESLint·TypeScript noEmit·diff 공백 검사 통과. Projects는1440/1000/320/360/375/390/760/761px에서 각 목록13건/상세5건의 원문·폰트·단어 줄 위치·넘침 없음, 필터7개·대표5건·전체13건·정렬·딥링크·Escape/포커스 복귀를 검증했다. PageHeading320/360px 기간만 다음 줄,375/390px 기존 배치와 LG 날짜/주석 묶음을 확인했다.
+- QA: 홈1440/650/649/390/320, About1440/1295/1294/390/320, Contact1440/390/320에서 실제 글리프·반응형·가로 넘침·메뉴 가림을 확인했다. About 본문/기술과 Contact 이메일은 Pretendard, Contact 제목은 Chakra Petch다. About1295/1294 및 홈650/649 전환을 보존했고 홈 합성 용어도 한 묶음이다. 실제 PC·모바일 캡처를 메인과 각 담당이 확인했다.4페이지 전체 main 텍스트가 작업 전과 일치하며 페이지 JS 오류 없음.
+- 개발 환경: 첫 About 검사에서 이전 CSS가 제공돼 실패했다. 현재 저장소 dev 프로세스임을 확인한 후 Next dev를 재시작했고 실제 CSS·글리프와 해당 QA를 다시 확인해 통과했다. 이 문제를 브라우저 통과로 간주하지 않았다. 단순 표시/마크업 변경에 새 영구 테스트·전체 빌드는 추가하지 않았다.
+- 결과: 승인4건 로컬 구현·검증 완료. 커밋·push·배포·Notion 변경 없음. 기존 실기기/Safari·실제 공유·운영 데이터 점검은 후속 후보로 유지한다.
+
+## 2026-11-28 - 전체 페이지 폰트·간격 최종 재검토
+
+- PM/Planner: 사용자가 홈·About·Projects·Contact 전체 재검토를 요청했다. 공개 사이트가 아닌 현재 브랜치의 localhost 작업본과 최근 승인 디자인을 기준으로 했다. 서비스 수정 요청으로 확대하지 않았다. 홈/About와 Projects/Contact를 나누어 독립 시각 검토하고 메인 에이전트가 실제 캡처·글리프·결정 기록을 교차 확인했다.
+- 발견:320/360px Projects 페이지 제목의 단어 분리,390px Festival Life 상세의 `서비 / 스`와320px PoC의 `채 / 팅`, PC LG 기간의 `[초기 개 / 발]`. About·Contact 본문은 시스템 폰트로 홈/Projects의 Pretendard와 다르며 Contact 제목도 시스템 폰트다. 홈1440px에서는 `백엔드 / ·Agent` 줄바꿈이 남는다. 문제별 우선순위와 보완안은 개선 작업계획에 미구현 후보로 기록했다.
+- 정상 확인: 제목 공통 폰트는 최근 변경대로 적용된다. 주요 문단/섹션 간격, About의50:50→세로 전환, Contact 중앙 구성, 모바일 홈 하단 이메일과 고정 메뉴 사이 약44px 여유는 안정적이다.650~768px 홈 좁은 본문은 기존 승인된 전환 결과로 추가 필수 수정에 포함하지 않았다.
+- 검증: Chromium 홈1440/1024/768/650/649/390/320, About1440/1295/1294/1024/768/390/320, Projects·Contact1440/390/320와 추가 Projects760/761·제목320/360/375/390 확인. 상세5건을 PC/모바일에서 검토했다. 글자 중간 분리는 단순 가로 넘침 검사로 검출되지 않아 실제 캡처와 문자 줄 위치를 함께 확인했다. CDP로4페이지의 실제 폰트와 제목/본문 크기를 수집했다. 페이지 제목의 자연스러운 줄 전환·상세 단어 유지 및 본문 폰트 임시안을 화면에서 비교했다. 이는 서비스 적용이나 사용자 승인으로 기록하지 않는다.
+- 파일: `docs/portfolio-improvement-plan.md`, `docs/task-log.md`만 문서 수정. `output/typography-audit/`에 검토 스크립트·JSON·원본/임시안 캡처 생성. 서비스·의존성 파일은 작업 전 해시와 동일하다. 코드 수정이 없어 빌드·린트·단위 테스트는 반복하지 않았다. 커밋·push·배포·Notion 변경 없음.
+- 다음 후보: 위 줄바꿈3종을 우선 정리하고 본문 서체 통일·홈 구분점 묶음을 작은 보완 범위로 검토한다. 기존 실기기/Safari·실제 공유·운영 DB 점검은 별도 후속으로 유지한다.
+
+## 2026-11-28 - 홈·목록·상세 프로젝트 제목 폰트 통일
+
+- PM/Planner: 사용자 질문에 실제 렌더링을 확인해 홈 Pretendard·목록 Chakra/Pretendard·상세 Arial/Apple SD Gothic Neo 차이를 식별했다. 사용자가 공통 기준 적용을 승인했다. 실제 콘텐츠를 넣은1440/390/320px 임시 미리보기로 줄바꿈과 가로 넘침을 먼저 확인했다.
+- Developer: `ProjectsPreview`의 제목 span과 `ProjectPanel`의 h2에 기존 `font-project-title`을 적용했다. 목록은 이미 같은 토큰이다. 제목 외 역할·설명·기술 목록, 크기·굵기·간격과 원자료는 그대로다. 현재 상세 비교 시안도 갱신했다.
+- 수정: 서비스 `src/components/sections/ProjectsPreview.tsx`, `src/components/projects/ProjectPanel.tsx`; `output/final-review/preview.js`; 문서 decisions·project-context·portfolio-improvement-plan·task-log. 검증 자료 생성: `output/project-font-review/`. 서비스 코드 변경 있음(제목 클래스2곳), 라이브러리 변경 없음.
+- QA: 대상2개 파일 ESLint·diff 공백 검사 통과. Chromium1440/390/320px에서 홈3건 및 목록/상세13건씩 제목 원문·공통 폰트·가로 넘침 없음을 확인했다. CIA 제목은 각 위치의 실제 글리프가 Chakra Petch/Pretendard로 렌더링되는지 CDP로 확인했다. 본문/기술 폰트, 딥링크·Escape·포커스 복귀를 검증했고 페이지 JS 오류 없음. 상세 시안3건도 공통 토큰 적용 확인. 실제 PC 상세·모바일 홈/긴 상세 제목 캡처를 검토했다. CSS 클래스만 바꾸므로 새 영구 테스트나 전체 빌드·타입 검사는 반복하지 않았다.
+- 결과: 로컬 적용 완료. 기존 실기기/Safari·운영 공유 점검 후보는 유지한다. 커밋·push·배포·Notion 변경 없음.
+
+## 2026-11-28 - 제목에 포함된 회사명 중복 정리
+
+- PM/Planner: 사용자의 후속 수정 요청에 따라 실제 13개 제목·회사명과 목록/상세 표시 구조를 확인했다. 제목에 포함된 전체 회사명 및 확인된 별칭은 별도 표시를 숨기고, 제목에 없는 회사는 유지하기로 했다.
+- Developer: 공통 표시 함수로 목록·상세의 중복 11건을 제거하고 코드클릭 2건은 유지했다. 회사명 요소의 여백도 함께 사라진다. 비교 시안에도 같은 정책을 반영했다.
+- 수정: `src/constants/project-presentation.ts`, `src/components/projects/ProjectCard.tsx`, `src/components/projects/ProjectPanel.tsx`, `output/final-review/preview.js`; 문서 decisions·project-context·portfolio-improvement-plan·task-log. 검증 자료 생성: `output/company-label-review/`. 서비스 코드 변경 있음(표시 조건만). 회사·제목·기간·본문 원자료, 홈·About, 의존성은 그대로다.
+- QA: 변경3개 파일 ESLint·TypeScript noEmit·diff 공백 검사 통과. Chromium1440/390/320px에서 각13건의 목록/상세 표시 조건·제목 일치·딥링크·Escape와 포커스 복귀·가로 넘침 없음을 확인했다. 비교 시안3건도 중복 요소가 없다. PC 목록·모바일 상세 캡처를 직접 검토했고 페이지 JS 오류 없음. 별도 읽기 전용 검토에서도 표시 정책과 간격 처리를 확인했다. 작은 표시 변경에 전체 빌드나 새 영구 테스트를 추가하지 않았다.
+- 결과: 로컬 반영 완료. 기존 실기기/Safari·운영 공유 점검 후보는 유지한다. 커밋·push·배포·Notion 변경 없음.
+
+## 2026-11-28 - 프로젝트 영어 별칭 제거
+
+- PM/Planner: 사용자의 제목 매칭 피드백에 따라 `ver2` 실제 제목 데이터와 현재 열어둔 비교 시안을 확인했다. 별도 영어 별칭이 식별을 방해하므로 원래 `Project.title`로 통일하는 후속 수정으로 진행했다. 실제 서비스명의 영어는 유지하고 제목 원자료를 새로 만들지 않았다.
+- Developer: 영어 별칭13개와 삼성전자·오스템 영문 고객사 강제 표기를 제거했다. 제목 언어를 내용에 맞춰 설정하고 상세의 동일 부제를 없앴다. 홈도 같은 프로젝트 데이터에서 제목을 읽고 대표 순서·역할은 유지한다. 미사용 구형 카드의 오스템 영문 예외도 제거했다. 열려 있는 비교 시안의 제목·회사 표시도 갱신했다.
+- 수정: `src/constants/project-presentation.ts`, `src/components/projects/ProjectCard.tsx`, `src/components/projects/ProjectPanel.tsx`, `src/components/sections/ProjectsPreview.tsx`, `src/components/sections/ProjectCards.tsx`; 문서 decisions·project-context·portfolio-improvement-plan·task-log; `output/final-review/preview.js`. 신규 QA 자료는 `output/title-review/`에 저장했다. 서비스 코드 변경 있음(표시명/표시 경로만). 프로젝트 원자료·기간·기여·소개·About·상세 공유 기능·의존성 변경 없음.
+- QA: 변경5개 파일 ESLint, TypeScript noEmit, diff 공백 검사 통과. Chromium1440/390/320px에서 각13건의 목록/상세 제목 일치·한국어 lang·중복 부제 없음·기존 딥링크·닫기와 가로 넘침 없음을 확인했다. 홈3건 제목과 비교 시안3건도 동일하다. PC 목록과 모바일 상세 캡처를 직접 검토했고 페이지 JS 오류 없음. 단순 표시명 수정에 새 영구 테스트나 전체 빌드를 반복하지 않았다.
+- 결과: 로컬 반영 완료. 열려 있던 비교 시안은 새로고침하면 갱신된다. 커밋·push·배포·Notion 변경 없음. 이전 실기기/Safari·운영 공유 점검 후보는 그대로 남는다.
+
+## 2026-11-28 - 최종 채용 관점 검토와 승인 시안 개선 적용
+
+- PM: 사용자가 마지막 내용 검토와 포트폴리오 개선을 요청했다. 시작 문서와 `ver2` 미커밋 작업본을 확인하고, 인사·프론트엔드 담당 관점의 별도 읽기 전용 검토를 수행했다. 중대한 경력 오류보다 기여 발견성, 모바일 좁은 읽기 폭, 상세 공유 시 필터 초기화 문제가 핵심이었다. 사용자는 홈·About도 개선 대상으로 열었다.
+- Planner: 실제 원문을 넣은 홈 및 상세 현재/개선 비교 시안을 `output/final-review/`에 준비했다. 기존 Tailwind·Playwright로 PC/모바일 원문 보존·배치·복사 동작을 확인한 뒤 사용자에게 구체 범위를 제시했고 “시안대로 모두 반영”을 승인받았다. 전체 재설계·고객사 화면·새 라이브러리는 포함하지 않았다.
+- Developer: 홈의650px 미만 중복 margin을 없애24px padding만 유지하고 Featured3건 역할을 보강했다. 주요 기여20건에 정확한 문장 일치 소제목을 붙이고 desktop150px/본문2열, 모바일 세로로 배치했다. 링크 복사는 현재 URL/query를 유지하며 성공/실패를 구분하고, 실패한 주소를 readonly input에서 직접 복사할 수 있게 했다. 입력도 기존 포커스 순환에 포함했다. 이름/직무 메타데이터를 브라우저·OG·Twitter에 적용했다.
+- 서비스 수정5개: `src/components/home/HomeNavigation.tsx`, `src/components/sections/ProjectsPreview.tsx`, `src/components/projects/ProjectPanel.tsx`, `src/constants/project-presentation.ts`, `src/app/layout.tsx`. 신규 테스트: `src/components/projects/ProjectPanel.test.tsx`(6건). 문서 수정4개: decisions·project-context·portfolio-improvement-plan·task-log. 시안·캡처·QA 스크립트/JSON은 `output/final-review/`에 생성했다. 기존 미커밋 About 작업과 프로젝트 본문/기간 변경은 보존했다.
+- 코드 QA: ESLint 오류·경고 없이 통과, 전체 Jest6 suites/22 tests 통과, Next 프로덕션 빌드와 내장 TypeScript 검사 통과. 신규 테스트는 복사 비동기 성공/거부/API 부재·프로젝트 전환·포커스 복귀·미확인 문구 fallback을 확인한다. Motion의 reduced-motion 테스트 안내warn1회 외 실패 없음. 서비스77개 기준 해시 비교로 승인된 기존5개만 달라졌고, `projects.ts`·Hero·About 원문 파일은 동일함을 확인했다.
+- 브라우저 QA: Chromium1440/390/320/649/650px. 홈 소개 원문 보존,1440px 읽기 폭632px 유지,390px207→327px 및320px137→257px 개선을 확인했다. 모바일 하단 메뉴가 마지막 연락처를 가리지 않았고649/650 전환도 일치했다.1440/390px에서 About 본문 일치, 기간3건/목록13건/필터7개, 상세6건씩 총12건의 소제목·2열/세로·하단 접근·닫기, Enter·포커스 복귀·뒤로 가기를 확인했다. 실제 Clipboard API 성공 시 URL·history·timeOrigin·스크롤·필터·정렬이 그대로였고 권한 거부 시 URL 선택과 Tab/Shift+Tab/Escape도 통과했다. Contact 이메일 복사와4경로의 브라우저/OG/Twitter 제목을 확인했다. 페이지 JS 오류 없음. 개발 도구 UI만 QA 브라우저에서 숨겼다.
+- 시각 검토: 실제 모바일 홈, PC 상세 하단, 모바일 복사 실패 화면 캡처를 직접 확인했다. 시안과 구현은 동일한 본문·위계를 사용한다. 별도 인사 관점 최종 검토에서도 기간·역할·소제목 의미와 원문 보존을 재확인했다.
+- 결과: 승인 범위 로컬 구현·검증 완료. 커밋·push·배포·Notion·운영 DB 변경 없음. 실기기/Safari·실제 공유 미리보기·운영 데이터 확인은 후속으로 남겼다. 프로젝트별 공유 제목/이미지, 공개 가능한 작업 증거 확장은 선택 후보로 유지한다.
+
+## 2026-11-28 - 승인된 프로젝트 기간·상세 보강 반영
+
+- PM/Planner: 사용자가 앞선 기간 3건 정정과 상세 보강을 승인하고 홈·About 유지 조건을 명시했다. 시작 문서·현재 `ver2`·미커밋 변경을 확인하고 `Project`의 기존 기간/summary/highlights만 수정하는 범위로 진행했다. 홈은 고정 제목·ID만 사용하고 목록 소개는 별도 데이터이므로 상세 보강이 홈이나 목록 소개를 바꾸지 않음을 확인했다.
+- Developer: NH2022.02~2022.10, 하나은행2023.02~2023.07, Connect Always2023.07~2023.10을 반영했다. 삼성증권에는 기능/UI 제안과 AI 활용 Vitest 회귀 테스트·역할 분리, Festival Life에는 업무시간 외 참여와 데이터/API 응답 형식 설계, 오스템에는 반복 수정 문제 개선 목적, CIA에는 SSE 및 부분 오류 대응, 교보톡톡에는 실시간 채팅/API 비동기 처리/Pinia 상태관리를 보강했다.
+- 수정 파일: 서비스 데이터 `src/constants/projects.ts`; 문서 `docs/decisions.md`, `docs/project-context.md`, `docs/portfolio-improvement-plan.md`, `docs/task-log.md`. 저장소 신규 파일 없음. 검증 스크립트·캡처·결과 JSON은 `/tmp/portfolio-content-update/`에 저장했다. 서비스 변경은 데이터 파일 1개뿐이며 홈·About의 기존 미커밋 변경을 포함한 나머지 서비스 파일은 보존했다. 프로젝트 13건·ID·대표 순서·역할·기술 목록·목록 서비스 소개·UI·의존성 변경 없음.
+- QA: 변경 파일 ESLint, `tsc --noEmit --incremental false`, diff 공백 검사를 통과했다. 서비스 파일 77개를 작업 전 해시와 비교해 `src/constants/projects.ts`만 달라졌음을 확인했다. 읽기 전용 별도 에이전트가 원자료에 대한 과장 여부와 홈/About 영향 범위를 검토했다.
+- 브라우저 QA: localhost:3000 Chromium1440×1000/390×844에서 홈·About의 실제 본문이 변경 전과 일치함을 확인했다. 각 폭에서 목록 기간 3건·프로젝트 13건, 7개 필터, 날짜 정렬, Enter 열기·Tab/Shift+Tab 순환·Escape 닫기와 포커스 복귀·뒤로 가기를 확인했다. 변경 대상 상세 8건씩 총16개에서 새 문구/기간·가로 넘침 없음·하단 접근·닫기를 검증했다. 삼성증권 모바일 하단과 Festival Life PC 캡처를 직접 확인했으며 페이지 JavaScript 오류 없음. 검증 브라우저에서만 Next 개발 도구 표시를 숨겨 모바일 하단 버튼과 겹치는 영향을 제외했다. 서비스 코드로 개발 도구를 변경하지 않았다.
+- 결과: 승인 범위 로컬 반영·검증 완료. 데이터/문구 변경이므로 전체 빌드·광범위 단위 테스트를 반복하거나 새 영구 테스트를 추가하지 않았다. 커밋·push·배포·운영 DB·Notion 변경 없음.
+- 후속 후보: 이전 계획의 지원 전 전체 통합 점검과 공유·운영 점검은 별도 범위로 남는다. 이번에 제안한 상세 5건은 교보톡톡 선택 후보까지 반영했으며 추가 문구 구현 대기는 없다.
+
+## 2026-11-28 - 현재 브랜치 포트폴리오와 최종 이력서 대조 검토
+
+- PM: 시작 체크리스트와 기존 결정·후속 항목을 확인했다. 사용자 요청 범위는 추가·수정 후보 검토이며, 공개 페이지가 아닌 `ver2`의 미커밋 변경을 포함한 작업본을 대상으로 확정했다. 최신 이력서 `(2).pdf`와 이후 채택한 삼성증권·NH 문구를 사용했다.
+- Planner: 현재 `Project` 모델·Projects 목록과 상세·홈·About을 대조했다. NH/하나은행/Connect Always 기간 3건 차이, 삼성증권의 회귀 테스트·리팩터링 및 Festival Life의 데이터·API 응답 형식 설계 누락을 우선 후보로 정리했다. 오스템의 개선 목적·CIA의 부분 오류 대응은 다음 후보, 교보톡톡의 직접 구현 보강은 선택 후보로 남겼다. 기존 소개와 대표 순서는 유지하는 안을 권고했다.
+- Developer: 시작하지 않았다. 서비스 데이터·컴포넌트·스타일·의존성·DB·Notion 변경, 커밋·push·배포 없음. 기존 미커밋 변경과 미추적 파일을 보존했다.
+- 문서 수정: `docs/decisions.md`, `docs/portfolio-improvement-plan.md`, `docs/task-log.md`. 저장소 신규 파일 없음. 검토 자료와 화면 캡처는 `/tmp/portfolio-resume-audit/`에만 생성했다.
+- QA: 해당 저장소에서 실행 중인 localhost:3000을 Chromium으로 확인했다. 1440px 홈·About·Projects와 프로젝트 상세 8건의 실제 문구, 390px About·삼성증권 상세를 확인했다. 기록된 페이지 오류와 검사한 화면의 가로 넘침은 없었다. PC About·Festival Life 상세와 모바일 삼성증권 상세 캡처를 직접 검토했다. 이번 검토는 전체 키보드/필터 회귀 검사나 운영 검증을 대신하지 않는다. 서비스 수정이 없어 빌드·단위 테스트는 반복하지 않았다.
+- 다음 후보: 개선 작업계획의 최신 검토 항목을 구현 범위 협의에 사용한다. 이전 계획의 지원 전 통합 점검 및 공유·운영 점검은 여전히 별도 후속이다. 검토 결과를 구현 완료나 사용자 승인으로 기록하지 않는다.
+
+## 2026-11-27 - About 소개 글 영역 확대
+
+- PM/Planner: 현재 소스·diff와 실제40:60 배치를 확인했다. 사용자 요청에 따라50:50을 실제 콘텐츠로 미리 검증하고 소개 최대650px·열 간64px는 유지하기로 했다. 기존 미커밋 변경을 보존했다.
+- Developer: About page의 넓은 화면 grid 비율 유틸리티 한 곳만 변경했다. 서비스 수정은 `src/app/(pages)/about/page.tsx`이며 소개 문구·홈·회사/기간/역할·기술 내용·모바일은 그대로다. 문서 수정: decisions·project-context·portfolio-improvement-plan·task-log. 생성: `output/about-review/wider-intro-qa/`의6개 캡처와 측정 JSON.
+- QA: page 대상 ESLint·diff 공백 검사 통과. Chromium1440/1920/1295/1294/390/320px에서 가로 넘침 및 내부 잘림 없음, 기술6분류와2열/1열 전환 확인. 소개 폭은1440에서509.2→636.5px,1920에서531.2→650px,1295에서451.2→564px. 문단 줄 수는1440에서3+3 유지,1920에서3+3→2+3,1295에서3+4→3+3이다.390/320px 본문 폭335/265px와4+5/5+6줄은 그대로다. 오른쪽 열564–664px에서 기술 목록은2열이며 열 간64px·오른쪽 섹션 간56px 유지. PC1440·전환 직후1295·모바일390 캡처 직접 확인.
+- 로컬 반영 완료. 단순 비율 변경에 전체 빌드·테스트는 반복하지 않았다. 실기기/Safari·운영 검증은 별도 범위이며 이번 변경에 추가 수정 후보는 없다. 커밋·push·배포 없음.
+
+## 2026-11-27 - About 소개 전체 흐름 재작성
+
+- 사용자 피드백으로 어미만 바꾸던 방식을 중단하고, 화면에 담을 내용 협의→데이터 연결 협의→직접 구현을 첫 문단으로 연결했다. 두 번째는 웹/앱 동작 확인과 팀을 이끌면서도 직접 개발한 경험으로 이어진다. 협업 대상별 역할을 구분하고 추상적인 “다양한 책임” 요약은 제거했다. 현재 소스·git 상태를 확인해 다른 변경은 보존했다.
+- 수정: `src/components/about/AboutIntro.tsx`, `docs/decisions.md`, `docs/task-log.md`. 생성: `output/about-review/natural-copy-qa/`의 캡처4개·검증 JSON. 서비스 코드 변경 있음(소개 문구만). 최종 전문은 decisions 최신 항목에 기록했다. 홈·반응형 배치·경력·기술 내용은 유지했다.
+- QA: AboutIntro 대상 ESLint·diff 공백 검사 통과. Chromium1440/1295/390/320px에서 최종 원문 일치·두 문단·가로 넘침 없음 확인. 줄 수는 각각3+3/3+4/4+5/5+6줄이며 PC1440과 모바일390 캡처를 직접 확인했다. 기존 배치 검증을 재사용하고 문구 변경에 전체 빌드/테스트를 반복하지 않았다.
+- 로컬 반영 완료. 추가 문구 조정은 사용자 피드백에 따른다. 커밋·push·배포 없음.
+
+## 2026-11-27 - About 소개 종결과 문장 흐름 후속 수정
+
+- 사용자 “합니다” 반복 피드백에 따라 현재 AboutIntro와 git 상태를 확인한 뒤 지정 두 문단으로 교체했다. 문장 길이·연결·종결을 함께 정리했으며 최종 전문은 decisions 최신 항목에 기록했다. 기존 사실·소개 개발 전용 방침·홈·두 열 배치·경력/기술을 보존했다.
+- 수정: `src/components/about/AboutIntro.tsx`, `docs/decisions.md`, `docs/task-log.md`. 생성: `output/about-review/copy-rhythm-qa/`의 캡처3개·검증 JSON. 서비스 코드 변경 있음(소개 문구만).
+- QA: AboutIntro 대상 ESLint·diff 공백 검사 통과. Chromium1440/390/320px에서 지정 원문 정확한 일치·두 문단 표시·가로 넘침 없음 확인. 문단별3/4/5줄이며 모바일390px 캡처를 직접 확인했다. 단순 문구 수정에 전체 타입/빌드/테스트는 반복하지 않았다.
+- 로컬 반영 완료. 후속 수정은 사용자 피드백에 따른다. 커밋·push·배포 없음.
+
+## 2026-11-27 - About 소개 반복 어미 수정
+
+- 사용자 문구 수정 요청에 따라 현재 소스·미커밋 상태를 확인하고 AboutIntro의 두 문단을 지정 문구로 교체했다. “왔습니다” 반복을 없애고 개발 방식은 현재형, 경험한 팀 조율 역할은 과거형으로 정리했다. 최종 전문은 decisions 최신 항목에 기록했다.
+- 수정: `src/components/about/AboutIntro.tsx`, `docs/decisions.md`, `docs/task-log.md`. 생성: `output/about-review/final-copy-qa/`의 최종 화면 캡처7개·검증 JSON. 서비스 코드 변경 있음(소개 문구만). 직전 승인한 컨테이너1280px 이상40:60 두 열·오른쪽56px 간격·좁은 화면 세로 흐름과 회사/역할/기간·기술·홈은 유지했다.
+- QA: AboutIntro 대상 ESLint·diff 공백 검사 통과. Chromium1920/1440/1295/1294/768/390/320px에서 두 문단 표시·“왔습니다” 제거·두 열/세로 전환·가로 넘침 없음 확인. PC1440과 모바일390 캡처 직접 확인. 넓은 화면은 문단당3줄, 390px은4+4줄, 320px은4+5줄이다. 문구 변경에 전체 타입/빌드/광범위 테스트는 반복하지 않았다. 배치 자체의 타입·메뉴/키보드 검증은 직전 두 열 구현 기록을 따른다.
+- 로컬 `/about`에 최신 배치와 문구 반영 완료. 후속 수정은 사용자 피드백에 따른다. 커밋·push·배포 없음.
+
+## 2026-11-27 - About 넓은 화면 두 열 배치 적용
+
+- PM/Planner: 사용자가 넓은 화면 오른쪽에 Experience와 Tech Stack을 두자고 제안하고 구현을 승인했다. 시작 체크리스트/기존 문맥과 현재 git·diff를 재확인해 기존 About 미커밋 변경을 보존했다. 공통1480px 셸·거터 안에서 컨테이너1280px 이상2:3 비율·열 간64px을 적용하고, 좁은 화면은 기존 순서·간격을 유지하도록 정했다.
+- Developer: About page를 반응형 grid로 바꾸고 Experience/Tech Stack을 about-details로 묶었다. 넓은 화면에서 왼쪽 소개와 오른쪽 경력의 시작선을 맞추고 오른쪽 두 섹션 간격을56px로 조정했다. AboutCareer의650px 제한만 넓은 화면에서 해제했다. 소개 최대650px·두 문단, 이름/직무·역할/회사/기간·기술6분류·자체 폭460px 미만1열 전환은 유지했다.
+- 수정: `src/app/(pages)/about/page.tsx`, `src/components/about/AboutCareer.tsx`, `docs/decisions.md`, `docs/project-context.md`, `docs/portfolio-improvement-plan.md`, `docs/task-log.md`. 생성: `output/about-review/split-qa/`의 검증 스크립트·결과 JSON·9개 폭 캡처. 서비스 코드 변경 있음(About2개 파일). 홈·소개/기술 컴포넌트·공통 메뉴/푸터/PageHeading·의존성 변경 없음.
+- QA: 변경2개 파일 ESLint, TypeScript noEmit, diff 공백 검사 통과. Chromium1920/1440/1295/1294/1280/1279/768/390/320px에서 원문·역할/기간·글자 크기·기술6분류·반응형 열 수·가로 넘침 없음 확인. 스크롤바15px 환경에서 외곽1294px(컨테이너1279px)은 세로, 외곽1295px(컨테이너1280px)은2열로 전환했다. 넓은 화면의 실제 열 폭 비율1:1.5와 시작선 일치, 오른쪽56px 간격을 확인했다. 세로에서는96px/64px 간격과 같은 왼쪽 시작선이 보존됐다. 1440px 소개는509px 폭에서3+3줄, 전환 직후451px 폭에서3+4줄이다. PC1440·전환 직후1295·모바일390 캡처를 직접 검토했다.
+- 메뉴 ArrowDown·Tab·Escape·현재 페이지·포커스 복귀와 Contact 왕복 이동은9개 폭에서 통과했고 JavaScript 오류 없음. 검증 스크립트 초기 실행의 변수 선언 순서를 바로잡은 뒤 전체 검사를 완료했다. 단순 레이아웃 변경에 전체 빌드·광범위 단위 테스트는 반복하지 않았다.
+- 결과/후속: 넓은 화면 오른쪽 여백 후보를 승인된2열 배치로 반영 완료. 로컬 `/about`에서 확인 가능하며 추가 배치 조정은 사용자 피드백에 따른다. 실기기/Safari·운영 환경 검증은 별도 범위다. 커밋·push·배포·Notion 변경 없음.
+
+## 2026-11-27 - 디자이너 검토의 About 세부 개선 반영
+
+- PM/Planner: 사용자가 승인한 세 가지(이름/직무 위계, 경력별 역할, 기술 보조 글자 가독성)만 적용했다. 현재 로컬 diff·미추적 AboutCareer를 확인하고 기존 변경을 보존했다. 650px 소개 폭과96px/64px 섹션 간격은 유지한다.
+- Developer: 이름32px/profile-sm28px·직무16px/15px로 변경하고 영문 이름18px/16px은 유지했다. 회사 아래14px 역할 “프론트엔드 개발” 및 “A&R · 음반·공연 제작”을 추가했다. Tech Stack 분류명14px·사용 맥락13px로 키우고 기술명17px·색상·내용은 그대로 뒀다. 소개 개발 전용·회사/기간·한글 기술6분류와 전역 페이지 제목을 보존했다.
+- 이번 수정: `src/components/about/AboutIntro.tsx`, `src/components/about/AboutCareer.tsx`, `src/components/about/Stacks.tsx`, `docs/decisions.md`, `docs/project-context.md`, `docs/portfolio-improvement-plan.md`, `docs/task-log.md`. 생성: `output/about-review/hierarchy-qa/`의 검증 스크립트·결과 JSON·변경 후 캡처5개. 서비스 코드 변경 있음(About3개 파일). 홈·Projects·Contact·공통 PageHeading·메뉴·푸터·의존성 변경 없음.
+- QA: 변경3개 파일 ESLint·diff 공백 검사 통과. Chromium1920×1080,1440×900,768×1024,390×844,320×780에서 계산된 이름/직무/기술 보조 글자 크기·역할 원문·회사/기간·소개 원문·동일 섹션 간격96px/64px·기술2열/1열·가로 넘침 없음 확인. PC1440과 모바일320 전체 캡처를 직접 확인했고 영문 이름·역할·날짜·기술 사용 맥락 잘림 없음. 메뉴 키보드와 Contact 왕복 이동도 통과, JavaScript 오류 없음. 단순 글자 크기·역할 추가에 전체 빌드/광범위 테스트는 반복하지 않았다.
+- 후속: 넓은 화면 오른쪽 여백은 디자이너 검토의 후순위 후보로 유지한다. 이번 승인 범위는 로컬 반영 완료이며 추가 레이아웃 변경은 시작하지 않는다. 커밋·push·배포·Notion 변경 없음. 실기기/Safari·배포 환경 검증은 별도 범위다.
+
+## 2026-11-27 - About 섹션 간격 한 단계 확대
+
+- 사용자 후속 요청에 따라 현재 diff를 확인하고 기존 변경을 보존했다. 소개→Experience와 Experience→Tech Stack 간격만 PC64→96px, 페이지 컨테이너760px 이하48→64px로 확대했다. 내부 문단·경력 행·기술 그룹 간격과 문구·회사/날짜는 유지한다.
+- 서비스 수정: `src/app/(pages)/about/page.tsx`의 gap 유틸리티 한 줄. 문서 수정: decisions·project-context·portfolio-improvement-plan·task-log. 생성: `output/about-review/spacing-qa/`의 PC/모바일 캡처3개와 측정 JSON. 홈·기타 컴포넌트 미변경.
+- 검증: page 대상 ESLint 및 diff 공백 검사 통과. Chromium1440/390/320px에서 두 섹션 사이 실제 거리가 각각96/64/64px로 동일하며 가로 넘침 없음 확인. PC/390px 캡처 직접 확인. 단순 간격 수정이므로 전체 빌드·광범위 테스트는 반복하지 않았다.
+- 로컬 적용 완료. 추가 간격 조정은 사용자 피드백에 따른다. 커밋·push·배포 없음.
+
+## 2026-11-27 - About 개발 중심 소개·영문 제목·섹션 간격 보완
+
+- PM/Planner: 사용자 최신 요청은 소개글에서 엔터 서술을 빼고 개발 경험만 담는 것이다. 직전의 “이력이 구분이 너무 안 된다” 피드백도 함께 반영한다. 현재 diff와 미추적 AboutCareer를 읽어 앞 작업 이후 추가 로컬 수정이 없음을 확인하고 기존 변경을 보존했다.
+- Developer: 소개를 화면 구조/기능 설계·기획/디자인/백엔드 협의·웹/앱 연동 확인·팀 개발 협업의 두 문단·네 문장으로 교체했다. 홈의 프로젝트/고객사/기능 목록은 반복하지 않는다. 별도 회사/기간 목록의 두 회사와 날짜는 유지하고, ‘경력’ 제목을 표시하며 목록 위1px 구분선·상단16px·행 간20px 간격을 적용했다. 최종 소개 전문은 decisions 최신 항목에 기록했다. 추가 사용자 요청으로 제목을Experience/Tech Stack,22px Chakra Petch로 변경하고 섹션 간격을PC64px/페이지 컨테이너760px 이하48px로 늘렸다. 문단16px·경력 행20px과 한글 기술 분류는 유지한다.
+- 이번 수정: `src/app/(pages)/about/page.tsx`, `src/components/about/AboutIntro.tsx`, `src/components/about/AboutCareer.tsx`, `src/components/about/Stacks.tsx`, `docs/decisions.md`, `docs/project-context.md`, `docs/portfolio-improvement-plan.md`, `docs/task-log.md`. 생성: `output/about-review/development-qa/`의 검증 스크립트·결과 JSON·실제 화면 캡처4개. 서비스 코드 변경 있음(About4개 파일). 기존 미커밋 변경·홈·회사/날짜·메뉴·푸터·의존성 보존.
+- QA: 변경 About4개 파일 대상 ESLint, diff 공백 검사 통과. Chromium1440/768/390/320px에서 최종 두 문단 원문·회사/기간·time 값·가시적 Experience/Tech Stack 제목과1px 구분선·소개→경력→기술 순서·두 구간의 동일한64px/48px 간격·기술6분류·가로 넘침 없음 확인. PC/390px 캡처를 직접 확인했다. 문단 줄 수는1440px2+3줄, 390px4+4줄, 320px5+5줄이다. 메뉴 ArrowDown/Tab/Escape·현재 페이지·포커스 복귀·Contact 왕복 이동 통과, JavaScript 오류 없음. 문구·Tailwind 위계 조정에 전체 빌드/단위 테스트를 반복하지 않았다(직전 회사/기간 구현의 빌드·타입 검사 통과 이력 유지).
+- 결과/후속: 로컬 `/about`에 최신 요청 적용 완료. 엔터 업무 설명은 소개에서 제거되고 회사 경력 목록에 해피로봇레코드가 유지된다. 추가 문구·위계 조정은 사용자 피드백에 따른다. 커밋·push·배포·Notion 변경 없음. 실기기/Safari·운영 검증은 별도 후속이다.
+
+## 2026-11-27 - About 회사·기간 두 행과 구체적인 엔터 경력 적용
+
+- PM/Planner: 기존 미커밋 About 변경을 보존하고 사용자가 확인한 회사명·기간 및 제공 PDF를 경력 참고 자료로 확인했다. 기존 별도 연혁 제외 결정을 이번 두 회사의 간결한 표시 범위에서 갱신한다. 현재 회사 먼저, 소개 아래·사용 기술 위, 박스 없는 두 행과 모바일 줄바꿈으로 범위를 정했다.
+- Developer: `AboutCareer`에 코드클릭 `2021.11 – 현재`, 해피로봇레코드 `2016.02 – 2019.04`를 추가했다. 기간에 의미 있는 time/dateTime을 사용하고 420px 미만 경력 컨테이너에서 기간이 회사명 아래로 이어지게 했다. 법인명·직책·근속 연수 등 추가 정보는 UI에 넣지 않았다. 소개 첫 문단을 PDF로 확인한 음반·공연 제작, 아티스트 매니지먼트, 사내팀/외부 업체 협의 경험으로 구체화하고 두 번째 개발 경험 문단은 유지했다.
+- 날짜 출처: 코드클릭 입사2021.11·현재 재직은 사용자 확인. 해피로봇레코드 입사2016.02는 PDF의2016.04보다 최신인 사용자 직접 정정, 퇴사2019.04는 PDF 경력표. 정확한 회사명·법인 관계와 출처 차이는 decisions 최신 항목에 기록했다. PDF는 직접 읽기만 했으며 원본·추출 전문·캡처·주소·연락처·연봉을 저장소/사이트에 저장하지 않았다.
+- 생성: `src/components/about/AboutCareer.tsx`, `output/about-review/career-qa/`의 검증 스크립트·결과 JSON·실제 화면 캡처8개. 수정: `src/app/(pages)/about/page.tsx`, `src/components/about/AboutIntro.tsx`, `docs/decisions.md`, `docs/project-context.md`, `docs/portfolio-improvement-plan.md`, `docs/task-log.md`. 서비스 코드 변경 있음. 기존 About 기술 목록·홈·전역 메뉴/푸터·연락처·의존성은 보존했다.
+- QA: 전체 lint 및 프로덕션 빌드(TypeScript 포함) 통과. Chromium1920/1440/1024/768/760/500/390/320px에서 소개 전문·회사 순서·표시 기간·time 값·소개→경력→기술 순서·가로 넘침 없음·기술6분류 확인. PC에서 회사와 기간 좌우 정렬, 390/320px에서 기간이 회사명 아래 배치됨을 확인했다. PC/390px 캡처를 직접 검토했다. 소개는 PC2+3줄, 390px4+5줄, 320px6+6줄로 표시된다. 메뉴 ArrowDown/Tab/Escape·현재 페이지·포커스 복귀·Contact 왕복 이동도 통과했고 JavaScript 오류 없음. 정적 콘텐츠 추가라 별도 단위 테스트는 만들지 않았다.
+- 결과/제한: 로컬 `/about`에 적용 완료. 검증은 Chromium/로컬 개발 서버 및 프로덕션 빌드 기준이며 실기기·Safari·배포 환경은 미검증이다. 추가 소개 수정은 사용자 피드백에 따른다. 기존 통합/운영 후속은 유지하며 커밋·push·배포·Notion 변경은 하지 않았다.
+
+## 2026-11-27 - About 세로 구성 적용 및 소개 두 문단 보강
+
+- PM: 사용자의 직접 소스 반영 승인과 홈 선행 커밋 요청을 확인했다. 홈 커밋 `7c97224` 완료 후 스테이징이 비어 있고 기존 About 시안·문서 변경이 남아 있음을 확인해 구현을 재개했다. 홈·메뉴·푸터·프로젝트 동작은 보존한다.
+- Planner/Developer: About 제목을 `ABOUT`으로, 이름을 김황석 / Hwangseok Kim과 `Frontend Developer`로 표시하고 이름 → 소개 → 사용 기술의 같은 시작선 세로 흐름을 적용했다. 소개 최대650px·기술 최대900px, 기술만2열/좁은 화면1열로 구성했다. 여섯 기술 분류·순서·사용 맥락은 그대로 두고 기술 색면·하단 중복 링크를 제거했다. 스타일은 About TSX 세 파일의 Tailwind 유틸리티만 사용했다.
+- 후속 피드백: 사용자가 실제 두 문장 소개를 보고 “소개글이 너무 심플한데”라고 지적했다. 별도 승인 대기 없이 두 개의 짧은 문단·총 네 문장으로 보강하고 16px 문단 간격을 적용했다. 엔터업계의 여러 업체/부서와 소통한 배경과 개발의 구현·협의 경험을 담으며 홈의 프로젝트·기능·AI·PL 작업 목록은 반복하지 않는다. 미확인 직책·기간·전직 이유·성과·성격과 역량 자기평가는 추가하지 않았다. 최종 소개 전문은 `docs/decisions.md` 최신 적용 항목에 기록했다.
+- 수정: `src/app/(pages)/about/page.tsx`, `src/components/about/AboutIntro.tsx`, `src/components/about/Stacks.tsx`, `docs/project-context.md`, `docs/decisions.md`, `docs/portfolio-improvement-plan.md`, `docs/task-log.md`. 생성: `output/about-review/service-qa/`의 실제 화면 캡처8개·검증 스크립트·결과 JSON·변경 전 해시. 서비스 코드 변경 있음(About3개 파일). 홈 커밋·기존 시안·메뉴·푸터·전역 CSS·의존성 보존.
+- QA: `npm run lint`, `npx tsc --noEmit`, 기존 Header 테스트4개 통과. 최종 문단 보강 뒤 AboutIntro 대상 ESLint와 프로덕션 빌드(TypeScript 포함) 통과. 최종 문구로 Chromium1920/1440/1024/768/760/500/390/320px 총8개 폭에서 두 문단 원문·기술6분류·세로 순서·왼쪽 정렬·가로 넘침 없음 확인. 최종 문단은 PC 각각3줄, 390px 각각5줄, 320px 각각6줄이며 글자 축소나 말줄임 없이 자연스럽게 세로 스크롤한다. PC/320px 최종 캡처를 직접 확인했다. 메뉴 ArrowDown 열기·첫 링크 포커스·Tab 순서·현재 About 표시·Escape 닫기/포커스 복귀와 Contact 왕복 이동을 모든 폭에서 확인했고 JavaScript 오류는 없었다. 초기 검사에서 메뉴 포커스 이동의 requestAnimationFrame 완료 전에 읽던 검사 타이밍을 수정했고 실제 메뉴 소스는 변경하지 않았다.
+- 검증 제한: Chromium의 로컬 개발 서버와 프로덕션 빌드를 확인했으며 별도 실기기/Safari·배포 환경 검증은 수행하지 않았다. 개발 툴바가 본문을 가리지 않도록 최종 캡처에서만 Next 개발 도구 표시를 숨겼다. 전체 프로젝트 회귀 테스트는 반복하지 않았다.
+- 결과/후속: `http://localhost:3000/about`에 최신 문구와 구조가 반영되어 있다. 소개 원문·별도 시안 승인 대기는 해소됐으며 추가 내용 조정은 사용자 피드백에 따른다. 지원 전 통합 점검·운영 점검은 별도 후속이다. About 커밋·push·배포·Notion 변경은 수행하지 않았다.
+
+## 2026-11-27 - About 두 문장 소개 시안 구성
+
+- PM: 기존 세로 시안의 긴 자리표시자 세 묶음과 실제 서비스의 좌우 분할·두 문단 소개를 구분해 확인했다. 사용자는 긴 원문 작성 부담 없이 엔터업계 배경을 조금 드러내길 요청했다. 확인된 사실로 짧은 시안을 작성하는 범위이며 서비스 구현 승인은 아니다.
+- Planner/시안 제작: 이름 → 소개 → 사용 기술의 시작선을 유지하고 소개를 두 문장 한 문단으로 구성했다. 소개 뒤 간격을 PC 40px·좁은 화면 32px로 줄였다. 기술 여섯 분류·순서·사용 맥락과 넓은 화면 2열/좁은 화면 1열은 보존했다. 홈의 상세 업무·지향점은 반복하지 않고 별도 연혁·성과 카드·슬로건은 추가하지 않았다.
+- 제안 소개 전문: “웹과 앱을 만들어 온 프론트엔드 개발자입니다. 엔터업계에서 여러 업체·부서의 사람들과 이야기를 나누며 함께 일한 경험도 있습니다.” 확인되지 않은 직책·기간·성과·전직 계기·성격과 개발 역량에 대한 인과관계는 쓰지 않았다. 사용자 최종 문구 승인 전이다.
+- 생성: `output/about-review/about-compact-profile.html`, `output/about-review/compact-qa/`의 렌더용 preview·검증 스크립트·결과 JSON·다크/라이트 폭별 PNG·변경 전 해시 기록. 수정: `docs/decisions.md`, `docs/portfolio-improvement-plan.md`, `docs/task-log.md`. 기존 `about-single-flow.html` 보존. 서비스 코드·홈 소개·의존성·project-context·Notion·운영·배포·커밋·push 변경 없음.
+- QA: Chromium에서 실제 프레임 폭 1440/1024/768/390/320px × 다크/라이트 10개 조건을 확인했다. 가로 넘침 없음, 이름·소개·기술 제목/목록의 시작선 일치, 소개 뒤 기술 배치, 6개 분류와 기존 기술 마크업 동일, 하단 링크 기본 숨김, JavaScript 오류 없음. PC·390/320px 캡처의 줄바꿈·간격과 라이트 PC 화면을 직접 확인했다. 1024px에서 소개 2줄, 390px에서 3줄, 320px에서 4줄이다. 읽기 검토용 메뉴·푸터는 위치 표시이며 실제 탐색은 검증 대상이 아니다. 호스트의 조정 패널은 실제로 열어 확인하지 않았다. 문서 diff 공백 검사 통과, 보호 대상 75개 파일의 작업 전후 해시 일치로 서비스 파일과 기존 시안 보존 확인. 서비스 lint·빌드·회귀 테스트는 시안 작업에 수행하지 않았다.
+- 후속: 짧은 문구·압축한 간격의 사용자 검토와 하단 링크 처리 확인, 승인된 범위에서 별도 서비스 반영. 긴 소개 원문 수령을 더 이상 이번 작업의 선행 조건으로 두지 않는다. 지원 전 통합 점검·공유/데이터/운영 점검은 기존 별도 후속으로 유지한다.
+
 ## 2026-11-27 - 최종 마무리 및 개발 PL 표현 적용
 
 - PM/Planner: 현재 실제 소스의 정보 찾기·작업 연결 중심 마무리를 확인하고 최종 승인 문장으로 교체한다. 작업 중 PL 표현도 별도 승인돼 해당 문법 정리를 함께 반영했다. 비교 문구·UX/AX 약어는 추가하지 않는다.
@@ -82,6 +334,29 @@ Next Candidates:
 - QA: `npm run lint`, `npx tsc --noEmit` 통과. Chromium에서 1920/1440/1024/768/650/649/390/320px 총 8개 폭으로 최종 두 문단 표시·가로 넘침 없음·모바일 끝까지 스크롤한 뒤 이메일과 하단 메뉴 비중첩을 확인했다. 삼성전자 Featured 링크로 실제 딥링크·상세 열기 및 Escape 닫기를 확인했고 런타임 오류는 없었다. 1440/390px 최종 캡처의 읽기·줄바꿈을 검토했다. 390px 본문은 10+7줄, 320px은 15+10줄로 자연스럽게 세로 스크롤한다. 단순 문구 변경이라 신규 단위 테스트·전체 회귀 테스트·프로덕션 빌드는 수행하지 않았다.
 - 검증 산출물은 `/tmp/paris-home-copy/`의 check.cjs·results.json·before/after 캡처에만 저장했다. 문서 공백 검사 통과. 운영 DB·배포·커밋·push·Notion 쓰기는 수행하지 않았다.
 - 후속: 이번 홈 소개 적용은 완료. 좁은 모바일의 기존 큰 좌우 여백은 유지돼 스크롤이 길어지는 한계가 있다. 사용자 요청 없는 레이아웃 변경은 시작하지 않는다. 기존 About 원문·시안 검토, 지원 전 통합 점검, 공유·운영 확인은 별도 후속으로 유지한다.
+
+## 2026-11-26 - About 세로 흐름 단일 시안
+
+- 사용자 요청에 따라 왼쪽 섹션 라벨 열을 제거하고 이름·소개 본문·사용 기술 제목/목록을 동일한 시작선에 배치했다. 본문 최대650px, 기술 최대900px, 기술 목록만 반응형2열/1열로 구성했다. 별도 연혁 없음, 사용자 원문 대신 자리표시자 유지.
+- 생성: `output/about-review/about-single-flow.html`. 대화 폴더 `/Users/paris/.codex/visualizations/2026/11/26/01a216ec-2280-7253-8a76-af89e5da602a/`에 같은 이름의 시안과 `about-single-flow-preview.html` 생성. 기존 두 안 보존. 수정: 결정·계획·작업 로그. 서비스 코드·의존성·Notion 변경 없음.
+- QA: 렌더 생성 및 1440/768/390/320px에서 이름·본문·기술 제목·목록의 왼쪽 좌표 일치, 소개 뒤 기술 배치, 가로 넘침 없음 확인. PC 상단과 모바일 기술 목록 캡처 확인. 실제 소개글·호스트 조정 패널은 미검증이며 메뉴/푸터는 위치 표시용이다.
+- 후속: 소개 원문을 넣어 문단 길이·여백 조정, 하단 링크 처리 확인, 승인된 서비스 구현 범위 확정. 현재 요청은 시안 수정으로 처리했다.
+
+## 2026-11-26 - About 시안의 지나온 과정 제거
+
+- 사용자 결정: 별도 연혁 없이 이전 경험을 소개글에 녹인다. 두 시안에서 과정 영역·전용 스타일·표시 토글을 제거하고 소개 원문 자리와 기술 분류는 유지했다.
+- 수정: `output/about-review/about-directions.html`, 검증용 `preview.html`, 결정·계획·작업 로그. 대화 전용 폴더 `/Users/paris/.codex/visualizations/2026/11/26/01a216ec-2280-7253-8a76-af89e5da602a/about-directions.html`에도 갱신본 저장. 서비스 코드 변경 없음.
+- 검증: 과정 관련 마크업·스타일·스크립트 참조 없음, 두 안·각 기술 6분류·엔터업계 소개 문단 자리 유지 확인. 미리보기 재생성과 diff 공백 검사 수행. 브라우저 시각 검증은 이번 단순 삭제에서 반복하지 않았다.
+- 후속: 사용자 소개 원문과 배치·하단 링크 선택. 연혁 포함 여부는 더 이상 미결 항목이 아니다.
+
+## 2026-11-26 - About 소개 방향 검토와 두 배치 시안
+
+- PM: 현행 About 페이지·AboutIntro·Stacks·PageHeading·Footer와 최신 저장소 문서를 확인했다. localhost:3000/about 실제 화면에서 짧은 두 문단/우측 기술 색면의 좌우 배치와 링크를 확인했다. 긴 자기소개와 엔터업계 경험을 보여주는 것이 이번 목표이며 서비스 구현은 요청 범위 밖이다.
+- Planner: ‘소개 우선’(본문 → 선택적 과정 → 열린 기술 2열)과 ‘소개·기술 병렬’(기존 분할 조정 → 선택적 과정)을 제안했다. 본문 원문·과거 역할/기간/공개 범위·연혁 포함 여부·링크 제거/이동·배치 선택은 미확정으로 남긴다. 실제 글로 데스크톱·모바일을 확인한 후 승인 범위만 구현한다.
+- 시안: `output/about-review/about-directions.html` 생성. 검증용 `output/about-review/preview.html` 생성. 영문 이름은 기존 확정 Hwangseok Kim, 직무는 Frontend Developer, 제목은 ABOUT. 미제공 소개글은 자리표시자이며 실제 경력 문구가 아니다. 과정 표시·하단 링크·본문 분량은 시안 조정 항목이다.
+- QA: 시안 렌더링, 두 배치 전환, 390/768/320px 두 안의 요소 폭/스크롤 폭 일치 확인. 데스크톱 1440px 소개 우선 폭 일치 확인 및 병렬 화면 관찰. 데스크톱/모바일 캡처 확인. 실제 긴 원문·서비스 구현·호스트 조정 패널 동작은 미검증이다. 메뉴/푸터 링크는 위치 비교용 표시이며 시안에서 서비스 이동을 구현하지 않았다. 코드 테스트·빌드는 서비스 변경이 없어 실행하지 않았다.
+- 기록: decisions·portfolio-improvement-plan·task-log 수정. 서비스 코드·의존성 변경 없음. Notion TASK-260을 읽어 11/11 기존 구현 기록을 확인했으며 이후 11/26 메뉴/Tailwind 사실은 저장소 최신 문서를 기준으로 했다. Notion 쓰기·커밋·배포 없음.
+- 후속: 소개 원문을 받은 뒤 문단 구성과 엔터업계 경험 노출 정도 결정, 연혁의 본문 중복 검토, 기술 배치·하단 링크 선택. 구현 후보는 About page·AboutIntro·Stacks이며 PageHeading 공통 변경 없이 About 제목 전달값으로 처리할 수 있다. 기존 지원 전 통합·공유·운영 점검도 유지한다.
 
 ## 2026-11-26 - PC 모서리 메뉴 콘텐츠 정렬
 

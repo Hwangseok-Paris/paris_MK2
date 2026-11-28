@@ -26,9 +26,9 @@ export const projects: Project[] = [
       "콘텐츠 제작·활용·성과 정보를 대화형 분석 화면과 대시보드에서 확인하는 서비스입니다. 프론트엔드를 초기 구성부터 단독 담당했습니다.",
     highlights: [
       "Agent가 반환하는 데이터를 화면에 표시하기 위한 위젯·템플릿 구조와 응답 규약을 설계했습니다.",
-      "질문과 분석 결과를 연결하는 채팅 화면, 진행 상태와 결과를 단계적으로 표시하는 응답 처리, 콘텐츠 검색·필터·상세 조회를 구현했습니다.",
+      "질문과 분석 결과를 연결하는 채팅 화면, SSE 기반 진행 상태·결과 표시, 콘텐츠 검색·필터·상세 조회를 구현했습니다.",
       "백엔드·Agent 개발자들과 연동 방식, 멀티턴 대화의 슬롯 응답 선택과 대화 이력 처리 방향을 협의했습니다.",
-      "Agent 응답의 데이터 검증과 렌더링 오류 처리를 구현했습니다.",
+      "Agent 응답의 형식을 검증하고, 일부 결과에 오류가 발생해도 나머지 내용은 확인할 수 있도록 오류 처리를 구현했습니다.",
     ],
   },
   {
@@ -40,11 +40,12 @@ export const projects: Project[] = [
     category: "Finance",
     stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "PDF.js", "KaTeX", "Vitest"],
     summary:
-      "문서 원본과 파서가 추출한 데이터를 비교하고 검수·수정하는 뷰어입니다. 프론트엔드를 초기부터 단독 담당하며 화면 구조와 데이터 유형별 표현 방식을 결정했습니다.",
+      "문서 원본과 파서가 추출한 데이터를 비교하고 검수·수정하는 뷰어입니다. 프론트엔드를 초기부터 단독 담당하며 화면 구조와 데이터 유형별 표현 방식을 결정했습니다. 사용 편의성을 높이기 위한 기능과 UI 개선안도 먼저 제안하고 구현했습니다.",
     highlights: [
       "원본 문서와 파싱 결과를 나란히 표시하고, 선택한 요소의 원본 위치를 확인할 수 있는 하이라이트와 페이지 이동을 구현했습니다.",
       "신뢰도가 낮은 항목을 찾는 필터, 유형별 데이터 편집, 수정 반영과 수정이력·변경 전후 비교를 구현했습니다.",
       "초기 FastAPI 샘플 API를 작성한 뒤 백엔드 개발자에게 인계하고 연동을 협의했습니다.",
+      "AI를 활용해 문서 요소의 표시·편집 동작에 대한 Vitest 기반 회귀 테스트를 보완하고, 기존 동작이 유지되는지 확인하며 API·타입·화면 컴포넌트의 역할을 분리했습니다.",
     ],
   },
   {
@@ -68,7 +69,7 @@ export const projects: Project[] = [
     category: "Hybrid APP",
     stack: ["Kotlin", "Swift", "SwiftUI", "WKWebView", "Vue3", "WebView Bridge", "TestFlight"],
     summary:
-      "기존 Full WebView 앱을 네이티브 메뉴와 웹 화면이 결합된 Partial Hybrid 구조로 전환하는 작업입니다.",
+      "채널별로 분산 운영하던 공통 UI를 앱 중심으로 통합해, 같은 내용을 여러 채널에서 반복 수정해야 했던 구조를 개선했습니다. 기존 Full WebView 앱을 네이티브 메뉴와 웹 화면이 결합된 Partial Hybrid 구조로 전환했습니다.",
     highlights: [
       "네이티브 상단 메뉴·하단 툴바와 웹 화면을 연결하고, 표시 제어·위치 요청·전체화면·버전 확인과 강제 업데이트 등의 브릿지 연동을 구현했습니다.",
       "딥링크·유니버설 링크·외부 앱 실행, SSO·쿠키 동기화 등 앱 진입과 인증에 필요한 동작을 구현·검증했습니다.",
@@ -121,8 +122,10 @@ export const projects: Project[] = [
     category: "Admin",
     stack: ["React", "TypeScript", "React-Query", "Zustand", "Tailwind", "AWS", "Docker"],
     summary:
-      "공연·페스티벌 업계 경험을 바탕으로 관계자와 관객의 이용을 고려한 서비스 기획에 참여했습니다. React 기반 관리자 웹을 개발하고 AWS·Docker를 활용한 개발·배포 환경을 구성했습니다.",
-    highlights: [],
+      "공연·페스티벌 업계 경험을 바탕으로, 직장 업무시간 외에 서비스 기획과 개발에 참여했습니다. 관계자와 관객의 이용 상황을 고려해 필요한 기능과 이용 흐름을 검토했습니다. React 기반 관리자 웹을 개발하고 AWS·Docker를 활용한 개발·배포 환경을 구성했습니다.",
+    highlights: [
+      "관리자 화면에 필요한 데이터 항목과 구조를 정리하고, 백엔드에서 제공할 API 응답 형식을 정의해 개발자에게 전달했습니다.",
+    ],
   },
   {
     id: "amore-bts",
@@ -148,6 +151,7 @@ export const projects: Project[] = [
       "FP가 PC 웹과 모바일 하이브리드 앱에서 카카오톡 고객 상담을 진행하는 서비스입니다. 본인 포함 프론트엔드 3명 팀을 리딩하며 PC·모바일 웹 UI 개발과 웹·앱·서버 간 연동을 맡았습니다.",
     highlights: [
       "업무 분담·일정 관리·코드 리뷰·기술 방향 결정을 맡았습니다.",
+      "실시간 채팅과 API 연동·비동기 처리를 구현하고, Pinia로 화면 상태를 관리했습니다.",
       "기획자·디자이너·퍼블리셔·백엔드 및 앱 개발자와 화면·기능의 구현 방향을 협의했습니다.",
       "앱 개발자와 웹·앱 브릿지 통신 방향을 정하고 서버 연동과 함께 구현했습니다.",
     ],
@@ -156,7 +160,7 @@ export const projects: Project[] = [
     id: "kakaoi-connect-always",
     title: "카카오 i Connect Always 솔루션 개발",
     company: "코드클릭",
-    period: "2023.05~2023.09",
+    period: "2023.07~2023.10",
     role: "프론트엔드 개발",
     category: "CRM",
     stack: ["Vue3", "Pinia", "Tailwind", "Stomp.js", "Vite"],
@@ -168,7 +172,7 @@ export const projects: Project[] = [
     id: "hana-bank",
     title: "하나은행 하나톡 MVP",
     company: "하나은행",
-    period: "2023.02~2024.07",
+    period: "2023.02~2023.07",
     role: "프론트엔드 개발",
     category: "Finance",
     stack: ["JavaScript", "Vue.js", "Vuex", "Github"],
@@ -180,7 +184,7 @@ export const projects: Project[] = [
     id: "nh-investment",
     title: "NH투자증권 챗봇 구축",
     company: "NH투자증권",
-    period: "2022.03~2024.10",
+    period: "2022.02~2022.10",
     role: "개발 PL·주요 로직 개발·아키텍처 재구성",
     category: "Finance",
     stack: ["Java", "JavaScript", "Skill-Builder", "Oracle", "Docker-Compose"],

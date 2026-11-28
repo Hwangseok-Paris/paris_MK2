@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# Local review prototypes, screenshots and QA output
+/output/
+
 # next.js
 /.next/
 /out/

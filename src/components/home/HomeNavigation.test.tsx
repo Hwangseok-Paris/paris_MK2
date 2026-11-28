@@ -4,6 +4,7 @@ import HomeNavigation from "./HomeNavigation";
 
 beforeEach(() => {
   jest.useFakeTimers();
+  window.ResizeObserver = jest.fn().mockImplementation(() => ({ observe: jest.fn(), disconnect: jest.fn() }));
   Object.defineProperty(window, "matchMedia", { writable: true, value: jest.fn().mockReturnValue({ matches: false, addEventListener: jest.fn(), removeEventListener: jest.fn() }) });
 });
 afterEach(() => { jest.clearAllTimers(); jest.useRealTimers(); });

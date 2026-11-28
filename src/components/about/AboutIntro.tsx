@@ -1,13 +1,16 @@
 export default function AboutIntro() {
   return (
-    <section className="about-intro" aria-label="자기소개">
-      <div className="identity pt-1.5 pb-[25px] profile-sm:pt-0 profile-sm:pb-[21px]">
-        <h2 className="text-[19px] leading-[1.6] font-medium profile-sm:text-[17px]">김황석</h2>
-        <p className="mt-1 text-[13px] text-muted profile-sm:text-xs profile-sm:leading-[1.9]">프론트엔드 개발자</p>
+    <section className="about-intro max-w-[650px]" aria-label="소개">
+      <div className="identity mb-[18px]">
+        <div className="flex flex-wrap items-baseline gap-x-3.5 gap-y-1.5 profile-sm:gap-x-3 profile-sm:gap-y-0.5">
+          <h2 className="text-[32px] leading-[1.6] font-medium profile-sm:text-[28px]">김황석</h2>
+          <span className="font-chakra text-lg leading-[1.6] text-muted profile-sm:text-base" lang="en">Hwangseok Kim</span>
+        </div>
+        <p className="mt-[3px] font-chakra text-base leading-[1.8] text-muted profile-sm:text-[15px]" lang="en">Frontend Developer</p>
       </div>
-      <div className="intro-copy max-w-[41em] [&_p]:text-[17px] [&_p]:leading-[1.95] [&_p]:break-keep [&_p+p]:mt-[18px] profile-sm:[&_p]:text-base profile-sm:[&_p]:leading-[1.9] profile-sm:[&_p+p]:mt-4">
-        <p>상담 서비스와 데이터 분석·검수 도구의 화면 구조와 기능을 설계하고 개발해 왔습니다.</p>
-        <p>직접 개발하면서 기획·디자인·백엔드와 구현 방향을 협의하고, 프로젝트에 따라 개발팀을 이끌며 업무와 기술 방향을 조율했습니다.</p>
+      <div className="intro-copy space-y-4 text-[17px] leading-[1.9] break-keep profile-sm:text-base">
+        <p>화면을 만들 때는 기획자·디자이너와 어떤 내용을 어떻게 보여줄지 함께 정합니다. 백엔드 개발자와 데이터가 오가는 방식을 맞추고, 그 내용을 실제로 동작하는 화면과 기능으로 옮기는 것이 제 일입니다.</p>
+        <p>웹과 앱을 연결한 프로젝트에서는 각 환경에서 기능이 제대로 이어지는지 직접 확인하며 개발을 진행했습니다. 팀을 이끄는 역할을 맡았을 때도 직접 코드를 작성하면서, 개발자들과 업무를 나누고 구현 방향을 맞췄습니다.</p>
       </div>
     </section>
   );
